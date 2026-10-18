@@ -8,7 +8,7 @@ const crypto = require("node:crypto");
 const PORT = Number(process.env.PORT || 8080);
 const HOST = process.env.HOST || "0.0.0.0";
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
-const DATA_DIR = path.join(__dirname, "data");
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
 const MAX_BODY_BYTES = 1024 * 1024;
 
