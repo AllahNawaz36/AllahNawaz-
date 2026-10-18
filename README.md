@@ -1,53 +1,65 @@
-# Naz Business Assistant — Professional Starter
+# Naz Business Assistant Pro
 
-## Included modules
-- Overview dashboard
-- Lead CRM with source, service, stage, budget and notes
-- Marketing campaign planner
-- Content studio for social posts, email drafts, short-video scripts and blog outlines
-- Manual on-page SEO checks and keyword brainstorming (no live volume data)
-- Email and follow-up message templates (drafts only; not sent)
-- Customer-support reply helper and FAQ library
-- Local task board
-- Manual KPI calculator
-- Settings / backend status page
+A starter dashboard plus a separate Python workflow runner. This repository is **not** a fully connected AI/social automation service yet.
 
-## Run locally (Node.js 18+; no npm packages)
-From this folder:
+## What works
 
-**Windows PowerShell**
+- Browser dashboard for leads, tasks, content drafts, campaign planning, manual SEO checks, FAQs and KPI calculations.
+- Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN`.
+- Python workflow runner with a brand-aware content prompt, planning stages and an explicit approval gate.
+- Safe-by-default Python dry run (`DRY_RUN=1`).
+
+## Run the dashboard + lead API locally
+
+Requires Node.js 18+.
+
+**PowerShell**
 ```powershell
-$env:ADMIN_TOKEN="replace-with-a-long-random-secret"
-node server.js
+$env:ADMIN_TOKEN = "replace-this-with-a-random-secret-of-at-least-32-characters"
+npm start
 ```
 
-**macOS / Linux**
+**macOS/Linux**
 ```bash
-ADMIN_TOKEN="replace-with-a-long-random-secret" node server.js
+ADMIN_TOKEN="replace-this-with-a-random-secret-of-at-least-32-characters" npm start
 ```
 
-Open `http://127.0.0.1:8080`.
+Open http://127.0.0.1:8080. In the dashboard's Leads area, select **Admin Login** and enter the same token. Do not put the real token in `index.html`, commit it, or share it in screenshots.
 
-## Storage
-- Leads: `data/leads.json` when backend is running. Central lead listing/edit/delete requires the `ADMIN_TOKEN`.
-- If backend is unavailable, leads fall back to this browser's localStorage; they are not shared across devices.
-- Tasks, FAQs, drafts, theme and checklists are stored in the current browser only.
+Health check: `GET /api/health`. Lead listing/creation/editing/deletion is under `/api/leads` and requires `Authorization: Bearer <ADMIN_TOKEN>`.
 
-## Honest limitations
-This starter does **not** connect an AI model, crawl websites, fetch live keyword volumes/rankings, send email/WhatsApp, publish/schedule social posts, or connect analytics accounts. The content and campaign tools use local templates. The SEO page checks the values you manually enter and is not a full SEO audit.
+## Run the Python workflow
 
-## Free online demo deployment (Android-friendly)
-1. Upload `index.html`, `server.js`, and `package.json` to a GitHub repository. The server creates its `data` folder automatically.
-2. In Render, create a new **Web Service** and connect that GitHub repository.
-3. Use build command `npm install` (there are no third-party dependencies) and start command `npm start`.
-4. Choose the **Free** instance. Add an environment variable named `ADMIN_TOKEN` with a long, random secret.
-5. Deploy, open the `onrender.com` URL, then open Settings / Connections and confirm backend status.
+Requires Python 3.10+.
 
-**Important:** Render free web services use an ephemeral filesystem and may sleep after inactivity. Lead records stored in the included JSON file can be lost after restart, sleep, or redeploy. Treat this as a demo only; do not store real customer data until persistent database storage and privacy/security controls are added.
+```bash
+python -m pip install -r requirements.txt
+python allinone_bot.py --brief "Create a helpful introduction post for a small business"
+```
 
-## Before public deployment
-- Deploy behind HTTPS on a Node.js-capable host. Plain static hosting such as GitHub Pages cannot run this backend.
-- Use a strong private `ADMIN_TOKEN`; never place it in public HTML.
-- Add persistent database storage, automated backups, stricter rate limits, abuse monitoring, privacy notice/consent, and data retention/deletion processes.
-- The included JSON file storage is a starter for low-volume use, not a production CRM database.
-- Add official API integrations only after reviewing each provider's current policies and permissions.
+The default is dry-run: it builds a prompt and planning output without sending posts or emails. Edit `config/industry.yaml` for your brand, region, language and tone.
+
+For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and then explicitly set `DRY_RUN=0`. Do not commit API keys. The AI stage uses the configured `CONTENT_MODEL` if provided; otherwise it uses the model ID in the code. Confirm your provider account supports that model before live use.
+
+## Deployment: important distinction
+
+- **GitHub Pages is static hosting only.** It can show the dashboard interface, but cannot run `server.js`; the API buttons will not connect there.
+- To use central lead storage, deploy the repository as a Node.js Web Service on a Node-capable host such as Render. Set start command to `npm start` and configure a strong `ADMIN_TOKEN` as a private environment variable.
+- If the dashboard is hosted separately from the API, the frontend currently uses same-origin `/api/... ` paths; a separate-domain deployment needs a configured API base URL and strict CORS. Do not expose the admin token in client-side source.
+- A free host may sleep and/or erase local files. The JSON lead store is demo storage only. Use a persistent database, backups, access controls, privacy notice and retention/deletion process before handling real customer data.
+
+## Honest feature limits
+
+The current code does not publish or schedule LinkedIn/social posts, send email/WhatsApp, connect CRM accounts, export Canva/Figma designs, generate videos, crawl websites, fetch live SEO rankings, or connect analytics accounts. Those stages create plans/drafts only; approval is not the same as an integration and no external action is executed by the current pipeline.
+
+## Checks
+
+```bash
+npm run check
+npm test
+python -m compileall -q allinone_bot.py workflows tests
+python -m unittest discover -s tests -v
+python allinone_bot.py --brief "CI smoke test"
+```
+
+See [AUTH_FIX_INSTALL.md](AUTH_FIX_INSTALL.md) and [RUNBOOK.md](RUNBOOK.md) for additional setup notes.

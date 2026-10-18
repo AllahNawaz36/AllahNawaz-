@@ -1,0 +1,21 @@
+# Starter configuration. Edit these values for your own brand before live content generation.
+brand:
+  name: "Naz Business Assistant"
+  tone: "helpful, professional, clear and human"
+  voice_rules:
+    - "Do not invent facts, prices, guarantees or testimonials."
+    - "Use short sentences and a clear call to action."
+    - "Keep claims honest and suitable for the audience."
+  colors:
+    primary: "#2563EB"
+    secondary: "#111827"
+    accent: "#F59E0B"
+    background: "#F9FAFB"
+industry:
+  niche: "business services"
+  sub_niche: "small business marketing and operations"
+  region: "Pakistan"
+  language: "English"
+tools:
+  voice: "not-configured"
+  video: "plan-only; provider not connected"
