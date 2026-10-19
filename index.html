@@ -128,7 +128,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 @media(max-width:720px){.ai-launcher{right:12px;bottom:84px;padding:12px 14px}.ai-chat-panel{right:10px;bottom:145px;width:calc(100vw - 20px);height:min(560px,calc(100dvh - 170px))}}
 @media(prefers-reduced-motion:reduce){.ai-launcher,.ai-chat-panel{transition:none}}
 
-.icon-fallback{display:inline-grid!important;place-items:center;width:var(--icon-size,18px);height:var(--icon-size,18px);min-width:var(--icon-size,18px);font-family:system-ui,sans-serif;font-size:15px;line-height:1;stroke:none;vertical-align:middle;overflow:visible}.navbtn .ico .icon-fallback{width:18px;height:18px;min-width:18px;margin:0}.mobile-nav .icon-fallback{width:19px;height:19px;min-width:19px;margin:0}.icons-fallback .navbtn .ico{display:grid;place-items:center}.icons-fallback button .icon-fallback{margin-right:7px}
+.icon-fallback{display:inline-grid!important;place-items:center;flex:0 0 var(--icon-size,18px);width:var(--icon-size,18px);height:var(--icon-size,18px);min-width:var(--icon-size,18px);margin:0!important;padding:0;font-family:Arial,sans-serif;font-size:15px;font-weight:600;line-height:1;letter-spacing:0;text-align:center;stroke:none;vertical-align:middle;overflow:hidden}.navbtn .ico .icon-fallback{flex-basis:18px;width:18px;height:18px;min-width:18px}.mobile-nav .icon-fallback{flex-basis:19px;width:19px;height:19px;min-width:19px}.mobile-more-panel .icon-fallback{flex-basis:20px;width:20px;height:20px;min-width:20px}.icons-fallback .navbtn .ico{display:grid;place-items:center}
 /* Mobile navigation alignment fix: keep icon and label as separate, predictable rows */
 .mobile-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;white-space:normal;line-height:1.1}
 .mobile-nav button .mobile-nav-icon{display:grid;place-items:center;width:22px;height:22px;min-width:22px;flex:0 0 22px;margin:0;font-size:16px;line-height:1}
@@ -558,7 +558,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
     </div>
   </section>
 </main>
-<div id="mobileMorePanel" class="mobile-more-panel" aria-label="More workspace pages" hidden>
+<div id="mobileMorePanel" class="mobile-more-panel" role="menu" aria-labelledby="mobileMoreButton" hidden>
   <button type="button" data-page="social" role="menuitem"><i data-lucide="send" data-fallback="➤" class="icon" aria-hidden="true"></i><span>Social Publisher</span></button>
   <button type="button" data-page="automation" role="menuitem"><i data-lucide="zap" data-fallback="⚡" class="icon" aria-hidden="true"></i><span>Automation</span></button>
   <button type="button" data-page="seo" role="menuitem"><i data-lucide="search" data-fallback="⌕" class="icon" aria-hidden="true"></i><span>SEO Toolkit</span></button>
