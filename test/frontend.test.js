@@ -107,7 +107,9 @@ test("Social Publisher includes a downloadable accessible LinkedIn visual concep
   assert.match(html, /id="downloadSocialVisual"/, "users should be able to download the vector visual");
   assert.match(html, /clone\.setAttribute\("width","1080"\);clone\.setAttribute\("height","1350"\)/, "download should use a 1080 by 1350 artboard");
   assert.match(html, /image\/svg\+xml;charset=utf-8/, "download should be a valid SVG asset");
-  assert.match(html, /export as PNG in Canva/i, "UI should explain that some schedulers require PNG or JPG");
+  assert.match(html, /id="downloadSocialVisualPng"/, "users should be able to export an upload-ready PNG");
+  assert.match(html, /canvas\.toBlob\(blob=>/, "PNG export should rasterize the poster in-browser");
+  assert.match(html, /allah-nawaz-linkedin-ux-visual\.png/, "PNG download should use a clear file name");
 });
 
 test("mobile navigation keeps icon and label in separate aligned elements", () => {
