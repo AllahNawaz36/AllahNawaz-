@@ -1,6 +1,6 @@
 # Naz Business Assistant Pro
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FAllahNawaz36%2FAllahNawaz-)
+[**Open free dashboard (GitHub Pages)**](https://allahnawaz36.github.io/AllahNawaz-/) · [**Deployment status**](https://github.com/AllahNawaz36/AllahNawaz-/actions)
 
 A starter dashboard plus a separate Python workflow runner. This repository is **not** a fully connected AI/social automation service yet.
 
