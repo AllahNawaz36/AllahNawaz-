@@ -103,7 +103,8 @@ export default {
         ok: true,
         service: "naz-business-assistant",
         storage: env.DB ? "d1" : "not-configured",
-        ai: env.AI ? "configured" : "not-configured"
+        ai: env.AI && typeof env.AI.run === "function" ? "configured" : "not-configured",
+        chatProtection: env.CHAT_LIMITER && typeof env.CHAT_LIMITER.limit === "function" ? "configured" : "not-configured"
       }, 200, cors);
     }
 
