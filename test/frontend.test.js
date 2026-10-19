@@ -52,6 +52,18 @@ test("social account reminder does not falsely claim the connected Metricool bra
 });
 
 
+test("static pages avoid third-party runtime assets and expose the privacy notice", () => {
+  const root = path.join(__dirname, "..");
+  const dashboard = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  const portfolio = fs.readFileSync(path.join(root, "portfolio.html"), "utf8");
+  const privacy = fs.readFileSync(path.join(root, "privacy.html"), "utf8");
+  assert.doesNotMatch(dashboard, /fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com\/lucide/);
+  assert.doesNotMatch(portfolio, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  assert.match(dashboard, /href="privacy\.html"/);
+  assert.match(privacy, /Do not enter real customer/);
+  assert.match(privacy, /does not implement a complete retention schedule or automatic deletion policy/);
+});
+
 test("support replies are honestly labelled and backend requests have a timeout", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
   assert.match(html, /Customer-support reply draft/);
