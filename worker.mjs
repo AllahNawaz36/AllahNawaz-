@@ -65,9 +65,13 @@ function validateLead(input, partial = false) {
       throw Object.assign(new Error(key.charAt(0).toUpperCase() + key.slice(1) + " is required."), { status: 400 });
     }
   }
-  if (!partial) {
+  if (!partial || "name" in lead) {
     if (typeof lead.name !== "string" || !lead.name.trim()) throw Object.assign(new Error("Name is required."), { status: 400 });
+  }
+  if (!partial || "email" in lead) {
     if (typeof lead.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email.trim())) throw Object.assign(new Error("A valid email is required."), { status: 400 });
+  }
+  if (!partial || "project" in lead) {
     if (typeof lead.project !== "string" || !lead.project.trim()) throw Object.assign(new Error("Project is required."), { status: 400 });
   }
   if ("stage" in lead && (!Number.isInteger(lead.stage) || lead.stage < 0 || lead.stage > 20)) {
@@ -114,13 +118,17 @@ export default {
       }
 
       if (request.method === "POST" && path === "/api/leads") {
-        const lead = validateLead(await bodyObject(request));
-        lead.id = crypto.randomUUID();
-        lead.createdAt = new Date().toISOString();
-        await env.DB.prepare(
-          "INSERT INTO leads (id,name,email,source,service,project,budget,stage,notes,createdAt) VALUES (?,?,?,?,?,?,?,?,?,?)"
-        ).bind(lead.id, lead.name, lead.email, lead.source || "", lead.service || "", lead.project, lead.budget || "", lead.stage, lead.notes || "", lead.createdAt).run();
-        return response({ lead }, 201, cors);
+        try {
+          const lead = validateLead(await bodyObject(request));
+          lead.id = crypto.randomUUID();
+          lead.createdAt = new Date().toISOString();
+          await env.DB.prepare(
+            "INSERT INTO leads (id,name,email,source,service,project,budget,stage,notes,createdAt) VALUES (?,?,?,?,?,?,?,?,?,?)"
+          ).bind(lead.id, lead.name, lead.email, lead.source || "", lead.service || "", lead.project, lead.budget || "", lead.stage, lead.notes || "", lead.createdAt).run();
+          return response({ lead }, 201, cors);
+        } catch (error) {
+          return response({ error: error.message || "Unable to create lead." }, error.status || 500, cors);
+        }
       }
 
       const id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
@@ -129,12 +137,16 @@ export default {
       if (!found) return response({ error: "Lead not found." }, 404, cors);
 
       if (request.method === "PATCH") {
-        const patch = validateLead(await bodyObject(request), true);
-        const merged = { ...found, ...patch, id: found.id, createdAt: found.createdAt };
-        await env.DB.prepare(
-          "UPDATE leads SET name=?, email=?, source=?, service=?, project=?, budget=?, stage=?, notes=? WHERE id=?"
-        ).bind(merged.name, merged.email, merged.source || "", merged.service || "", merged.project, merged.budget || "", merged.stage, merged.notes || "", id).run();
-        return response({ lead: merged }, 200, cors);
+        try {
+          const patch = validateLead(await bodyObject(request), true);
+          const merged = { ...found, ...patch, id: found.id, createdAt: found.createdAt };
+          await env.DB.prepare(
+            "UPDATE leads SET name=?, email=?, source=?, service=?, project=?, budget=?, stage=?, notes=? WHERE id=?"
+          ).bind(merged.name, merged.email, merged.source || "", merged.service || "", merged.project, merged.budget || "", merged.stage, merged.notes || "", id).run();
+          return response({ lead: merged }, 200, cors);
+        } catch (error) {
+          return response({ error: error.message || "Unable to update lead." }, error.status || 500, cors);
+        }
       }
       if (request.method === "DELETE") {
         await env.DB.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
