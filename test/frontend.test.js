@@ -83,12 +83,14 @@ test("UX research tools split multiline input and produce readable line breaks",
 });
 
 
-test("icon fallbacks preserve aligned icon elements when the icon CDN is unavailable", () => {
+test("offline icon fallback draws aligned local SVG icons when the icon CDN is unavailable", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  assert.match(html, /el\.textContent=fallback/, "fallback text should stay inside the icon element");
+  assert.match(html, /const shapes=\{/, "offline icon paths should be defined locally");
+  assert.match(html, /document\.createElementNS\("http:\/\/www\.w3\.org\/2000\/svg","svg"\)/, "fallback should create an inline SVG element");
+  assert.match(html, /el\.replaceChildren\(svg\)/, "fallback SVG should stay inside the icon wrapper");
   assert.match(html, /el\.classList\.add\("icon-fallback"\)/, "fallback icons should receive a dedicated style");
-  assert.doesNotMatch(html, /el\.replaceWith\(document\.createTextNode\(fallback\)\)/, "fallback must not destroy the icon wrapper and break alignment");
   assert.match(html, /\.icon-fallback\{display:inline-grid!important;place-items:center/, "fallback icon alignment styles should exist");
+  assert.match(html, /"chart-no-axes-combined":\[/, "common dashboard icons should have explicit local paths");
 });
 
 
