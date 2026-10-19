@@ -74,7 +74,7 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 ## CI and verification status
 
-The latest observed GitHub Actions run on commit `c51b64c5e1bd421956291b0a500ff733ebdc9920` passed, including the in-memory admin-token change, Node CORS allowlist, API-only per-IP rate limiting, and regression tests. Later documentation updates should trigger CI again before merge. A passing test suite still does not verify live Cloudflare bindings or a third-party social account.
+The latest fully completed GitHub Actions run [39255566872](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39255566872) passed earlier regression checks. Newer runs for the Social Publisher PNG export are queued; latest observed run [39284759173](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39284759173) has no runner assigned yet. The CI workflow now cancels superseded runs for the same PR and caps job runtime at 15 minutes after start, but runner assignment is controlled by GitHub. Do not treat the newest tests as passing until completion. CI also cannot verify live Cloudflare bindings or a third-party social account.
 
 ## Remaining risks
 
