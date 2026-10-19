@@ -195,7 +195,9 @@ export default {
           ).bind(lead.id, lead.name, lead.email, lead.source || "", lead.service || "", lead.project, lead.budget || "", lead.stage, lead.notes || "", lead.createdAt).run();
           return response({ lead }, 201, cors);
         } catch (error) {
-          return response({ error: error.message || "Unable to create lead." }, error.status || 500, cors);
+          const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 500;
+          const message = status < 500 ? error.message : "Unable to create lead. Please try again.";
+          return response({ error: message }, status, cors);
         }
       }
 
@@ -213,7 +215,9 @@ export default {
           ).bind(merged.name, merged.email, merged.source || "", merged.service || "", merged.project, merged.budget || "", merged.stage, merged.notes || "", id).run();
           return response({ lead: merged }, 200, cors);
         } catch (error) {
-          return response({ error: error.message || "Unable to update lead." }, error.status || 500, cors);
+          const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 500;
+          const message = status < 500 ? error.message : "Unable to update lead. Please try again.";
+          return response({ error: message }, status, cors);
         }
       }
       if (request.method === "DELETE") {
