@@ -171,7 +171,7 @@ test("worker chat returns the AI response when a Workers AI binding is configure
     } }
   });
   assert.equal(response.status, 200);
-  assert.equal(modelName, "@cf/meta/llama-3.1-8b-instruct");
+  assert.equal(modelName, "@cf/zai-org/glm-4.7-flash");
   assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
 });
 
