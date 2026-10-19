@@ -20,11 +20,11 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 ### Medium
 
-1. **CDN integrity protection remains incomplete** — `index.html:21`. Lucide is pinned to version `0.468.0`, preventing floating `@latest` behavior, but Subresource Integrity (SRI) is not present. Before calling this fully hardened, add a verified integrity hash or vendor a reviewed local copy. Do not guess an SRI hash.
+1. **CDN integrity protection remains incomplete** — `index.html:21`. The dashboard no longer loads the Lucide CDN script; it uses built-in icon fallbacks. Both static pages no longer request Google Fonts and use system-font fallbacks. This removes those third-party runtime asset requests instead of relying on an unverified SRI hash.
 2. **Browser-stored admin token increases XSS impact** — `index.html:649-650`. The token is not embedded in source and is tab-scoped, but JavaScript running in the page can read it. Keep the page's scripts/dependencies tightly controlled; a stronger authenticated session is preferable if this becomes a multi-user service.
 3. **Public chat abuse controls require deployment testing** — `worker.mjs:115-125`, `wrangler.toml:20-27`. The Worker fails closed without `CHAT_LIMITER`, and the configured IP limit is 10 requests/60 seconds. Shared mobile/carrier IPs can affect multiple users; this is not a complete anti-abuse system.
 4. **Node API is for trusted/self-hosted use** — `server.js:8-18, 112-173`. It requires a 32+ character admin token and checks protected lead routes, but no explicit CORS/rate-limit middleware is apparent. Do not expose it publicly without additional hardening.
-5. **Dependency reproducibility needs work** — `requirements.txt:1-3`. Python packages use lower bounds rather than a lockfile/exact pins. Adopt a tested, reviewed lock/pin strategy; do not pin to unverified or outdated versions merely to create exact numbers.
+5. **Dependency reproducibility needs work** — `requirements.txt:1-3`. Direct Python dependencies are now exact-pinned to `anthropic==1.13.0`, `PyYAML==6.0.3`, and `requests==2.34.2`. Transitive dependencies are still resolved by pip and are not locked with hashes.
 6. **External font requests remain** — `index.html:22-23`, `portfolio.html` head. Google Fonts add third-party requests and can slow rendering on mobile networks. Test fallback fonts and consider self-hosting if offline/third-party-minimal behavior is required.
 7. **AI service must not be implied by local fallbacks** — `index.html:546, 747`, `worker.mjs:124-175`. The support reply UI now uses honest draft wording and a local fallback; live AI requires the configured backend. Do not paste private customer messages into the demo or use it as an automated response sender.
 8. **Health checks need real runtime evidence** — `index.html:639-644`, `worker.mjs:101-108`. The dashboard can show local-only or unavailable states. A configured URL or visible binding label is not proof of database persistence or provider connectivity.
@@ -33,12 +33,15 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 1. **Social scheduling remains a manual handoff** — `index.html:255-304, 410-420`. The UI creates drafts, copies text, and opens Metricool. The checklist is local state only and does not prove scheduling.
 2. **Accessibility needs device-level validation** — `index.html:571-609`, `portfolio.html:203-225, 285-316`. Focus styles, labels, ARIA, reduced-motion and keyboard Escape behavior exist. Verify keyboard/focus order, screen-reader announcements and Android touch targets in a real browser.
-3. **SEO/social metadata needs live validation** — `index.html:4-16`, `portfolio.html:4-20`. Canonical and Open Graph metadata exist. Confirm the published canonical URLs and social preview after deployment.
+3. **SEO/social metadata needs live validation** — `index.html:4-16`, `portfolio.html:4-20`. Canonical and Open Graph metadata exist. Confirm the published canonical URLs and social preview after deployment. A user-facing `privacy.html` notice now explains local/server storage limits and the no-real-customer-data rule.
 4. **Python tests are smoke tests** — `tests/test_workflow_smoke.py:1-32`. They cover dry-run and empty approval safety, not a live provider integration. Do not infer successful scheduling from these tests.
 
 ## Implemented in this branch
 
 - Added a 12-second timeout to shared dashboard API requests and a user-facing timeout message, avoiding indefinite pending states.
+- Removed the external Lucide CDN script and Google Fonts requests; the dashboard uses built-in icon fallbacks and system fonts, avoiding the unverified-SRI dependency.
+- Added a user-facing `privacy.html` notice and linked it from Settings; it explicitly warns against real customer data because automated retention/deletion is not implemented.
+- Pinned direct Python dependencies to exact release versions.
 - Renamed the support tool to **Customer-support reply draft** and removed raw backend error text from its local fallback.
 - Updated regression tests to match the current account-verification warning and cover request timeout / honest draft wording.
 - Changed Worker lead create/update handlers to return generic 500 messages for unexpected database failures while preserving expected 4xx validation messages.
@@ -62,8 +65,8 @@ The repository defines `npm run check`, `npm test`, Python compilation, `python 
 
 ## Remaining risks
 
-- SRI/local vendoring for the Lucide CDN is not complete.
-- Python dependency lock/pin strategy is not complete.
+- Python direct dependencies are pinned, but a fully reproducible transitive lockfile with hashes is not complete.
+- The privacy notice is informational; automated retention/deletion and tested backup/restore are still not implemented.
 - Deployed Cloudflare Worker, D1 schema, rate limiting and health endpoint are not verified from this repository session.
 - Correct social account identity is still a manual prerequisite; no scheduling or publishing action was taken.
 - Privacy notice, retention/deletion, backup/restore and production incident monitoring are still required before real customer data.
