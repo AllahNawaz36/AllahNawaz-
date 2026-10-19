@@ -174,7 +174,9 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
    if(/contact|whatsapp|email|linkedin|talk|message/.test(q))return 'You can connect through LinkedIn: https://www.linkedin.com/in/allah-nawaz-productdesigner/. The link opens Allah’s profile so you can send a connection or message request.';
    return 'I can help with '+platform.options[platform.selectedIndex].text.toLowerCase()+'. Tell me your goal, audience, current challenge, and any deadline. For live account actions—such as publishing, scheduling, sending messages, or editing files—an authorised integration is required.';
  }
- const CHAT_API_URL = window.NAZ_CHAT_API_URL || ''; // Set to your deployed Worker URL plus "/api/chat".
+ let configuredApiBase = '';
+ try { configuredApiBase = (localStorage.getItem('nazProApiBase') || '').trim().replace(/\\/+$/, ''); } catch (_) {}
+ const CHAT_API_URL = window.NAZ_CHAT_API_URL || (configuredApiBase ? configuredApiBase + '/api/chat' : ''); // Reuses the dashboard's saved API endpoint.
  async function send(text){
    const clean=(text||'').trim();if(!clean)return;
    addMessage(clean,'user');input.value='';quick.style.display='none';
