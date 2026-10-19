@@ -215,7 +215,7 @@ h1,h2,h3,p{overflow-wrap:break-word}
 <div class="herofoot"><span><b>Based in</b> Islamabad, Pakistan</span><span><b>Focus</b> SaaS · E-commerce · Digital products</span><span><b>Tools</b> Figma · Framer · Adobe</span></div>
 </div></section>
 <section class="section" id="work"><div class="wrap">
-<div class="sectionhead reveal"><div><div class="overline">01 / Selected work</div><h2>Design with a purpose.</h2></div><p>Five selected projects across product UI, SaaS workflows, and campaign design. Each case study focuses on the design challenge, key decisions, and evidence limits—without invented performance metrics.</p></div>
+<div class="sectionhead reveal"><div><div class="overline">01 / Selected work</div><h2>Design with a purpose.</h2></div><div class="work-intro"><p>Five selected projects across product UI, SaaS workflows, and campaign design. Open any project below to view the original Behance work and its case study.</p><a class="btn secondary" href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer">View all Behance projects ↗</a></div></div>
 <div class="workgrid">
 <article class="project reveal"><div class="visual wellness"><div class="poster"><span class="tiny">WellnessWell · Daily ritual</span><div><h3>Feel good.<br>Live well.</h3><span class="tiny">A little care goes a long way.</span></div><div class="leaf"></div></div></div><div class="projectbody"><div class="tags"><span class="tag">Social design</span><span class="tag">Wellness</span><span class="tag">Visual identity</span></div><h3>WellnessWell — Shilajit Social Campaign</h3><p>A calm, nature-inspired visual direction for wellness content, designed to feel approachable, consistent, and easy to recognize in a busy social feed.</p><details class="case-study"><summary>Case study overview</summary><p><strong>Brief:</strong> Build a recognizable visual direction for wellness-focused social content.</p><p><strong>Design decisions:</strong> Nature-inspired color, calm composition, clear headline hierarchy, and a repeatable campaign look.</p><p><strong>Scope note:</strong> This summary describes the visual approach; no campaign performance data is claimed.</p></details><a class="projectlink" href="https://www.behance.net/gallery/245328781/WellnessWell-Shalajit-Social-Media-Posts" target="_blank" rel="noopener">Explore project <span>↗</span></a></div></article>
 <article class="project reveal"><div class="visual electronics"><div class="poster"><span class="tiny">Jalal Electronics · Kitchen essentials</span><div><h3>Make everyday<br>prep easier.</h3><span class="tiny">Powerful. Practical. Ready for home.</span></div><div class="productshape"></div><div class="price">SPECIAL OFFER</div></div></div><div class="projectbody"><div class="tags"><span class="tag">E-commerce</span><span class="tag">Product ads</span><span class="tag">Art direction</span></div><h3>Jalal Electronics — Product Marketing</h3><p>A product-first campaign concept balancing clear hierarchy, product focus, and promotional messaging for retail audiences.</p><details class="case-study"><summary>Case study overview</summary><p><strong>Product:</strong> Panasonic MK-5087M-NS Food Processor.</p><p><strong>Offer shown in the campaign:</strong> Rs 32,900 sale price, reduced from Rs 44,900.</p><p><strong>Design decisions:</strong> Keep the product as the visual hero, make the sale price the quickest detail to scan, and preserve a clear distinction between offer price and original price.</p><p><strong>Scope note:</strong> These are campaign details and design rationale, not verified sales or conversion results.</p></details><a class="projectlink" href="https://www.behance.net/gallery/243834513/Jalal-Electronics-Product-Marketing-Ads-Designs" target="_blank" rel="noopener">Explore project <span>↗</span></a></div></article>
@@ -364,6 +364,15 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal.visible { transition: none !important; }
 }
+</style>
+
+
+<style>
+/* Make the real Behance portfolio easy to find from the selected-work section. */
+.work-intro{max-width:420px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.work-intro p{margin:0;color:var(--muted);font-size:14px}
+.work-intro .btn{font-size:12px}
+@media(max-width:760px){.work-intro{margin-top:14px;max-width:none}}
 </style>
 
 </body></html>
