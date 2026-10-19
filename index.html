@@ -549,6 +549,19 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 </nav>
 </div>
 <div class="toast" id="toast" role="status"></div>
+<div id="aiChatPanel" class="ai-chat-panel" role="dialog" aria-modal="false" aria-labelledby="aiChatTitle" hidden>
+  <div class="ai-chat-head"><div class="ai-chat-mark" aria-hidden="true"><i data-lucide="messages-square" data-fallback="✉" class="icon"></i></div>
+    <div class="ai-chat-head-copy"><strong id="aiChatTitle">Naz AI Assistant</strong><small id="aiChatStatus">Checking configured API…</small></div>
+    <button id="aiChatClose" class="ai-chat-close" type="button" aria-label="Close AI assistant"><i data-lucide="x" data-fallback="×" class="icon"></i></button>
+  </div>
+  <div class="ai-chat-topic"><label for="aiChatTopic">What do you need help with?</label><select id="aiChatTopic">
+    <option value="general">General business / design</option><option value="uiux">UI/UX & Product Design</option><option value="website">Website & Landing Pages</option><option value="saas">SaaS Dashboard</option><option value="ecommerce">E-commerce</option><option value="branding">Branding & Creatives</option><option value="seo">SEO & Marketing</option><option value="automation">Business Automation</option><option value="figma-canva">Figma & Canva</option><option value="social-platforms">LinkedIn & Social Content</option><option value="hire">Project Enquiry</option>
+  </select></div>
+  <div id="aiChatLog" class="ai-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="ai-chat-message assistant">Assalam-o-alaikum! I can help with design questions, project briefs and content planning. Responses require your backend AI endpoint to be configured.</div></div>
+  <form id="aiChatForm" class="ai-chat-compose"><textarea id="aiChatInput" maxlength="1000" rows="2" aria-label="Your message" placeholder="Type in English or Roman Urdu…" required></textarea><button id="aiChatSend" class="ai-chat-send" type="submit" aria-label="Send message"><i data-lucide="send" data-fallback="➤" class="icon"></i></button></form>
+  <div class="ai-chat-note">Drafting and advice only. This assistant does not publish posts, send messages or change accounts.</div>
+</div>
+<button id="aiChatLauncher" class="ai-launcher" type="button" aria-controls="aiChatPanel" aria-expanded="false"><i data-lucide="message-circle" data-fallback="◉" class="icon" aria-hidden="true"></i> Ask Naz AI</button>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -782,19 +795,7 @@ checkBackend().then(()=>{updateSeo();updateOverview();renderDrafts();renderTasks
 
 </script>
 
-<div id="aiChatPanel" class="ai-chat-panel" role="dialog" aria-modal="false" aria-labelledby="aiChatTitle" hidden>
-  <div class="ai-chat-head"><div class="ai-chat-mark" aria-hidden="true"><i data-lucide="messages-square" data-fallback="✉" class="icon"></i></div>
-    <div class="ai-chat-head-copy"><strong id="aiChatTitle">Naz AI Assistant</strong><small id="aiChatStatus">Checking configured API…</small></div>
-    <button id="aiChatClose" class="ai-chat-close" type="button" aria-label="Close AI assistant"><i data-lucide="x" data-fallback="×" class="icon"></i></button>
-  </div>
-  <div class="ai-chat-topic"><label for="aiChatTopic">What do you need help with?</label><select id="aiChatTopic">
-    <option value="general">General business / design</option><option value="uiux">UI/UX & Product Design</option><option value="website">Website & Landing Pages</option><option value="saas">SaaS Dashboard</option><option value="ecommerce">E-commerce</option><option value="branding">Branding & Creatives</option><option value="seo">SEO & Marketing</option><option value="automation">Business Automation</option><option value="figma-canva">Figma & Canva</option><option value="social-platforms">LinkedIn & Social Content</option><option value="hire">Project Enquiry</option>
-  </select></div>
-  <div id="aiChatLog" class="ai-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="ai-chat-message assistant">Assalam-o-alaikum! I can help with design questions, project briefs and content planning. Responses require your backend AI endpoint to be configured.</div></div>
-  <form id="aiChatForm" class="ai-chat-compose"><textarea id="aiChatInput" maxlength="1000" rows="2" aria-label="Your message" placeholder="Type in English or Roman Urdu…" required></textarea><button id="aiChatSend" class="ai-chat-send" type="submit" aria-label="Send message"><i data-lucide="send" data-fallback="➤" class="icon"></i></button></form>
-  <div class="ai-chat-note">Drafting and advice only. This assistant does not publish posts, send messages or change accounts.</div>
-</div>
-<button id="aiChatLauncher" class="ai-launcher" type="button" aria-controls="aiChatPanel" aria-expanded="false"><i data-lucide="message-circle" data-fallback="◉" class="icon" aria-hidden="true"></i> Ask Naz AI</button>
+
 
 </body>
 </html>
