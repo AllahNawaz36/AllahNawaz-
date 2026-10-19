@@ -14,23 +14,27 @@ jobs:
           node-version: 20
       - run: npm run check
       - run: npm test
-      - name: Check inline JavaScript in portfolio HTML
+      - name: Check inline JavaScript and duplicate HTML IDs
         run: |
           python - <<'PY'
+          from collections import Counter
           from html.parser import HTMLParser
           from pathlib import Path
           import subprocess
           import tempfile
 
-          class ScriptExtractor(HTMLParser):
+          class PageChecker(HTMLParser):
               def __init__(self):
                   super().__init__()
                   self.current = None
                   self.scripts = []
+                  self.ids = []
 
               def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get("id"):
+                      self.ids.append(attrs["id"])
                   if tag.lower() == "script":
-                      attrs = dict(attrs)
                       if "src" not in attrs and attrs.get("type", "").lower() not in ("application/ld+json", "application/json"):
                           self.current = []
 
@@ -43,16 +47,23 @@ jobs:
                       self.scripts.append("".join(self.current))
                       self.current = None
 
-          parser = ScriptExtractor()
-          parser.feed(Path("portfolio.html").read_text(encoding="utf-8"))
-          if not parser.scripts:
-              raise SystemExit("No inline JavaScript found in portfolio.html")
+          total_scripts = 0
           with tempfile.TemporaryDirectory() as temp:
-              for index, script in enumerate(parser.scripts):
-                  path = Path(temp) / ("inline-" + str(index) + ".js")
-                  path.write_text(script, encoding="utf-8")
-                  subprocess.run(["node", "--check", str(path)], check=True)
-          print("Validated " + str(len(parser.scripts)) + " inline script(s).")
+              for page in ("index.html", "portfolio.html"):
+                  parser = PageChecker()
+                  parser.feed(Path(page).read_text(encoding="utf-8"))
+                  duplicates = sorted(key for key, count in Counter(parser.ids).items() if count > 1)
+                  if duplicates:
+                      raise SystemExit(f"{page} has duplicate IDs: {duplicates}")
+                  if not parser.scripts:
+                      raise SystemExit(f"No inline JavaScript found in {page}")
+                  for index, script in enumerate(parser.scripts):
+                      path = Path(temp) / (page.replace(".html", "") + "-" + str(index) + ".js")
+                      path.write_text(script, encoding="utf-8")
+                      subprocess.run(["node", "--check", str(path)], check=True)
+                  total_scripts += len(parser.scripts)
+                  print(f"{page}: {len(parser.scripts)} inline script(s), IDs unique.")
+          print(f"Validated {total_scripts} inline script(s) across both HTML pages.")
           PY
       - uses: actions/setup-python@v5
         with:
