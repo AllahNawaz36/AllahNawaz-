@@ -15,6 +15,8 @@ test("inline dashboard scripts parse and API settings controls exist", () => {
     assert.match(html, new RegExp(`id=["']${id}["']`), `missing expected UI element: ${id}`);
   }
   assert.match(html, /nazProApiBase/, "API endpoint should be stored in browser-local settings");
+  assert.doesNotMatch(html, /sessionStorage|nazProAdminToken/, "admin token must not persist in browser storage");
+  assert.match(html, /Admin token stays in page memory only/, "admin token lifetime should be disclosed");
 });
 
 
