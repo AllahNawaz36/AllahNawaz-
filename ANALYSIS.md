@@ -52,6 +52,8 @@ The free-first path remains **draft → human review → copy caption/media → 
 - Added a Worker regression test to ensure internal database error strings are not returned to API clients.
 - Updated this analysis and the security status.
 
+- Hardened the Worker AI error path: unexpected provider failures return a generic 502 without echoing upstream error text, and switched the generation cap to the current `max_completion_tokens` parameter. Added a regression test for error redaction.
+
 ## Free social workflow
 
 1. Draft the caption and visual brief in the dashboard.
