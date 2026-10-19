@@ -25,3 +25,16 @@ test("local backup controls and restore validation are present", () => {
   assert.match(html, /payload\?\.app!==\"Naz Business Assistant Pro\"/);
   assert.match(html, /Keep the file private/);
 });
+
+
+test("AI chat widget uses the configured backend and reports real connection state", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /id="aiChatPanel"/, "AI chat panel should exist");
+  assert.match(html, /id="aiChatLauncher"/, "floating chat launcher should exist");
+  assert.match(html, /id="aiChatTopic"/, "chat should offer a topic selector");
+  assert.match(html, /fetch\(base\+"\/api\/health"/, "chat should check the configured backend health");
+  assert.match(html, /fetch\(base\+"\/api\/chat"/, "chat should send messages to the configured API");
+  assert.match(html, /Backend not configured/, "unconfigured backend must be clearly disclosed");
+  assert.match(html, /does not publish posts, send messages or change accounts/, "chat must not imply external actions are connected");
+  assert.ok(html.indexOf('id="aiChatPanel"') < html.lastIndexOf("<script>"), "chat markup must exist before its initialization script");
+});
