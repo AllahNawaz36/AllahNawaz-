@@ -297,8 +297,8 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
                 <text x="48" y="425" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#28231f">ALLAH NAWAZ</text><text x="48" y="436" font-family="Arial,sans-serif" font-size="8" fill="#6f6258">UI/UX &amp; PRODUCT DESIGNER</text>
               </svg>
             </div>
-            <div class="linkedin-artboard-actions"><span class="mini">4:5 concept · 1080 × 1350 export</span><button class="btn" type="button" id="downloadSocialVisual">Download visual (SVG)</button></div>
-            <p class="mini">This is a ready-made vector concept, not a verified PNG upload. If your scheduler rejects SVG, open it in Canva or another editor and export PNG before attaching it.</p>
+            <div class="linkedin-artboard-actions"><span class="mini">4:5 concept · 1080 × 1350 export</span><button class="btn primary" type="button" id="downloadSocialVisualPng">Download PNG</button><button class="btn" type="button" id="downloadSocialVisual">Download SVG</button></div>
+            <p class="mini">Download the PNG for a ready-to-upload 1080 × 1350 image, or choose SVG to keep an editable vector version.</p>
           </div></div>
         <div class="actions">
           <button class="btn" type="button" id="copySocialCaption">📋 Copy caption</button>
@@ -872,6 +872,35 @@ $("downloadSocialVisual").addEventListener("click",()=>{
  document.body.appendChild(link);link.click();link.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1000);
  toast("Vector visual downloaded. Export as PNG in Canva if your scheduler requires PNG/JPG.");
+});
+$("downloadSocialVisualPng").addEventListener("click",()=>{
+ const svg=$("socialPosterSvg");
+ if(!svg)return toast("Visual preview is unavailable.");
+ const clone=svg.cloneNode(true);
+ clone.setAttribute("width","1080");clone.setAttribute("height","1350");
+ clone.setAttribute("xmlns","http://www.w3.org/2000/svg");
+ const source=new XMLSerializer().serializeToString(clone);
+ const vectorUrl=URL.createObjectURL(new Blob([source],{type:"image/svg+xml;charset=utf-8"}));
+ const img=new Image();
+ img.onload=()=>{
+  try{
+   const canvas=document.createElement("canvas");canvas.width=1080;canvas.height=1350;
+   const context=canvas.getContext("2d");
+   if(!context)throw new Error("Canvas is unavailable.");
+   context.drawImage(img,0,0,1080,1350);
+   canvas.toBlob(blob=>{
+    URL.revokeObjectURL(vectorUrl);
+    if(!blob)return toast("PNG export failed. Try Download SVG instead.");
+    const pngUrl=URL.createObjectURL(blob),link=document.createElement("a");
+    link.href=pngUrl;link.download="allah-nawaz-linkedin-ux-visual.png";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(pngUrl),1000);
+    toast("1080 × 1350 PNG downloaded. Review it before uploading.");
+   },"image/png");
+  }catch(error){URL.revokeObjectURL(vectorUrl);toast("PNG export unavailable in this browser. Try Download SVG instead.");}
+ };
+ img.onerror=()=>{URL.revokeObjectURL(vectorUrl);toast("PNG export failed. Try Download SVG instead.");};
+ img.src=vectorUrl;
 });
 $("saveSocialDraft").addEventListener("click",()=>{const caption=currentSocialCaption(),visual=currentSocialVisual();if(!caption)return toast("Build the post draft first.");const saved=saveDraftRecord("LinkedIn · "+$("socialTopic").value.trim(),caption+"\n\n"+visual);if(saved)toast("Caption and visual brief saved in local drafts.")});
 $("copyCaptionOpenLinkedIn").addEventListener("click",async()=>{const caption=currentSocialCaption();if(!caption)return toast("Build and review the caption first.");try{await navigator.clipboard.writeText(caption);toast("Caption copied. LinkedIn will open; review it and schedule only after approval.")}catch{toast("Open LinkedIn and copy the caption from this preview manually.")}window.open("https://www.linkedin.com/feed/","_blank","noopener,noreferrer")});
