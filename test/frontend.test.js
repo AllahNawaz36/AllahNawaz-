@@ -79,7 +79,7 @@ test("mobile navigation keeps icon and label in separate aligned elements", () =
 
 test("mobile More menu exposes all secondary pages and supports accessible open/close", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  const panel = html.match(/<div id="mobileMorePanel"[\\s\\S]*?<\\/div>/)?.[0];
+  const panel = html.match(/<div id="mobileMorePanel"[\s\S]*?<\/div>/)?.[0];
   assert.ok(panel, "mobile More panel should exist");
   for (const page of ["social", "automation", "seo", "email", "comms", "support", "tasks", "analytics", "settings"]) {
     assert.match(panel, new RegExp('data-page="' + page + '"'), "More menu should expose " + page);
