@@ -38,3 +38,11 @@ test("AI chat widget uses the configured backend and reports real connection sta
   assert.match(html, /does not publish posts, send messages or change accounts/, "chat must not imply external actions are connected");
   assert.ok(html.indexOf('id="aiChatPanel"') < html.lastIndexOf("<script>"), "chat markup must exist before its initialization script");
 });
+
+
+test("social account reminder does not falsely claim the connected Metricool brand is verified", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /connected Metricool brand has not been verified as your account/i);
+  assert.match(html, /Do not publish or schedule from it until you confirm the correct brand/i);
+  assert.doesNotMatch(html, /You confirmed ANJAN MALIK JAN is your parent Metricool account/i);
+});
