@@ -14,3 +14,13 @@ ALLOWED_ORIGIN = "https://allahnawaz36.github.io"
 
 [ai]
 binding = "AI"
+
+# Public AI chat: max 10 requests per client key per 60 seconds.
+# The Worker fails closed if this binding is unavailable.
+[[ratelimits]]
+name = "CHAT_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
