@@ -63,3 +63,15 @@ test("icon fallbacks preserve aligned icon elements when the icon CDN is unavail
   assert.doesNotMatch(html, /el\.replaceWith\(document\.createTextNode\(fallback\)\)/, "fallback must not destroy the icon wrapper and break alignment");
   assert.match(html, /\.icon-fallback\{display:inline-grid!important;place-items:center/, "fallback icon alignment styles should exist");
 });
+
+
+test("mobile navigation keeps icon and label in separate aligned elements", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const nav = html.match(/<nav class="mobile-nav"[\\s\\S]*?<\\/nav>/)?.[0];
+  assert.ok(nav, "mobile navigation should exist");
+  assert.equal((nav.match(/class="mobile-nav-icon"/g) || []).length, 8, "each mobile navigation item should have an icon wrapper");
+  assert.equal((nav.match(/class="mobile-nav-label"/g) || []).length, 8, "each mobile navigation item should have a dedicated label");
+  assert.match(nav, /aria-current="page"/, "the active navigation item should be identified accessibly");
+  assert.match(html, /\\.mobile-nav button \\.mobile-nav-icon \\.icon,.mobile-nav button \\.mobile-nav-icon svg\\{display:block;width:19px;height:19px/, "mobile icons should share consistent dimensions");
+  assert.match(html, /\\.mobile-nav button \\.mobile-nav-label\\{display:block;width:100%;height:auto/, "mobile labels should not inherit icon wrapper sizing");
+});
