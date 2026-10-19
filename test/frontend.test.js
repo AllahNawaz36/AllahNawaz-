@@ -42,11 +42,20 @@ test("AI chat widget uses the configured backend and reports real connection sta
 
 test("social account reminder does not falsely claim the connected Metricool brand is verified", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  assert.match(html, /connected Metricool brand has not been verified as your account/i);
-  assert.match(html, /Do not publish or schedule from it until you confirm the correct brand/i);
+  assert.match(html, /connected publishing account has not been verified/i);
+  assert.match(html, /Do not schedule or publish until you confirm the correct brand and LinkedIn profile/i);
   assert.doesNotMatch(html, /You confirmed ANJAN MALIK JAN is your parent Metricool account/i);
 });
 
+
+test("support replies are honestly labelled and backend requests have a timeout", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /Customer-support reply draft/);
+  assert.match(html, /LOCAL TEMPLATE DRAFT — AI service unavailable/);
+  assert.doesNotMatch(html, /DEMO DRAFT — AI backend unavailable/);
+  assert.match(html, /setTimeout\(\(\)=>controller\.abort\(\),12000\)/, "API requests should not stay loading forever");
+  assert.match(html, /The server took too long to respond/);
+});
 
 test("UX research tools split multiline input and produce readable line breaks", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
