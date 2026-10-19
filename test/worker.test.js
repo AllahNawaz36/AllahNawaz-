@@ -1,8 +1,8 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const worker = require("../worker.mjs").default;
+const getWorker = async () => (await import("../worker.mjs")).default;
 
-test("worker health endpoint responds without database credentials", async () => {
+test("worker health endpoint responds without database credentials", async () => {\n  const worker = await getWorker();
   const response = await worker.fetch(new Request("https://example.workers.dev/api/health"), {}, {});
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), {
@@ -12,7 +12,7 @@ test("worker health endpoint responds without database credentials", async () =>
   });
 });
 
-test("worker permits the configured dashboard origin and rejects other origins", async () => {
+test("worker permits the configured dashboard origin and rejects other origins", async () => {\n  const worker = await getWorker();
   const env = { ALLOWED_ORIGIN: "https://allahnawaz36.github.io" };
   const allowed = await worker.fetch(new Request("https://example.workers.dev/api/health", {
     headers: { Origin: "https://allahnawaz36.github.io" }
@@ -25,7 +25,7 @@ test("worker permits the configured dashboard origin and rejects other origins",
   assert.equal(denied.status, 403);
 });
 
-test("worker protects lead endpoints with a bearer token", async () => {
+test("worker protects lead endpoints with a bearer token", async () => {\n  const worker = await getWorker();
   const response = await worker.fetch(new Request("https://example.workers.dev/api/leads", {
     headers: { Origin: "https://allahnawaz36.github.io" }
   }), {
@@ -36,7 +36,7 @@ test("worker protects lead endpoints with a bearer token", async () => {
   assert.match((await response.json()).error, /token/i);
 });
 
-test("worker rejects invalid JSON with a client error instead of crashing", async () => {
+test("worker rejects invalid JSON with a client error instead of crashing", async () => {\n  const worker = await getWorker();
   const response = await worker.fetch(new Request("https://example.workers.dev/api/leads", {
     method: "POST",
     headers: {
@@ -54,7 +54,7 @@ test("worker rejects invalid JSON with a client error instead of crashing", asyn
   assert.match((await response.json()).error, /Invalid JSON/i);
 });
 
-test("worker validates fields during partial updates", async () => {
+test("worker validates fields during partial updates", async () => {\n  const worker = await getWorker();
   const db = {
     prepare(query) {
       return {
