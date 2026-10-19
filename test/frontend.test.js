@@ -46,3 +46,11 @@ test("social account reminder does not falsely claim the connected Metricool bra
   assert.match(html, /Do not publish or schedule from it until you confirm the correct brand/i);
   assert.doesNotMatch(html, /You confirmed ANJAN MALIK JAN is your parent Metricool account/i);
 });
+
+
+test("UX research tools split multiline input and produce readable line breaks", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /uxTestTasks"\)\.value\.split\("\\n"\)/, "usability test tasks should split on actual newline characters");
+  assert.match(html, /USABILITY TEST PLAN\\nObjective:/, "usability plan should contain readable line breaks");
+  assert.match(html, /RESEARCH NOTES — SYNTHESIS TEMPLATE\\nContext/, "research synthesis should contain readable line breaks");
+});
