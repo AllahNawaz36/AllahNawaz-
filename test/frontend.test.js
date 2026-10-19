@@ -45,6 +45,10 @@ test("social account reminder does not falsely claim the connected Metricool bra
   assert.match(html, /connected publishing account has not been verified/i);
   assert.match(html, /Do not schedule or publish until you confirm the correct brand and LinkedIn profile/i);
   assert.doesNotMatch(html, /You confirmed .* is your parent Metricool account/i);
+  assert.match(html, /copyCaptionOpenLinkedIn/);
+  assert.match(html, /Open LinkedIn composer/);
+  assert.match(html, /Metricool \(optional, if your plan supports it\)/);
+  assert.doesNotMatch(html, /openMetricoolPlanner/);
 });
 
 
