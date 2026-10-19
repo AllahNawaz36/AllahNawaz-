@@ -40,6 +40,7 @@ The free-first path remains **draft → human review → copy caption/media → 
 ## Implemented in this branch
 
 - Added a 12-second timeout to shared dashboard API requests and a user-facing timeout message, avoiding indefinite pending states.
+- Hardened Worker lead list, lookup and delete database failures to return generic 503 responses; added regression coverage to prevent database error details leaking through these routes.
 - Removed the external Lucide CDN script and Google Fonts requests; the dashboard uses built-in icon fallbacks and system fonts, avoiding the unverified-SRI dependency.
 - Added a user-facing `privacy.html` notice and linked it from Settings; it explicitly warns against real customer data because automated retention/deletion is not implemented.
 - Pinned direct Python dependencies to exact release versions.
