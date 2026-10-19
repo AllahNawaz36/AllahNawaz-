@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f5f1eb">\n<meta name="description" content="Naz Business Assistant Pro — a calm, premium workspace for business growth, content planning and responsible automation.">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n<script src="https://unpkg.com/lucide@latest" defer></script>
+<meta name="theme-color" content="#f5f1eb">
+<meta name="description" content="Naz Business Assistant Pro — a calm, premium workspace for business growth, content planning and responsible automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest" defer></script>
 <title>Naz Business Assistant · Allah Nawaz</title>
 <style>
 :root{color-scheme:light;--bg:#f5f1eb;--panel:#fffdf9;--panel2:#f0e9df;--ink:#201d1a;--muted:#786f66;--line:#e4dbcf;--accent:#a94f2c;--accent2:#df9868;--good:#24734f;--bad:#a73535;--warn:#8a5b14;--shadow:0 10px 32px #3524170b;--font-body:"DM Sans",ui-sans-serif,system-ui,sans-serif;--font-display:"Manrope","DM Sans",ui-sans-serif,system-ui,sans-serif;--radius-card:18px;--radius-control:12px;--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
@@ -19,42 +24,42 @@
   <div class="brand"><div class="logo">N</div><div><strong>Naz Assistant</strong><small>Business growth workspace</small></div></div>
   <div class="navgroup">
     <div class="navlabel">Workspace</div>
-    <button class="navbtn active" data-page="overview"><span class="ico" aria-hidden="true"><i data-lucide="house" class="icon"></i></span>Overview</button>
-    <button class="navbtn" data-page="leads"><span class="ico" aria-hidden="true"><i data-lucide="users" class="icon"></i></span>Lead CRM</button>
-    <button class="navbtn" data-page="marketing"><span class="ico" aria-hidden="true"><i data-lucide="chart-no-axes-combined" class="icon"></i></span>Marketing Planner</button>
-    <button class="navbtn" data-page="content"><span class="ico" aria-hidden="true"><i data-lucide="pen-line" class="icon"></i></span>Content Studio</button>
+    <button class="navbtn active" data-page="overview"><span class="ico" aria-hidden="true"><i data-lucide="house" data-fallback="🏠" class="icon" aria-hidden="true"></i></span>Overview</button>
+    <button class="navbtn" data-page="leads"><span class="ico" aria-hidden="true"><i data-lucide="users" data-fallback="👥" class="icon" aria-hidden="true"></i></span>Lead CRM</button>
+    <button class="navbtn" data-page="marketing"><span class="ico" aria-hidden="true"><i data-lucide="chart-no-axes-combined" data-fallback="📈" class="icon" aria-hidden="true"></i></span>Marketing Planner</button>
+    <button class="navbtn" data-page="content"><span class="ico" aria-hidden="true"><i data-lucide="pen-line" data-fallback="✍️" class="icon" aria-hidden="true"></i></span>Content Studio</button>
     <button class="navbtn" data-page="social"><span class="ico">📣</span>Social Publisher</button>
-    <button class="navbtn" data-page="automation"><span class="ico" aria-hidden="true"><i data-lucide="zap" class="icon"></i></span>Automation Studio</button>
-    <button class="navbtn" data-page="seo"><span class="ico" aria-hidden="true"><i data-lucide="search" class="icon"></i></span>SEO Toolkit</button>
-    <button class="navbtn" data-page="email"><span class="ico" aria-hidden="true"><i data-lucide="mail" class="icon"></i></span>Email & Follow-ups</button>
-    <button class="navbtn" data-page="comms"><span class="ico" aria-hidden="true"><i data-lucide="messages-square" class="icon"></i></span>Communication Hub</button>
-    <button class="navbtn" data-page="support"><span class="ico" aria-hidden="true"><i data-lucide="headset" class="icon"></i></span>Customer Support</button>
-    <button class="navbtn" data-page="tasks"><span class="ico" aria-hidden="true"><i data-lucide="list-check" class="icon"></i></span>Tasks & Projects</button>
-    <button class="navbtn" data-page="analytics"><span class="ico" aria-hidden="true"><i data-lucide="chart-column" class="icon"></i></span>Analytics</button>
+    <button class="navbtn" data-page="automation"><span class="ico" aria-hidden="true"><i data-lucide="zap" data-fallback="⚡" class="icon" aria-hidden="true"></i></span>Automation Studio</button>
+    <button class="navbtn" data-page="seo"><span class="ico" aria-hidden="true"><i data-lucide="search" data-fallback="🔎" class="icon" aria-hidden="true"></i></span>SEO Toolkit</button>
+    <button class="navbtn" data-page="email"><span class="ico" aria-hidden="true"><i data-lucide="mail" data-fallback="✉️" class="icon" aria-hidden="true"></i></span>Email & Follow-ups</button>
+    <button class="navbtn" data-page="comms"><span class="ico" aria-hidden="true"><i data-lucide="messages-square" data-fallback="💬" class="icon" aria-hidden="true"></i></span>Communication Hub</button>
+    <button class="navbtn" data-page="support"><span class="ico" aria-hidden="true"><i data-lucide="headset" data-fallback="🎧" class="icon" aria-hidden="true"></i></span>Customer Support</button>
+    <button class="navbtn" data-page="tasks"><span class="ico" aria-hidden="true"><i data-lucide="list-check" data-fallback="✅" class="icon" aria-hidden="true"></i></span>Tasks & Projects</button>
+    <button class="navbtn" data-page="analytics"><span class="ico" aria-hidden="true"><i data-lucide="chart-column" data-fallback="📊" class="icon" aria-hidden="true"></i></span>Analytics</button>
   </div>
   <div class="navgroup">
     <div class="navlabel">Settings</div>
-    <button class="navbtn" data-page="settings"><span class="ico" aria-hidden="true"><i data-lucide="settings" class="icon"></i></span>Connections & Settings</button>
+    <button class="navbtn" data-page="settings"><span class="ico" aria-hidden="true"><i data-lucide="settings" data-fallback="⚙️" class="icon" aria-hidden="true"></i></span>Connections & Settings</button>
   </div>
   <div class="sidefoot"><b>Honest status</b><p>This starter uses working local tools and templates. AI, live SEO crawling and social publishing require real integrations.</p><span class="pill"><span class="dot"></span><span id="backendStatus">Checking backend</span></span></div>
 </aside>
 <main>
-  <div class="topbar"><div><div class="eyebrow">Allah Nawaz · Growth workspace</div><h1 id="pageTitle">Overview</h1></div><div class="top-actions"><button class="btn" id="themeToggle"><i data-lucide="moon-star" class="icon" aria-hidden="true"></i> Theme</button><button class="btn primary" data-goto="leads"><i data-lucide="user-plus" class="icon" aria-hidden="true"></i> New lead</button></div></div>
+  <div class="topbar"><div><div class="eyebrow">Allah Nawaz · Growth workspace</div><h1 id="pageTitle">Overview</h1></div><div class="top-actions"><button class="btn" id="themeToggle"><i data-lucide="moon-star" data-fallback="◐" class="icon" aria-hidden="true"></i> Theme</button><button class="btn primary" data-goto="leads"><i data-lucide="user-plus" data-fallback="＋" class="icon" aria-hidden="true"></i> New lead</button></div></div>
 
   <section class="page active" id="page-overview">
     <div class="hero"><div><h2>Turn conversations into business growth.</h2><p>One workspace for lead management, marketing planning, SEO checklists, content drafts, client follow-ups and project tasks.</p></div><button class="btn" data-goto="content">Create content →</button></div>
     <div class="grid">
-      <div class="reminder-banner" role="status" aria-label="Important account reminder"><div class="reminder-icon" aria-hidden="true"><i data-lucide="bell-ring" class="icon"></i></div><div><strong>Reminder: verify your own social account before scheduling</strong><p>The last connector check showed a Metricool brand that you said is not yours. Keep publishing paused until the correct brand and LinkedIn profile are confirmed. No post was scheduled by that test.</p><div class="reminder-actions"><button class="btn primary" type="button" data-goto="social">Review publishing steps</button><button class="btn" type="button" data-goto="settings">Check connections</button></div></div></div><div class="card span-3"><div class="metriclabel">Tracked leads</div><div class="metric" id="metricLeads">0</div><div class="metricfoot">Stored in backend when connected</div></div>
+      <div class="reminder-banner" role="status" aria-label="Important account reminder"><div class="reminder-icon" aria-hidden="true"><i data-lucide="bell-ring" data-fallback="🔔" class="icon" aria-hidden="true"></i></div><div><strong>Reminder: verify your own social account before scheduling</strong><p>The last connector check showed a Metricool brand that you said is not yours. Keep publishing paused until the correct brand and LinkedIn profile are confirmed. No post was scheduled by that test.</p><div class="reminder-actions"><button class="btn primary" type="button" data-goto="social">Review publishing steps</button><button class="btn" type="button" data-goto="settings">Check connections</button></div></div></div><div class="card span-3"><div class="metriclabel">Tracked leads</div><div class="metric" id="metricLeads">0</div><div class="metricfoot">Stored in backend when connected</div></div>
       <div class="card span-3"><div class="metriclabel">Open tasks</div><div class="metric" id="metricTasks">0</div><div class="metricfoot">Saved in this browser</div></div>
       <div class="card span-3"><div class="metriclabel">Drafts created</div><div class="metric" id="metricDrafts">0</div><div class="metricfoot">Template-based, ready to review</div></div>
       <div class="card span-3"><div class="metriclabel">SEO checklist</div><div class="metric" id="metricSeo">0%</div><div class="metricfoot">Based on your manual checklist</div></div>
       <div class="card span-7"><div class="cardhead"><h3>Business tools</h3><span class="pill">9 modules</span></div><div class="toolcards">
-        <button class="toolcard" data-goto="leads"><span class="toolico" aria-hidden="true"><i data-lucide="users" class="icon"></i></span><strong>Lead CRM</strong><span>Capture, track and qualify prospects</span></button>
-        <button class="toolcard" data-goto="marketing"><span class="toolico" aria-hidden="true"><i data-lucide="chart-no-axes-combined" class="icon"></i></span><strong>Campaign planner</strong><span>Goals, audience, channels and KPIs</span></button>
-        <button class="toolcard" data-goto="content"><span class="toolico" aria-hidden="true"><i data-lucide="pen-line" class="icon"></i></span><strong>Content studio</strong><span>Social posts and short-video scripts</span></button>
-        <button class="toolcard" data-goto="seo"><span class="toolico" aria-hidden="true"><i data-lucide="search" class="icon"></i></span><strong>SEO toolkit</strong><span>On-page checks and keyword ideas</span></button>
-        <button class="toolcard" data-goto="email"><span class="toolico" aria-hidden="true"><i data-lucide="mail" class="icon"></i></span><strong>Client follow-ups</strong><span>Polite email and message templates</span></button>
-        <button class="toolcard" data-goto="analytics"><span class="toolico" aria-hidden="true"><i data-lucide="chart-column" class="icon"></i></span><strong>Analytics</strong><span>Enter metrics and calculate rates</span></button>
+        <button class="toolcard" data-goto="leads"><span class="toolico" aria-hidden="true"><i data-lucide="users" data-fallback="👥" class="icon" aria-hidden="true"></i></span><strong>Lead CRM</strong><span>Capture, track and qualify prospects</span></button>
+        <button class="toolcard" data-goto="marketing"><span class="toolico" aria-hidden="true"><i data-lucide="chart-no-axes-combined" data-fallback="📈" class="icon" aria-hidden="true"></i></span><strong>Campaign planner</strong><span>Goals, audience, channels and KPIs</span></button>
+        <button class="toolcard" data-goto="content"><span class="toolico" aria-hidden="true"><i data-lucide="pen-line" data-fallback="✍️" class="icon" aria-hidden="true"></i></span><strong>Content studio</strong><span>Social posts and short-video scripts</span></button>
+        <button class="toolcard" data-goto="seo"><span class="toolico" aria-hidden="true"><i data-lucide="search" data-fallback="🔎" class="icon" aria-hidden="true"></i></span><strong>SEO toolkit</strong><span>On-page checks and keyword ideas</span></button>
+        <button class="toolcard" data-goto="email"><span class="toolico" aria-hidden="true"><i data-lucide="mail" data-fallback="✉️" class="icon" aria-hidden="true"></i></span><strong>Client follow-ups</strong><span>Polite email and message templates</span></button>
+        <button class="toolcard" data-goto="analytics"><span class="toolico" aria-hidden="true"><i data-lucide="chart-column" data-fallback="📊" class="icon" aria-hidden="true"></i></span><strong>Analytics</strong><span>Enter metrics and calculate rates</span></button>
       </div></div>
       <div class="card span-5"><div class="cardhead"><h3>Quick start</h3><span class="pill">Suggested</span></div><div class="checklist">
         <label class="checkrow"><input type="checkbox" data-onboard="profile"> Verify your portfolio and contact links</label>
@@ -363,7 +368,7 @@
   </section>
 </main>
 <nav class="mobile-nav" aria-label="Mobile navigation">
-  <button class="active" data-page="overview"><span aria-hidden="true"><i data-lucide="house" class="icon"></i></span>Home</button><button data-page="leads"><span aria-hidden="true"><i data-lucide="users" class="icon"></i></span>Leads</button><button data-page="marketing"><span aria-hidden="true"><i data-lucide="chart-no-axes-combined" class="icon"></i></span>Marketing</button><button data-page="content"><span aria-hidden="true"><i data-lucide="pen-line" class="icon"></i></span>Content</button><button data-page="social"><span aria-hidden="true"><i data-lucide="send" class="icon"></i></span>Publish</button><button data-page="seo"><span aria-hidden="true"><i data-lucide="search" class="icon"></i></span>SEO</button><button data-page="tasks"><span aria-hidden="true"><i data-lucide="list-check" class="icon"></i></span>Tasks</button>
+  <button class="active" data-page="overview"><span aria-hidden="true"><i data-lucide="house" data-fallback="🏠" class="icon" aria-hidden="true"></i></span>Home</button><button data-page="leads"><span aria-hidden="true"><i data-lucide="users" data-fallback="👥" class="icon" aria-hidden="true"></i></span>Leads</button><button data-page="marketing"><span aria-hidden="true"><i data-lucide="chart-no-axes-combined" data-fallback="📈" class="icon" aria-hidden="true"></i></span>Marketing</button><button data-page="content"><span aria-hidden="true"><i data-lucide="pen-line" data-fallback="✍️" class="icon" aria-hidden="true"></i></span>Content</button><button data-page="social"><span aria-hidden="true"><i data-lucide="send" data-fallback="📣" class="icon" aria-hidden="true"></i></span>Publish</button><button data-page="seo"><span aria-hidden="true"><i data-lucide="search" data-fallback="🔎" class="icon" aria-hidden="true"></i></span>SEO</button><button data-page="tasks"><span aria-hidden="true"><i data-lucide="list-check" data-fallback="✅" class="icon" aria-hidden="true"></i></span>Tasks</button>
 </nav>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -377,7 +382,7 @@ function read(key,fallback=[]){try{const x=JSON.parse(localStorage.getItem(key))
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch{toast("Browser storage is unavailable.");return false}}
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800)}
 function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function refreshIcons(){if(window.lucide&&typeof window.lucide.createIcons==="function")window.lucide.createIcons({attrs:{"stroke-width":1.8}})}\nfunction showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));const names={overview:"Overview",leads:"Lead CRM",marketing:"Marketing Planner",content:"Content Studio",social:"Social Publisher",automation:"Automation Studio",seo:"SEO Toolkit",email:"Email & Follow-ups",comms:"Communication Hub",support:"Customer Support",tasks:"Tasks & Projects",analytics:"Analytics",settings:"Connections & Settings"};$("pageTitle").textContent=names[name]||"Workspace";if(name==="leads")loadLeads();if(name==="tasks")renderTasks();if(name==="content")renderDrafts();if(name==="support")renderFaqs();if(name==="overview")updateOverview();if(name==="settings")checkBackend();if(name==="comms")renderCommsDrafts();refreshIcons()}
+function refreshIcons(){if(window.lucide&&typeof window.lucide.createIcons==="function"){window.lucide.createIcons({attrs:{"stroke-width":1.8}});document.documentElement.classList.add("icons-ready")}else{document.querySelectorAll("[data-lucide]").forEach(el=>{const fallback=el.getAttribute("data-fallback")||"•";el.replaceWith(document.createTextNode(fallback))})}}\nfunction showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));const names={overview:"Overview",leads:"Lead CRM",marketing:"Marketing Planner",content:"Content Studio",social:"Social Publisher",automation:"Automation Studio",seo:"SEO Toolkit",email:"Email & Follow-ups",comms:"Communication Hub",support:"Customer Support",tasks:"Tasks & Projects",analytics:"Analytics",settings:"Connections & Settings"};$("pageTitle").textContent=names[name]||"Workspace";if(name==="leads")loadLeads();if(name==="tasks")renderTasks();if(name==="content")renderDrafts();if(name==="support")renderFaqs();if(name==="overview")updateOverview();if(name==="settings")checkBackend();if(name==="comms")renderCommsDrafts();refreshIcons()}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.goto)));
 $("themeToggle").addEventListener("click",toggleTheme);
