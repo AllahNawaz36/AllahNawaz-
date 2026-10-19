@@ -53,7 +53,7 @@ test("support replies are honestly labelled and backend requests have a timeout"
   assert.match(html, /Customer-support reply draft/);
   assert.match(html, /LOCAL TEMPLATE DRAFT — AI service unavailable/);
   assert.doesNotMatch(html, /DEMO DRAFT — AI backend unavailable/);
-  assert.match(html, /setTimeout\(\(\)=>controller\.abort\(\),12000\)/, "API requests should not stay loading forever");
+  assert.ok(html.includes("setTimeout(()=>controller.abort(),12000)"), "API requests should not stay loading forever");
   assert.match(html, /The server took too long to respond/);
 });
 
