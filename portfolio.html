@@ -59,4 +59,75 @@ navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLin
 document.getElementById('year').textContent=new Date().getFullYear();
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));}
 </script>
+
+<style>
+/* Premium assistant + WhatsApp floating actions */
+.assist-fab-stack{position:fixed;right:20px;bottom:20px;z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:11px;font-family:"DM Sans",sans-serif}
+.assist-fab{width:58px;height:58px;border:0;border-radius:20px;display:grid;place-items:center;cursor:pointer;box-shadow:0 12px 35px #0006;transition:transform .2s,box-shadow .2s}
+.assist-fab:hover{transform:translateY(-3px);box-shadow:0 16px 40px #0008}
+.assist-fab svg{width:25px;height:25px}
+.assist-chat-toggle{background:var(--lime);color:#151610}
+.assist-wa-toggle{background:#20c76a;color:#062c17;border:1px solid #ffffff20}
+.assist-tip{font-size:11px;color:#e9ebdf;background:#20231e;border:1px solid #383d31;border-radius:10px;padding:5px 9px;box-shadow:0 5px 20px #0003}
+.assist-window{position:fixed;right:20px;bottom:166px;width:min(380px,calc(100vw - 28px));height:min(540px,calc(100dvh - 205px));z-index:1001;display:none;flex-direction:column;overflow:hidden;border:1px solid #3a4032;border-radius:24px;background:#151713;color:#f4f4ee;box-shadow:0 25px 80px #0009;font-family:"DM Sans",sans-serif}
+.assist-window.open{display:flex;animation:assistIn .22s ease-out}
+@keyframes assistIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.assist-head{padding:17px 17px 14px;background:linear-gradient(135deg,#262d20,#171a15);border-bottom:1px solid #33382c;display:flex;align-items:center;gap:11px}
+.assist-avatar{width:42px;height:42px;border-radius:15px;background:var(--lime);color:#141710;display:grid;place-items:center;font-weight:900}
+.assist-headtext{flex:1;min-width:0}.assist-headtext strong{display:block;font-size:14px}.assist-headtext small{font-size:11px;color:#b4bea5}.assist-status{display:inline-block;width:7px;height:7px;background:#75df8d;border-radius:50%;margin-right:5px}
+.assist-close{background:#ffffff0c;color:#e9ebdf;border:1px solid #ffffff1b;border-radius:10px;width:33px;height:33px;cursor:pointer;font-size:19px}
+.assist-messages{flex:1;overflow:auto;padding:16px 13px;display:flex;flex-direction:column;gap:11px;scroll-behavior:smooth}
+.assist-msg{max-width:91%;padding:11px 12px;border-radius:15px;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.assist-msg.bot{align-self:flex-start;background:#242820;border:1px solid #353b2e;border-bottom-left-radius:5px;color:#e8eade}
+.assist-msg.user{align-self:flex-end;background:var(--lime);color:#1a1c14;border-bottom-right-radius:5px}
+.assist-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 13px 11px}
+.assist-quick button{border:1px solid #49513b;background:#1b2018;color:#e6edda;border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}
+.assist-quick button:hover{border-color:var(--lime);color:var(--lime)}
+.assist-compose{display:flex;gap:8px;padding:12px;border-top:1px solid #30352b;background:#191b17}
+.assist-compose input{min-width:0;flex:1;border:1px solid #414638;background:#10120f;color:#f4f4ee;border-radius:13px;padding:12px;font:12px "DM Sans",sans-serif;outline:none}
+.assist-compose input:focus{border-color:var(--lime)}.assist-send{width:43px;border:0;border-radius:13px;background:var(--lime);color:#141710;font-weight:900;cursor:pointer}
+.assist-footnote{text-align:center;color:#858a7c;font-size:9px;padding:0 10px 9px;background:#191b17}
+@media(max-width:480px){.assist-fab-stack{right:13px;bottom:14px;gap:9px}.assist-fab{width:53px;height:53px;border-radius:18px}.assist-window{right:10px;bottom:139px;width:calc(100vw - 20px);height:min(560px,calc(100dvh - 170px));border-radius:21px}.assist-msg{font-size:12px}}
+</style>
+<div class="assist-fab-stack" aria-label="Contact options">
+  <span class="assist-tip">Chat with my design assistant</span>
+  <button class="assist-fab assist-chat-toggle" id="assistChatToggle" aria-label="Open design assistant chat" aria-expanded="false" title="Chat with me">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>
+  </button>
+  <a class="assist-fab assist-wa-toggle" id="assistWhatsApp" href="https://wa.me/?text=Hi%20Allah%20Nawaz%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer" aria-label="Contact through WhatsApp" title="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/><path d="M8.8 8.6c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 1.8c.1.2 0 .4-.1.6l-.6.7c-.2.2-.2.4-.1.6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .4-.2 1.2-.7 1.6-.5.5-1.2.7-1.8.6-1.1-.2-2.4-.7-3.8-2-1.5-1.3-2.4-2.9-2.6-4-.2-.8.1-1.5.5-2.2z"/></svg>
+  </a>
+</div>
+<section class="assist-window" id="assistWindow" role="dialog" aria-label="Allah Nawaz design assistant" aria-modal="false">
+  <header class="assist-head"><div class="assist-avatar">AN.</div><div class="assist-headtext"><strong>Allah’s Design Assistant</strong><small><span class="assist-status"></span>Portfolio guide · Instant replies</small></div><button class="assist-close" id="assistClose" aria-label="Close chat">×</button></header>
+  <div class="assist-messages" id="assistMessages" aria-live="polite"><div class="assist-msg bot">Hi there! 👋 Welcome to Allah Nawaz’s portfolio. I can help you explore UI/UX work, skills, experience, or start a project conversation. What would you like to know?</div></div>
+  <div class="assist-quick" id="assistQuick"><button type="button" data-question="Show me your projects">View projects</button><button type="button" data-question="What services do you offer?">Services</button><button type="button" data-question="Tell me about your experience">Experience</button><button type="button" data-question="I want to hire you">Hire / Contact</button></div>
+  <form class="assist-compose" id="assistForm"><input id="assistInput" autocomplete="off" maxlength="500" placeholder="Ask about design or projects…" aria-label="Type your question"><button class="assist-send" aria-label="Send message" type="submit">➤</button></form>
+  <div class="assist-footnote">Instant portfolio helper · No sign-in required</div>
+</section>
+<script>
+(function(){
+ const toggle=document.getElementById('assistChatToggle'),win=document.getElementById('assistWindow'),close=document.getElementById('assistClose'),messages=document.getElementById('assistMessages'),form=document.getElementById('assistForm'),input=document.getElementById('assistInput'),quick=document.getElementById('assistQuick');
+ if(!toggle||!win)return;
+ function openChat(){win.classList.add('open');toggle.setAttribute('aria-expanded','true');setTimeout(()=>input.focus(),100)}
+ function closeChat(){win.classList.remove('open');toggle.setAttribute('aria-expanded','false')}
+ toggle.addEventListener('click',()=>win.classList.contains('open')?closeChat():openChat());close.addEventListener('click',closeChat);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChat()});
+ function addMessage(text,who){const el=document.createElement('div');el.className='assist-msg '+who;el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight}
+ function reply(raw){const q=raw.toLowerCase();
+   if(/project|portfolio|behance|work sample|case study/.test(q))return 'You can explore these projects:\n• WellnessWell — Shilajit social media campaign\n• Jalal Electronics — product marketing ads\n• T-Tech Solutions — SaaS UX concept\n\nOpen the Selected Work section or visit Behance: behance.net/allahnawaz175';
+   if(/service|offer|hire|price|cost|freelance|available|job|collaborat/.test(q))return 'Allah works across UI/UX design, responsive web and mobile interfaces, wireframes, prototypes, design systems, and visual/marketing creatives. For a project or hiring enquiry, use LinkedIn or the WhatsApp button. Share your project scope and timeline to start the conversation.';
+   if(/experience|company|t-tech|click masters|background/.test(q))return 'Allah worked as a UI/UX & Graphic Designer at T-Tech Solutions in Islamabad from May to November 2025, focusing on responsive interfaces, reusable design patterns, and marketing visuals. His portfolio also includes marketing-oriented creative work with Click Masters Digital Marketing Agency.';
+   if(/skill|tool|figma|framer|adobe|software/.test(q))return 'Tools and skills listed here include Figma, prototyping, Framer, Adobe Creative Suite, wireframing, responsive UI, design systems, typography, and visual design.';
+   if(/contact|whatsapp|email|linkedin|talk|message/.test(q))return 'You can connect through LinkedIn: linkedin.com/in/allah-nawaz-productdesigner/ or tap the green WhatsApp button. WhatsApp opens with a suggested message that you can edit before sending.';
+   if(/hello|hi\b|hey|salam|assalam/.test(q))return 'Hello! 👋 I can show you projects, explain design services, share experience, or help you get in touch. What are you interested in?';
+   if(/location|based|where/.test(q))return 'Allah Nawaz is based in Islamabad, Pakistan and focuses on UI/UX, product design, SaaS, e-commerce, and visual design.';
+   return 'I’m a portfolio assistant, so I can answer common questions about Allah’s projects, skills, experience, and design services. Try “Show me your projects”, “What services do you offer?”, or “I want to hire you”. For a detailed brief, use LinkedIn or WhatsApp.';
+ }
+ function send(text){const clean=(text||'').trim();if(!clean)return;addMessage(clean,'user');input.value='';quick.style.display='none';setTimeout(()=>addMessage(reply(clean),'bot'),180)}
+ form.addEventListener('submit',e=>{e.preventDefault();send(input.value)});
+ quick.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>send(b.dataset.question||b.textContent)));
+})();
+</script>
+
 </body></html>
