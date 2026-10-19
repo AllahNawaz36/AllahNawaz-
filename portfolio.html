@@ -110,6 +110,33 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 "DM Sans",sa
 @media(max-width:850px){.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.resource-grid{grid-template-columns:1fr}.resource-card{min-height:190px}}
 
+
+/* Premium visitor chat + WhatsApp contact */
+.contact-launchers{position:fixed;right:22px;bottom:22px;z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.contact-launcher{display:flex;align-items:center;gap:10px;border:1px solid #ffffff20;border-radius:999px;padding:10px 15px 10px 10px;background:#1b1e18;color:#f4f4ee;box-shadow:0 10px 34px #0006;font-size:12px;font-weight:800;cursor:pointer;transition:transform .2s,border-color .2s}
+.contact-launcher:hover{transform:translateY(-3px);border-color:#d5ff72}
+.launcher-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:var(--lime);color:#161811;font-size:17px}
+.whatsapp-launcher .launcher-icon{background:#25d366;color:#062d15}
+.chat-panel{position:fixed;right:22px;bottom:88px;z-index:1001;width:min(370px,calc(100vw - 28px));height:min(540px,calc(100dvh - 130px));display:none;flex-direction:column;overflow:hidden;border:1px solid #4a5140;border-radius:23px;background:#141611;color:var(--text);box-shadow:0 26px 90px #000a}
+.chat-panel.open{display:flex;animation:chatEnter .24s var(--ease-premium) both}
+@keyframes chatEnter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px;border-bottom:1px solid var(--line);background:linear-gradient(120deg,#242a1e,#171a15)}
+.chat-brand{display:flex;align-items:center;gap:10px}.chat-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:var(--lime);color:#171912;font-weight:900}.chat-head strong{display:block;font-size:13px}.chat-head small{display:block;color:#a8b09d;font-size:10px}
+.chat-close{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#ffffff08;color:var(--text);cursor:pointer;font-size:18px}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:90%;padding:11px 13px;border:1px solid var(--line);border-radius:14px 14px 14px 4px;background:#20231d;color:#e7e9e1;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-msg.user{align-self:flex-end;border-color:#4c5d32;background:#29351f;border-radius:14px 14px 4px 14px}
+.chat-quick{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}
+.chat-quick button{border:1px solid #424838;background:#1a1d17;color:#dfe7d1;border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}
+.chat-quick button:hover{border-color:var(--lime);color:var(--lime)}
+.chat-compose{display:flex;align-items:flex-end;gap:8px;padding:12px;border-top:1px solid var(--line);background:#191b16}
+.chat-compose textarea{flex:1;resize:none;min-height:42px;max-height:95px;border:1px solid #414638;border-radius:14px;background:#10120e;color:var(--text);padding:11px 12px;font:12px/1.5 inherit;outline:none}
+.chat-compose textarea:focus{border-color:var(--lime)}
+.chat-send{width:42px;height:42px;flex:0 0 42px;border:0;border-radius:13px;background:var(--lime);color:#161811;font-weight:900;cursor:pointer}
+.chat-foot{padding:0 14px 12px;color:#828779;font-size:9px;line-height:1.5}
+@media(max-width:520px){.contact-launchers{right:12px;bottom:12px;gap:8px}.contact-launcher{padding:8px 12px 8px 8px}.launcher-icon{width:34px;height:34px}.chat-panel{right:8px;bottom:78px;width:calc(100vw - 16px);height:min(560px,calc(100dvh - 100px))}}
+@media(prefers-reduced-motion:reduce){.chat-panel.open{animation:none}.contact-launcher{transition:none}}
+
 </style>
 </head>
 <body>
@@ -185,7 +212,31 @@ const scrollProgress=document.getElementById('scrollProgress');
 let progressTick=false;
 function updateScrollProgress(){const max=document.documentElement.scrollHeight-window.innerHeight;const value=max>0?(window.scrollY/max)*100:0;scrollProgress.style.width=Math.min(100,Math.max(0,value))+'%';progressTick=false;}
 window.addEventListener('scroll',()=>{if(!progressTick){window.requestAnimationFrame(updateScrollProgress);progressTick=true;}},{passive:true});
+
 updateScrollProgress();
+const liveChatPanel=document.getElementById('liveChatPanel');
+const liveChatToggle=document.getElementById('liveChatToggle');
+const liveChatClose=document.getElementById('liveChatClose');
+const liveChatMessages=document.getElementById('liveChatMessages');
+const liveChatForm=document.getElementById('liveChatForm');
+const liveChatInput=document.getElementById('liveChatInput');
+function setChatOpen(open){liveChatPanel.classList.toggle('open',open);liveChatToggle.setAttribute('aria-expanded',String(open));if(open)liveChatInput.focus();}
+function addChatMessage(text,who='bot'){const el=document.createElement('div');el.className='chat-msg'+(who==='user'?' user':'');el.textContent=text;liveChatMessages.appendChild(el);liveChatMessages.scrollTop=liveChatMessages.scrollHeight;}
+function guidedReply(q){const t=q.toLowerCase();
+if(/service|offer|help|hire|skill/.test(t))return 'Allah focuses on UI/UX design, product interfaces, SaaS experiences, design systems, e-commerce creatives, social campaign design, and motion/VFX exploration. Share your project goals to discuss the right scope.';
+if(/project|portfolio|work|case|behance/.test(t))return 'You can explore the selected work section for WellnessWell, Jalal Electronics, Prime Estimate, Conectly, and an AI influencer-marketing concept. Motion & VFX and creative resources are also available in the portfolio. Open any project link to view the original work.';
+if(/motion|vfx|animation|video/.test(t))return 'The portfolio includes an animated motion study and links to motion references and free asset libraries. Those are explorations and references, not a claim of a completed client VFX reel.';
+if(/price|cost|budget|rate|quote/.test(t))return 'Project pricing depends on scope, deliverables, and timeline. Send your requirements through WhatsApp or LinkedIn so Allah can review them and provide a suitable quote.';
+if(/contact|whatsapp|email|linkedin|start|discuss|collaborat/.test(t))return 'The quickest next step is the WhatsApp button beside this chat, or the LinkedIn link in the Contact section. Include your goal, deliverables, and timeline so the discussion can be focused.';
+if(/hello|hi|salam|assalam/.test(t))return 'Hello! 👋 Thanks for visiting Allah Nawaz’s portfolio. I can guide you through services, projects, motion work, and how to get in touch.';
+return 'I can guide you through design services, selected portfolio projects, motion/VFX exploration, or project collaboration. Try one of the quick prompts, or contact Allah directly through WhatsApp or LinkedIn for a personal response.';
+}
+liveChatToggle.addEventListener('click',()=>setChatOpen(!liveChatPanel.classList.contains('open')));
+liveChatClose.addEventListener('click',()=>setChatOpen(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setChatOpen(false);});
+document.getElementById('liveChatQuick').addEventListener('click',e=>{const b=e.target.closest('button[data-question]');if(!b)return;const q=b.dataset.question;addChatMessage(q,'user');addChatMessage(guidedReply(q));});
+liveChatForm.addEventListener('submit',e=>{e.preventDefault();const q=liveChatInput.value.trim();if(!q)return;addChatMessage(q,'user');liveChatInput.value='';addChatMessage(guidedReply(q));});
+
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));}
 </script>
 
@@ -199,6 +250,19 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 .visual.behance-embed{height:360px;overflow:hidden;background:#171a15;border-radius:inherit}
 @media(max-width:600px){.visual.behance-embed{height:310px}.workgrid .behance-embed iframe{min-height:310px}}
 </style>
+
+<div class="contact-launchers" aria-label="Contact options">
+<button class="contact-launcher" id="liveChatToggle" type="button" aria-controls="liveChatPanel" aria-expanded="false"><span class="launcher-icon">✦</span><span>Ask my design assistant</span></button>
+<a class="contact-launcher whatsapp-launcher" href="https://wa.me/?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer" aria-label="Contact Allah Nawaz on WhatsApp"><span class="launcher-icon">◉</span><span>WhatsApp me</span></a>
+</div>
+<section class="chat-panel" id="liveChatPanel" role="dialog" aria-label="Allah Nawaz portfolio design assistant" aria-modal="false">
+<header class="chat-head"><div class="chat-brand"><div class="chat-avatar">AN.</div><div><strong>Allah’s Design Assistant</strong><small>Portfolio guide · Instant replies</small></div></div><button class="chat-close" id="liveChatClose" type="button" aria-label="Close chat">×</button></header>
+<div class="chat-messages" id="liveChatMessages" aria-live="polite"><div class="chat-msg">Hi! 👋 I can help you explore Allah’s portfolio, design services, case studies, and project collaboration. What would you like to know?</div></div>
+<div class="chat-quick" id="liveChatQuick"><button type="button" data-question="What design services are available?">Design services</button><button type="button" data-question="Show me the portfolio projects.">Portfolio projects</button><button type="button" data-question="How can I discuss a project?">Start a project</button></div>
+<form class="chat-compose" id="liveChatForm"><textarea id="liveChatInput" rows="1" maxlength="600" placeholder="Ask about design services…" aria-label="Your message"></textarea><button class="chat-send" type="submit" aria-label="Send message">↑</button></form>
+<div class="chat-foot">This portfolio assistant uses local guided replies; it is not connected to a live AI backend. For a personal response, use WhatsApp or LinkedIn.</div>
+</section>
+
 <!-- Portfolio kept focused on selected work and direct contact links. -->
 
 
