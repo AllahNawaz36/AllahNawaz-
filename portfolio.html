@@ -123,6 +123,16 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 "DM Sans",sa
 .chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px;border-bottom:1px solid var(--line);background:linear-gradient(120deg,#242a1e,#171a15)}
 .chat-brand{display:flex;align-items:center;gap:10px}.chat-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:var(--lime);color:#171912;font-weight:900}.chat-head strong{display:block;font-size:13px}.chat-head small{display:block;color:#a8b09d;font-size:10px}
 .chat-close{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#ffffff08;color:var(--text);cursor:pointer;font-size:18px}
+
+.chat-toolrow{display:flex;align-items:center;gap:8px;padding:10px 14px 4px;font-size:10px;color:#a8b09d}
+.chat-toolrow label{font-weight:800;white-space:nowrap}
+.chat-toolrow select{flex:1;min-width:0;background:#1a1d17;color:#e7e9e1;border:1px solid #414638;border-radius:9px;padding:7px;font-size:10px}
+.chat-status{font-size:9px;white-space:nowrap}.chat-status.ready{color:#b9f77a}.chat-status.offline{color:#e5b16a}
+.chat-tool-links{display:flex;gap:8px;padding:8px 14px 2px}
+.chat-tool-links a{display:inline-flex;text-decoration:none;border:1px solid #424838;border-radius:9px;padding:7px 10px;font-size:10px;font-weight:800;color:#d5ff72}
+.chat-tool-links a:hover{background:#252d1d}
+@media(max-width:360px){.chat-toolrow{gap:5px;padding-left:10px;padding-right:10px}.chat-status{font-size:8px}.chat-toolrow select{padding:6px;font-size:9px}}
+
 .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 .chat-msg{max-width:90%;padding:11px 13px;border:1px solid var(--line);border-radius:14px 14px 14px 4px;background:#20231d;color:#e7e9e1;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
 .chat-msg.user{align-self:flex-end;border-color:#4c5d32;background:#29351f;border-radius:14px 14px 4px 14px}
@@ -223,20 +233,25 @@ const liveChatInput=document.getElementById('liveChatInput');
 function setChatOpen(open){liveChatPanel.classList.toggle('open',open);liveChatToggle.setAttribute('aria-expanded',String(open));if(open)liveChatInput.focus();}
 function addChatMessage(text,who='bot'){const el=document.createElement('div');el.className='chat-msg'+(who==='user'?' user':'');el.textContent=text;liveChatMessages.appendChild(el);liveChatMessages.scrollTop=liveChatMessages.scrollHeight;}
 function guidedReply(q){const t=q.toLowerCase();
-if(/service|offer|help|hire|skill/.test(t))return 'Allah focuses on UI/UX design, product interfaces, SaaS experiences, design systems, e-commerce creatives, social campaign design, and motion/VFX exploration. Share your project goals to discuss the right scope.';
-if(/project|portfolio|work|case|behance/.test(t))return 'You can explore the selected work section for WellnessWell, Jalal Electronics, Prime Estimate, Conectly, and an AI influencer-marketing concept. Motion & VFX and creative resources are also available in the portfolio. Open any project link to view the original work.';
-if(/motion|vfx|animation|video/.test(t))return 'The portfolio includes an animated motion study and links to motion references and free asset libraries. Those are explorations and references, not a claim of a completed client VFX reel.';
-if(/price|cost|budget|rate|quote/.test(t))return 'Project pricing depends on scope, deliverables, and timeline. Send your requirements through WhatsApp or LinkedIn so Allah can review them and provide a suitable quote.';
-if(/contact|whatsapp|email|linkedin|start|discuss|collaborat/.test(t))return 'The quickest next step is the WhatsApp button beside this chat, or the LinkedIn link in the Contact section. Include your goal, deliverables, and timeline so the discussion can be focused.';
-if(/hello|hi|salam|assalam/.test(t))return 'Hello! 👋 Thanks for visiting Allah Nawaz’s portfolio. I can guide you through services, projects, motion work, and how to get in touch.';
-return 'I can guide you through design services, selected portfolio projects, motion/VFX exploration, or project collaboration. Try one of the quick prompts, or contact Allah directly through WhatsApp or LinkedIn for a personal response.';
+if(/figma|canva|design prompt|design brief|post design|poster|banner|creative|social post/.test(t))return 'Design direction: define one clear audience, one message, and one primary action. For UI/UX screens, open Figma and start with a mobile frame, user flow, and reusable components. For social posts, open Canva and set the exact platform size, brand colours, strong headline, and clear CTA. I can refine a ready-to-paste prompt here, but cannot directly edit private files from this public website chat.';
+if(/service|offer|help|hire|skill/.test(t))return 'Allah focuses on UI/UX and product design, SaaS experiences, responsive websites, design systems, e-commerce creatives, social campaigns, and motion/VFX exploration. Share your goals and deliverables to scope the work.';
+if(/project|portfolio|work|case|behance/.test(t))return 'Explore the selected work for WellnessWell, Jalal Electronics, Prime Estimate, Conectly, and an AI influencer-marketing concept. Motion & VFX exploration and curated creative resources are also available. Each project links to its original work where available.';
+if(/motion|vfx|animation|video/.test(t))return 'The portfolio includes a motion study and links to motion references and free asset libraries. These are explorations and references, not a claim of a completed client VFX reel.';
+if(/price|cost|budget|rate|quote/.test(t))return 'Pricing depends on scope, deliverables, and timeline. Share your brief through LinkedIn so Allah can review the requirements before discussing a quote.';
+if(/contact|whatsapp|email|linkedin|start|discuss|collaborat/.test(t))return 'Use the LinkedIn link in the Contact section or the WhatsApp shortcut. Include your goal, deliverables, target audience, and timeline for a focused discussion.';
+if(/hello|hi|salam|assalam/.test(t))return 'Hello! 👋 I can guide you through design services, selected work, or creating a strong Figma/Canva brief. What are you making?';
+return 'I can help with UI/UX, websites, SaaS, branding, Canva social graphics, and project briefs. Tell me what you are designing, who it is for, and the goal. For full AI answers, connect the Cloudflare Worker in the Naz dashboard; for direct file editing, use Figma or Canva themselves.';
 }
-liveChatToggle.addEventListener('click',()=>setChatOpen(!liveChatPanel.classList.contains('open')));
+function readChatApiBase(){try{const raw=localStorage.getItem('nazProApiBase');if(!raw)return '';const value=JSON.parse(raw);if(typeof value!=='string')return '';const base=value.replace(/\\/+$/,'');return /^https:\/\//i.test(base)?base:'';}catch{return '';}}
+function setChatStatus(text,kind='offline'){const el=document.getElementById('liveChatStatus');el.textContent=text;el.className='chat-status '+kind;}
+function getChatPlatform(){return document.getElementById('liveChatTopic').value||'general';}
+async function replyToChat(q){const base=readChatApiBase();if(base){setChatStatus('AI responding…','ready');try{const res=await fetch(base+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,platform:getChatPlatform(),task:'client-chat'})});const data=await res.json();if(!res.ok)throw new Error(data.error||'AI service unavailable');if(data.answer){addChatMessage(data.answer);setChatStatus('AI connected','ready');return;}}catch(err){setChatStatus('AI unavailable','offline');addChatMessage('AI reply is unavailable right now. '+(err.message||'Please check the backend setup.')+' You can still use the guided prompts or try again later.');return;}}
+setChatStatus('Guided replies','offline');addChatMessage(guidedReply(q));}
+liveChatToggle.addEventListener('click',()=>{const open=!liveChatPanel.classList.contains('open');setChatOpen(open);if(open){setChatStatus(readChatApiBase()?'AI endpoint saved':'Guided replies only',readChatApiBase()?'ready':'offline');}});
 liveChatClose.addEventListener('click',()=>setChatOpen(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setChatOpen(false);});
-document.getElementById('liveChatQuick').addEventListener('click',e=>{const b=e.target.closest('button[data-question]');if(!b)return;const q=b.dataset.question;addChatMessage(q,'user');addChatMessage(guidedReply(q));});
-liveChatForm.addEventListener('submit',e=>{e.preventDefault();const q=liveChatInput.value.trim();if(!q)return;addChatMessage(q,'user');liveChatInput.value='';addChatMessage(guidedReply(q));});
-
+document.getElementById('liveChatQuick').addEventListener('click',async e=>{const b=e.target.closest('button[data-question]');if(!b)return;const q=b.dataset.question;addChatMessage(q,'user');await replyToChat(q);});
+liveChatForm.addEventListener('submit',async e=>{e.preventDefault();const q=liveChatInput.value.trim();if(!q)return;addChatMessage(q,'user');liveChatInput.value='';await replyToChat(q);});
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));}
 </script>
 
@@ -257,10 +272,12 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 </div>
 <section class="chat-panel" id="liveChatPanel" role="dialog" aria-label="Allah Nawaz portfolio design assistant" aria-modal="false">
 <header class="chat-head"><div class="chat-brand"><div class="chat-avatar">AN.</div><div><strong>Allah’s Design Assistant</strong><small>Portfolio guide · Instant replies</small></div></div><button class="chat-close" id="liveChatClose" type="button" aria-label="Close chat">×</button></header>
-<div class="chat-messages" id="liveChatMessages" aria-live="polite"><div class="chat-msg">Hi! 👋 I can help you explore Allah’s portfolio, design services, case studies, and project collaboration. What would you like to know?</div></div>
-<div class="chat-quick" id="liveChatQuick"><button type="button" data-question="What design services are available?">Design services</button><button type="button" data-question="Show me the portfolio projects.">Portfolio projects</button><button type="button" data-question="How can I discuss a project?">Start a project</button></div>
-<form class="chat-compose" id="liveChatForm"><textarea id="liveChatInput" rows="1" maxlength="600" placeholder="Ask about design services…" aria-label="Your message"></textarea><button class="chat-send" type="submit" aria-label="Send message">↑</button></form>
-<div class="chat-foot">This portfolio assistant uses local guided replies; it is not connected to a live AI backend. For a personal response, use WhatsApp or LinkedIn.</div>
+<div class="chat-toolrow"><label for="liveChatTopic">Topic</label><select id="liveChatTopic" aria-label="Chat topic"><option value="general">General</option><option value="uiux">UI/UX & product design</option><option value="website">Website design</option><option value="saas">SaaS / dashboard</option><option value="branding">Branding & social creatives</option><option value="figma-canva">Figma & Canva</option><option value="hire">Hire / project brief</option></select><span id="liveChatStatus" class="chat-status offline">AI setup needed</span></div>
+<div class="chat-tool-links"><a href="https://www.figma.com/design/vt3zmYnIUFYfTq9fQlvsng" target="_blank" rel="noopener noreferrer">Open Figma ↗</a><a href="https://www.canva.com/" target="_blank" rel="noopener noreferrer">Open Canva ↗</a></div>
+<div class="chat-messages" id="liveChatMessages" aria-live="polite"><div class="chat-msg">Hi! 👋 I can help with UI/UX, product design, project briefs, and prompts for Figma or Canva. Choose a topic or ask a question below.</div></div>
+<div class="chat-quick" id="liveChatQuick"><button type="button" data-question="Help me create a premium UI/UX design brief for a new app.">UI/UX brief</button><button type="button" data-question="Write a premium Canva prompt for a LinkedIn design post.">Canva post prompt</button><button type="button" data-question="How can I start a project with Allah?">Start a project</button></div>
+<form class="chat-compose" id="liveChatForm"><textarea id="liveChatInput" rows="1" maxlength="1000" placeholder="Ask a design question…" aria-label="Your message"></textarea><button class="chat-send" type="submit" aria-label="Send message">↑</button></form>
+<div class="chat-foot">Guided replies work now. AI replies require the free Cloudflare Worker with Workers AI + CHAT_LIMITER configured and its HTTPS URL saved in the Naz dashboard. Figma/Canva open separately; this chat cannot directly edit private design files.</div>
 </section>
 
 <!-- Portfolio kept focused on selected work and direct contact links. -->
