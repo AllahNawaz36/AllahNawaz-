@@ -22,6 +22,7 @@ jobs:
           from pathlib import Path
           import subprocess
           import tempfile
+          from urllib.parse import unquote
 
           class PageChecker(HTMLParser):
               def __init__(self):
@@ -29,11 +30,14 @@ jobs:
                   self.current = None
                   self.scripts = []
                   self.ids = []
+                  self.links = []
 
               def handle_starttag(self, tag, attrs):
                   attrs = dict(attrs)
                   if attrs.get("id"):
                       self.ids.append(attrs["id"])
+                  if tag.lower() == "a":
+                      self.links.append(attrs)
                   if tag.lower() == "script":
                       if "src" not in attrs and attrs.get("type", "").lower() not in ("application/ld+json", "application/json"):
                           self.current = []
@@ -57,12 +61,30 @@ jobs:
                       raise SystemExit(f"{page} has duplicate IDs: {duplicates}")
                   if not parser.scripts:
                       raise SystemExit(f"No inline JavaScript found in {page}")
+                  known_ids = set(parser.ids)
+                  broken_fragments = sorted({
+                      unquote(link.get("href", "")[1:])
+                      for link in parser.links
+                      if link.get("href", "").startswith("#")
+                      and len(link.get("href", "")) > 1
+                      and unquote(link.get("href", "")[1:]) not in known_ids
+                  })
+                  if broken_fragments:
+                      raise SystemExit(f"{page} has broken in-page links: {broken_fragments}")
+                  unsafe_blank_links = sorted({
+                      link.get("href", "")
+                      for link in parser.links
+                      if link.get("target", "").lower() == "_blank"
+                      and "noopener" not in link.get("rel", "").lower().split()
+                  })
+                  if unsafe_blank_links:
+                      raise SystemExit(f"{page} has target=_blank links without rel=noopener: {unsafe_blank_links}")
                   for index, script in enumerate(parser.scripts):
                       path = Path(temp) / (page.replace(".html", "") + "-" + str(index) + ".js")
                       path.write_text(script, encoding="utf-8")
                       subprocess.run(["node", "--check", str(path)], check=True)
                   total_scripts += len(parser.scripts)
-                  print(f"{page}: {len(parser.scripts)} inline script(s), IDs unique.")
+                  print(f"{page}: {len(parser.scripts)} inline script(s); IDs unique; in-page links valid; new-tab links safe.")
           print(f"Validated {total_scripts} inline script(s) across both HTML pages.")
           PY
       - uses: actions/setup-python@v5
