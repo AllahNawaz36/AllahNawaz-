@@ -776,7 +776,17 @@ checkBackend().then(()=>{updateSeo();updateOverview();renderDrafts();renderTasks
  launcher.addEventListener("click",()=>setOpen(panel.hidden));close.addEventListener("click",()=>{setOpen(false);launcher.focus()});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden){setOpen(false);launcher.focus()}});
  const addMessage=(text,role)=>{const el=document.createElement("div");el.className="ai-chat-message "+role;el.textContent=text;log.appendChild(el);log.scrollTop=log.scrollHeight;return el};
- const updateStatus=()=>{status.textContent=typeof apiBase==="function"&&apiBase()?"API endpoint configured · availability not yet verified":"Backend not configured · local demo only"};
+ const updateStatus=async()=>{
+  if(typeof apiBase!=="function"||!apiBase()){status.textContent="Backend not configured · local demo only";return}
+  status.textContent="Checking backend health…";
+  try{
+   const base=apiBase().replace(/\\/+$/,"");
+   const res=await fetch(base+"/api/health",{method:"GET",cache:"no-store"});
+   const data=await res.json().catch(()=>({}));
+   if(!res.ok||data.ok!==true)throw new Error("Health check failed");
+   status.textContent=data.ai==="configured"?"Backend online · AI binding detected":"Backend online · AI binding missing";
+  }catch{status.textContent="Backend unavailable · check API URL and CORS"}
+ };
  updateStatus();
  form.addEventListener("submit",async e=>{
   e.preventDefault();const message=input.value.trim();if(!message)return;
