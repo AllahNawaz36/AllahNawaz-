@@ -31,10 +31,10 @@
 
 ## Remaining security risks
 
-1. **Customer privacy and recovery:** a privacy notice, data-minimization policy, retention/deletion rules, backup/restore test and incident plan are still required before storing real customer data.
+1. **Customer privacy and recovery:** a visible `privacy.html` notice is now linked from Settings. It is informational only; a formal reviewed policy, data-minimization controls, enforced retention/deletion, backup/restore test and incident plan are still required before storing real customer data.
 2. **Browser token exposure:** tab-scoped `sessionStorage` is better than a hard-coded token but remains readable by same-origin JavaScript. Keep dependencies controlled and avoid untrusted scripts; consider a stronger authenticated session if multiple users will access this system.
-3. **CDN integrity:** Lucide is pinned to `0.468.0`, but its script tag does not yet include a verified SRI hash or a vendored local copy. Do not guess a hash; complete this hardening before claiming supply-chain integrity is complete.
-4. **Dependency pinning:** Python requirements use minimum-version ranges, not a tested lockfile. Review and lock dependency versions before production use.
+3. **External runtime assets:** the Lucide CDN and Google Fonts requests were removed from the static pages; built-in icon fallbacks and system fonts are used. Validate visual rendering on target Android browsers.
+4. **Dependency pinning:** direct Python packages are exact-pinned; transitive dependency lockfile/hashes remain outstanding.
 5. **Public AI rate limiting:** `CHAT_LIMITER` is configured for 10 requests per client IP per 60 seconds. Shared carrier IPs can affect multiple visitors, and this alone is not a complete abuse-prevention solution.
 6. **Node API exposure:** `server.js` is intended for trusted/self-hosted use. Add explicit rate limiting and a reviewed CORS policy before public exposure.
 7. **Deployment uncertainty:** configured bindings in `wrangler.toml` are not proof of runtime configuration. Confirm the actual deployed Worker, AI binding, rate-limit binding, D1 binding/schema and HTTPS endpoint.
