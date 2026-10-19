@@ -119,8 +119,14 @@ export default {
         return response({ error: "Chat protection is not configured. Add the CHAT_LIMITER binding before enabling public AI chat." }, 503, cors);
       }
       const clientKey = request.headers.get("cf-connecting-ip") || "unknown-client";
-      const rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
-      if (!rateLimit.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
+      let rateLimit;
+      try {
+        rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
+      } catch {
+        // Fail closed if the abuse-control service is unavailable.
+        return response({ error: "Chat protection is temporarily unavailable. Please try again later." }, 503, cors);
+      }
+      if (!rateLimit?.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
       if (!env.AI || typeof env.AI.run !== "function") {
         return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
       }
@@ -212,7 +218,12 @@ export default {
         }
       }
 
-      const id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
+      let id = "";
+      try {
+        id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
+      } catch {
+        return response({ error: "Invalid lead ID." }, 400, cors);
+      }
       if (!id || id.includes("/")) return response({ error: "Lead not found." }, 404, cors);
       let found;
       try {
