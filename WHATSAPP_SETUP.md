@@ -8,7 +8,7 @@ The Communication Hub now has a two-step approval flow:
 1. Enter the recipient's phone number in international format and write the message.
 2. Save the draft if you want to keep it on this device.
 3. Tap **WhatsApp**. The dashboard shows a preview and asks you to review it.
-4. Tick the approval checkbox and tap **Approve & open WhatsApp**.
+4. Confirm you are allowed to contact the recipient, tick the approval checkbox, and tap **Approve & open WhatsApp**.
 5. WhatsApp opens with a pre-filled draft. Check the chat and tap **Send** in WhatsApp yourself.
 
 **Important:** approving in the dashboard only authorizes opening the WhatsApp draft. It does not send the message. Sending happens only after the user taps Send in WhatsApp.
@@ -28,7 +28,7 @@ Use this only for people you are allowed to contact. Avoid unsolicited bulk mess
 5. Tick the checkbox and tap **Approve & open WhatsApp**.
 6. Verify WhatsApp shows the intended recipient and draft. Send only if you intend to.
 
-If WhatsApp does not open, allow the browser to open external apps/pop-ups or copy the message and open WhatsApp manually.
+The dashboard requests the WhatsApp link in a separate tab/app without relying on a pop-up return value. If WhatsApp does not open, allow external-app links or copy the message and open WhatsApp manually.
 
 ## What is not connected
 
