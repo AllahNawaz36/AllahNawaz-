@@ -180,10 +180,14 @@ export default {
       if (!env.DB) return response({ error: "Database is not configured. Follow CLOUDFLARE_SETUP.md." }, 503, cors);
 
       if (request.method === "GET" && path === "/api/leads") {
-        const result = await env.DB.prepare(
-          "SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads ORDER BY createdAt DESC"
-        ).all();
-        return response({ leads: result.results || [] }, 200, cors);
+        try {
+          const result = await env.DB.prepare(
+            "SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads ORDER BY createdAt DESC"
+          ).all();
+          return response({ leads: result.results || [] }, 200, cors);
+        } catch {
+          return response({ error: "Unable to load leads. Please try again." }, 503, cors);
+        }
       }
 
       if (request.method === "POST" && path === "/api/leads") {
@@ -204,7 +208,12 @@ export default {
 
       const id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
       if (!id || id.includes("/")) return response({ error: "Lead not found." }, 404, cors);
-      const found = await env.DB.prepare("SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads WHERE id = ?").bind(id).first();
+      let found;
+      try {
+        found = await env.DB.prepare("SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads WHERE id = ?").bind(id).first();
+      } catch {
+        return response({ error: "Unable to load lead. Please try again." }, 503, cors);
+      }
       if (!found) return response({ error: "Lead not found." }, 404, cors);
 
       if (request.method === "PATCH") {
@@ -222,8 +231,12 @@ export default {
         }
       }
       if (request.method === "DELETE") {
-        await env.DB.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
-        return response({ ok: true }, 200, cors);
+        try {
+          await env.DB.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
+          return response({ ok: true }, 200, cors);
+        } catch {
+          return response({ error: "Unable to delete lead. Please try again." }, 503, cors);
+        }
       }
       return response({ error: "Method not allowed." }, 405, cors);
     }
