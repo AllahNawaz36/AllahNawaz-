@@ -10,7 +10,8 @@ test("worker health endpoint responds without database credentials", async () =>
     ok: true,
     service: "naz-business-assistant",
     storage: "not-configured",
-    ai: "not-configured"
+    ai: "not-configured",
+    chatProtection: "not-configured"
   });
 });
 
