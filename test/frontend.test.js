@@ -90,3 +90,14 @@ test("mobile More menu exposes all secondary pages and supports accessible open/
   assert.match(html, /if\(morePanel\)morePanel\.hidden=true/, "choosing a page should close the panel");
   assert.match(html, /\.mobile-more-panel:not\(\[hidden\]\)\{position:fixed/, "open menu should be positioned above the mobile bottom bar");
 });
+
+
+test("icon fallbacks have consistent spacing and More menu uses matching accessible semantics", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const iconTags = [...html.matchAll(/<i\\b[^>]*data-lucide="[^"]+"[^>]*>/g)].map(match => match[0]);
+  assert.ok(iconTags.length > 0, "dashboard should contain Lucide icons");
+  assert.ok(iconTags.every(tag => /data-fallback="[^"]+"/.test(tag)), "every Lucide icon should include a fallback glyph");
+  assert.match(html, /\.icon-fallback\\{display:inline-grid!important;place-items:center;flex:0 0 var\\(--icon-size,18px\\)/, "fallback icons should use fixed geometry and centering");
+  assert.match(html, /id="mobileMorePanel" class="mobile-more-panel" role="menu" aria-labelledby="mobileMoreButton" hidden/, "More panel should expose an accessible menu label");
+  assert.match(html, /\.mobile-more-panel \.icon-fallback\\{flex-basis:20px;width:20px;height:20px;min-width:20px\\}/, "More menu fallback icons should share consistent sizing");
+});
