@@ -11,6 +11,43 @@ const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
 const MAX_BODY_BYTES = 1024 * 1024;
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://allahnawaz36.github.io";
+const RATE_WINDOW_MS = 60_000;
+const rateBuckets = new Map();
+
+function applyCors(req, res) {
+  const origin = req.headers.origin;
+  if (origin && origin !== ALLOWED_ORIGIN) {
+    send(res, 403, { error: "Origin not allowed." });
+    return false;
+  }
+  if (origin === ALLOWED_ORIGIN) {
+    res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+    res.setHeader("Access-Control-Max-Age", "600");
+  }
+  return true;
+}
+
+function rateLimited(req, pathname) {
+  const now = Date.now();
+  const group = pathname.startsWith("/api/leads") ? "leads" : "general";
+  const key = (req.socket.remoteAddress || "unknown") + ":" + group;
+  let bucket = rateBuckets.get(key);
+  if (!bucket || now - bucket.startedAt >= RATE_WINDOW_MS) {
+    bucket = { startedAt: now, count: 0 };
+    rateBuckets.set(key, bucket);
+  }
+  bucket.count += 1;
+  if (rateBuckets.size > 1000) {
+    for (const [candidate, value] of rateBuckets) {
+      if (now - value.startedAt >= RATE_WINDOW_MS) rateBuckets.delete(candidate);
+    }
+  }
+  return bucket.count > (group === "leads" ? 30 : 120);
+}
 
 if (ADMIN_TOKEN.length < 32) {
   console.error("Startup blocked: set ADMIN_TOKEN to a random secret of at least 32 characters.");
@@ -113,6 +150,17 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, "http://localhost");
     const pathname = decodeURIComponent(url.pathname);
+
+    if (!applyCors(req, res)) return;
+    if (req.method === "OPTIONS") {
+      if (!req.headers.origin) return send(res, 400, { error: "Origin header required." });
+      res.writeHead(204);
+      return res.end();
+    }
+    if (rateLimited(req, pathname)) {
+      res.setHeader("Retry-After", "60");
+      return send(res, 429, { error: "Too many requests. Wait a minute and try again." });
+    }
 
     if (req.method === "GET" && pathname === "/api/health") {
       return send(res, 200, { ok: true, service: "naz-business-assistant" });
