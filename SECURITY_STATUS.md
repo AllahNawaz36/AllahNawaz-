@@ -1,48 +1,65 @@
 # Security Status — Naz Business Assistant Pro
 
-Last reviewed: 2026-10-19
+**Last reviewed:** 2026-10-19  
+**Review branch:** `audit/free-social-workflow-2026-10-19`
 
 ## Current verdict
 
-**Development/demo ready; not yet approved for production customer data or unattended outbound actions.** Passing CI proves the repository's checks pass; it does not prove a deployed Cloudflare service is secure or live.
+**Demo/starter only. Not approved for production customer data or unattended outbound actions.** This branch improves error handling and user-facing states, but it does not verify a live Cloudflare deployment or a social-provider account. No post was scheduled or published by this work.
 
-## Checks observed in the repository
+## Controls observed
 
-- `ADMIN_TOKEN` is not configured in public frontend source; the dashboard asks the operator to enter it and keeps it in tab-scoped session storage.
-- The Node API refuses to start unless `ADMIN_TOKEN` is at least 32 characters.
-- Lead CRUD endpoints require Bearer-token authorization.
-- The Worker limits request bodies, validates lead fields, restricts browser CORS to the configured GitHub Pages origin, and does not expose lead endpoints without the admin token.
-- `.env`, data files, Python caches, and generated reports are ignored by Git.
-- Python workflow defaults to dry-run; current workflow code does not send email or publish social posts.
-- Latest repository CI run passed syntax checks, JavaScript tests, Python compilation, Python tests, and dry-run smoke test.
+- The admin token is not hard-coded in `index.html`; the Node API refuses to start if `ADMIN_TOKEN` is shorter than 32 characters.
+- Lead CRUD endpoints in the Worker require a Bearer token. Token comparison is length-checked and timing-safe.
+- Worker CORS is limited to the configured origin (default: `https://allahnawaz36.github.io`); the deployed `ALLOWED_ORIGIN` must remain restricted to that origin.
+- Worker request bodies are size-limited and lead fields are validated. Public chat fails closed when `CHAT_LIMITER` is absent.
+- Unexpected database errors from Worker lead create/update handlers now return generic client-facing 500 messages; detailed database errors are not included in those response bodies.
+- Dashboard API calls now time out after 12 seconds rather than remaining pending indefinitely.
+- Python workflow defaults to dry-run; workflow stages are planning-only and do not send posts or email.
+- Social Publisher remains a draft-and-manual-handoff workflow. Its local checklist is not evidence that a post was scheduled.
+- `ADMIN_TOKEN` and provider credentials must remain in Cloudflare Secrets / private deployment configuration, never in browser code, repository files, logs, screenshots, or chat.
 
-## Open risks / required before real customer use
+## Verification status
 
-1. **Basic public-chat rate limiting is now defined in code/config** (`CHAT_LIMITER`, 10 requests per IP per 60 seconds), and the Worker fails closed if the binding is missing. This is not a complete anti-abuse solution: IP-based limits can affect multiple visitors behind shared mobile/carrier networks, and deployment must be verified. Consider an additional challenge such as Turnstile and monitor errors before public launch.
-2. **Cloudflare runtime is not verified.** Confirm `/api/health` after deployment; expected fields are `ok: true`, `ai: configured`, and, after D1 setup, `storage: d1`.
-3. **D1 is not configured until the owner creates a real database, binds it as `DB`, and runs `schema.sql`.** Do not enter real lead data before that test passes.
-4. **Secret setup is owner-only.** Set a unique random `ADMIN_TOKEN` in Cloudflare Worker Settings → Variables and Secrets as a Secret. Never commit it, put it in frontend code, or send it in chat/screenshots.
-5. **Outbound actions remain disabled/not implemented.** No automatic LinkedIn/Facebook publishing, outbound email, WhatsApp sending, ad spend changes, or customer replies should be claimed until a provider is connected, permissioned, and a real test action is confirmed.
-6. **Privacy controls are not a complete compliance package.** Before storing real customer information, add a privacy notice, retention/deletion process, minimal collection, and a backup/restore plan.
-7. **AI limits are not a hard cost guarantee.** Stay on the free plan and do not approve upgrades; Cloudflare Workers AI free allocation is limited and requests can fail at the quota.
+- **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
+- **CI for this branch:** pending until the pull-request workflow completes; do not infer a pass from earlier runs on another commit.
+- **Live `/api/health`:** not verified in this work session.
+- **D1 persistence and schema:** not verified in a deployed Cloudflare account.
+- **Wrong-token rejection against deployed Worker:** not verified in production.
+- **Social brand/profile ownership:** not verified. The recorded ChatGPT Metricool connection returned a brand that was not confirmed as the user's. Do not use that connection for any outbound action.
+- **Free-tier provider eligibility:** not verified against the user's own provider account. Use manual copy-and-schedule unless the signed-in account itself confirms a supported free scheduling option.
 
-## Safe operating rules
+## Remaining security risks
 
-- Keep content generation in draft mode by default.
-- Require a human approval before sending/publishing, deleting records, changing ads, or emailing customers.
-- Hand off uncertain, sensitive, refund/payment/security, legal, or complaint cases to a human.
-- Use test data until the health endpoint, auth, database and recovery path have been checked.
-- Recheck GitHub Actions after every repository change and inspect failed logs rather than assuming deployment succeeded.
+1. **Customer privacy and recovery:** a privacy notice, data-minimization policy, retention/deletion rules, backup/restore test and incident plan are still required before storing real customer data.
+2. **Browser token exposure:** tab-scoped `sessionStorage` is better than a hard-coded token but remains readable by same-origin JavaScript. Keep dependencies controlled and avoid untrusted scripts; consider a stronger authenticated session if multiple users will access this system.
+3. **CDN integrity:** Lucide is pinned to `0.468.0`, but its script tag does not yet include a verified SRI hash or a vendored local copy. Do not guess a hash; complete this hardening before claiming supply-chain integrity is complete.
+4. **Dependency pinning:** Python requirements use minimum-version ranges, not a tested lockfile. Review and lock dependency versions before production use.
+5. **Public AI rate limiting:** `CHAT_LIMITER` is configured for 10 requests per client IP per 60 seconds. Shared carrier IPs can affect multiple visitors, and this alone is not a complete abuse-prevention solution.
+6. **Node API exposure:** `server.js` is intended for trusted/self-hosted use. Add explicit rate limiting and a reviewed CORS policy before public exposure.
+7. **Deployment uncertainty:** configured bindings in `wrangler.toml` are not proof of runtime configuration. Confirm the actual deployed Worker, AI binding, rate-limit binding, D1 binding/schema and HTTPS endpoint.
+8. **Social account identity:** no automated scheduling/publishing integration is enabled. Verify your own brand/profile in the provider directly before manually scheduling; do not use the unrelated/unverified connection.
 
-## Manual launch checklist
+## Mandatory operating rules
 
-- [ ] Cloudflare Worker deployed under the expected name.
-- [ ] `CHAT_LIMITER` binding deployed and tested; consider additional Turnstile/abuse controls.
-- [ ] AI binding named `AI` confirmed.
-- [ ] D1 binding named `DB` confirmed and `schema.sql` executed.
-- [ ] `ADMIN_TOKEN` stored as a Worker secret (32+ characters).
-- [ ] `/api/health` checked from the deployed URL.
-- [ ] Synthetic lead CRUD tested; missing/wrong token returns 401.
-- [ ] No real customer data entered until all above checks pass.
-- [ ] Third-party social/chat accounts authorized through official flows only.
-- [ ] First outbound post/reply tested manually with explicit approval.
+- Draft-only by default. Every outbound post/message needs explicit human approval of copy, media, destination and time.
+- No automatic publish, auto-send, bulk messaging or ad-spend changes.
+- WhatsApp/SMS only for recipients who gave consent; review recipient and text, then send manually.
+- Never ask for passwords, OTPs, API tokens or secrets in chat.
+- No real customer data until privacy, retention, access control and backup/restore controls are in place.
+- Do not claim a feature is live unless the real endpoint/provider confirms it.
+
+## Manual checklist before any production use
+
+- [ ] Complete a reviewed SRI/local-vendoring solution for the icon script.
+- [ ] Create and test the privacy notice, retention/deletion rules and backup/restore procedure.
+- [ ] Pin/lock Python dependencies after reviewing safe versions.
+- [ ] Deploy Cloudflare Worker on the free plan; do not approve paid upgrades.
+- [ ] Set a random `ADMIN_TOKEN` (32+ characters) as a Cloudflare Secret.
+- [ ] Confirm `ALLOWED_ORIGIN` is exactly the GitHub Pages origin.
+- [ ] Confirm `CHAT_LIMITER` and Workers AI binding `AI` in the live Worker.
+- [ ] Create D1, apply `schema.sql`, and verify synthetic lead CRUD.
+- [ ] Verify `/api/health`; confirm expected fields, then test invalid token and disallowed Origin.
+- [ ] Confirm the signed-in social brand/profile is yours and check the plan's free capabilities.
+- [ ] Review each post, media, destination and timezone, then schedule manually only after explicit approval.
+- [ ] Verify the provider planner entry and actual published post before recording success.
