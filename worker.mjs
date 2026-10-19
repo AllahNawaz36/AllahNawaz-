@@ -164,13 +164,14 @@ export default {
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
           ],
-          max_tokens: 350
+          max_completion_tokens: 350
         });
         const answer = typeof result?.response === "string" ? result.response.trim() : "";
         if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
         return response({ answer, mode: "ai", platform }, 200, cors);
-      } catch (error) {
-        return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
+      } catch {
+        // Do not expose upstream provider messages, request IDs, or internal details to public clients.
+        return response({ error: "AI service temporarily unavailable. Please try again." }, 502, cors);
       }
     }
 
