@@ -18,7 +18,7 @@ Last reviewed: 2026-10-19
 
 ## Open risks / required before real customer use
 
-1. **Public AI chat has no configured abuse/rate-limit binding yet.** CORS is not authentication and cannot stop direct HTTP clients. Do not advertise it as abuse-proof; configure Cloudflare rate limiting/Turnstile or equivalent before public launch.
+1. **Basic public-chat rate limiting is now defined in code/config** (`CHAT_LIMITER`, 10 requests per IP per 60 seconds), and the Worker fails closed if the binding is missing. This is not a complete anti-abuse solution: IP-based limits can affect multiple visitors behind shared mobile/carrier networks, and deployment must be verified. Consider an additional challenge such as Turnstile and monitor errors before public launch.
 2. **Cloudflare runtime is not verified.** Confirm `/api/health` after deployment; expected fields are `ok: true`, `ai: configured`, and, after D1 setup, `storage: d1`.
 3. **D1 is not configured until the owner creates a real database, binds it as `DB`, and runs `schema.sql`.** Do not enter real lead data before that test passes.
 4. **Secret setup is owner-only.** Set a unique random `ADMIN_TOKEN` in Cloudflare Worker Settings → Variables and Secrets as a Secret. Never commit it, put it in frontend code, or send it in chat/screenshots.
@@ -37,7 +37,7 @@ Last reviewed: 2026-10-19
 ## Manual launch checklist
 
 - [ ] Cloudflare Worker deployed under the expected name.
-- [ ] Rate limiting configured for public AI chat and tested.
+- [ ] `CHAT_LIMITER` binding deployed and tested; consider additional Turnstile/abuse controls.
 - [ ] AI binding named `AI` confirmed.
 - [ ] D1 binding named `DB` confirmed and `schema.sql` executed.
 - [ ] `ADMIN_TOKEN` stored as a Worker secret (32+ characters).
