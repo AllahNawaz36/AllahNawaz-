@@ -14,6 +14,46 @@ jobs:
           node-version: 20
       - run: npm run check
       - run: npm test
+      - name: Check inline JavaScript in portfolio HTML
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import subprocess
+          import tempfile
+
+          class ScriptExtractor(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.current = None
+                  self.scripts = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "script":
+                      attrs = dict(attrs)
+                      if "src" not in attrs and attrs.get("type", "").lower() not in ("application/ld+json", "application/json"):
+                          self.current = []
+
+              def handle_data(self, data):
+                  if self.current is not None:
+                      self.current.append(data)
+
+              def handle_endtag(self, tag):
+                  if tag.lower() == "script" and self.current is not None:
+                      self.scripts.append("".join(self.current))
+                      self.current = None
+
+          parser = ScriptExtractor()
+          parser.feed(Path("portfolio.html").read_text(encoding="utf-8"))
+          if not parser.scripts:
+              raise SystemExit("No inline JavaScript found in portfolio.html")
+          with tempfile.TemporaryDirectory() as temp:
+              for index, script in enumerate(parser.scripts):
+                  path = Path(temp) / ("inline-" + str(index) + ".js")
+                  path.write_text(script, encoding="utf-8")
+                  subprocess.run(["node", "--check", str(path)], check=True)
+          print("Validated " + str(len(parser.scripts)) + " inline script(s).")
+          PY
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
