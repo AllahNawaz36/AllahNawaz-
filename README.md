@@ -7,6 +7,8 @@ A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflar
 ## What works
 
 - Browser dashboard for leads, tasks, content drafts, campaign planning, manual SEO checks, FAQs and KPI calculations.
+- Automation Studio: video-edit briefs (aspect ratios, trim/cut, captions, music and thumbnail checklist), a local publishing approval queue, browser-local reports, and downloadable proposal/invoice/meeting-note/CSV templates.
+- Automation Studio outputs are saved in this browser; they do not edit media, send messages, upload files or publish/schedule posts.
 - Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN` (local/self-hosted).
 - Optional Cloudflare Worker API with D1 persistent lead storage, origin restrictions, and private token protection. See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
 - Python workflow runner with a brand-aware content prompt, planning stages and an explicit approval gate.
@@ -53,7 +55,10 @@ For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and
 
 ## Honest feature limits
 
-The current code does not publish or schedule LinkedIn/social posts, send email/WhatsApp, connect CRM accounts, export Canva/Figma designs, generate videos, crawl websites, fetch live SEO rankings, or connect analytics accounts. Those stages create plans/drafts only; approval is not the same as an integration and no external action is executed by the current pipeline.
+- **Implemented locally:** planning briefs, templates, task/draft storage in the browser, and a publishing queue whose approval status is only a checklist state.
+- **Not implemented as external actions:** actual video rendering/editing, uploading/scheduling LinkedIn/social posts, sending email/WhatsApp, calendar changes, cloud-drive uploads, Canva/Figma file edits, website crawling, live SEO rankings, live competitor research, or connected analytics reports.
+- **Integration requirements:** each platform needs its own supported API/OAuth permission, a secure backend and account-specific setup. A saved URL, selected date, or local approval must never be presented as a successful upload or publication.
+- **Privacy and safety:** do not put tokens/passwords in dashboard fields or repository files. Get explicit approval before sending customer-facing messages, publishing, deleting, spending money, or sharing private data.
 
 ## Checks
 
