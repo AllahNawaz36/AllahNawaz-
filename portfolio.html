@@ -102,11 +102,11 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
   </a>
 </div>
 <section class="assist-window" id="assistWindow" role="dialog" aria-label="Allah Nawaz design assistant" aria-modal="false">
-  <header class="assist-head"><div class="assist-avatar">AN.</div><div class="assist-headtext"><strong>Allah’s Design Assistant</strong><small><span class="assist-status"></span>Portfolio guide · Instant replies</small></div><button class="assist-close" id="assistClose" aria-label="Close chat">×</button></header>
+  <header class="assist-head"><div class="assist-avatar">AN.</div><div class="assist-headtext"><strong>Allah’s Design Assistant</strong><small><span class="assist-status"></span>Portfolio guide · AI-ready</small></div><button class="assist-close" id="assistClose" aria-label="Close chat">×</button></header>
   <div class="assist-messages" id="assistMessages" aria-live="polite"><div class="assist-msg bot">Hi there! 👋 Welcome to Allah Nawaz’s portfolio. I can help you explore UI/UX work, skills, experience, or start a project conversation. What would you like to know?</div></div>
   <div class="assist-quick" id="assistQuick"><button type="button" data-question="Show me your projects">View projects</button><button type="button" data-question="What services do you offer?">Services</button><button type="button" data-question="Tell me about your experience">Experience</button><button type="button" data-question="I want to hire you">Hire / Contact</button></div>
   <form class="assist-compose" id="assistForm"><input id="assistInput" autocomplete="off" maxlength="500" placeholder="Ask about design or projects…" aria-label="Type your question"><button class="assist-send" aria-label="Send message" type="submit">➤</button></form>
-  <div class="assist-footnote">Instant portfolio helper · No sign-in required</div>
+  <div class="assist-footnote">AI replies need a connected backend · Demo replies otherwise</div>
 </section>
 <script>
 (function(){
@@ -127,7 +127,25 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
    if(/location|based|where/.test(q))return 'Allah Nawaz is based in Islamabad, Pakistan and focuses on UI/UX, product design, SaaS, e-commerce, and visual design.';
    return 'I’m a portfolio assistant, so I can answer common questions about Allah’s projects, skills, experience, and design services. Try “Show me your projects”, “What services do you offer?”, or “I want to hire you”. For a detailed brief, contact Allah through LinkedIn.';
  }
- function send(text){const clean=(text||'').trim();if(!clean)return;addMessage(clean,'user');input.value='';quick.style.display='none';setTimeout(()=>addMessage(reply(clean),'bot'),180)}
+ const CHAT_API_URL = ''; // Set this to your deployed Worker URL plus "/api/chat" to enable live AI.
+ async function send(text){
+   const clean=(text||'').trim();if(!clean)return;
+   addMessage(clean,'user');input.value='';quick.style.display='none';
+   const submit=form.querySelector('button[type="submit"]');if(submit)submit.disabled=true;
+   try{
+     if(CHAT_API_URL){
+       const response=await fetch(CHAT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:clean})});
+       const data=await response.json().catch(()=>({}));
+       if(!response.ok)throw new Error(data.error||'AI service is not available right now.');
+       if(typeof data.answer!=='string'||!data.answer.trim())throw new Error('AI returned an empty response.');
+       addMessage(data.answer.trim(),'bot');
+     }else{
+       addMessage(reply(clean)+'\n\n(Note: demo reply. Live AI is not connected yet.)','bot');
+     }
+   }catch(error){
+     addMessage('Live AI is temporarily unavailable. '+(error.message||'Please try again later.')+' You can still contact Allah through LinkedIn.','bot');
+   }finally{if(submit)submit.disabled=false;input.focus()}
+ }
  form.addEventListener('submit',e=>{e.preventDefault();send(input.value)});
  quick.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>send(b.dataset.question||b.textContent)));
 })();
