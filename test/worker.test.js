@@ -172,6 +172,8 @@ test("worker chat returns the AI response when a Workers AI binding is configure
   });
   assert.equal(response.status, 200);
   assert.equal(modelName, "@cf/zai-org/glm-4.7-flash");
+  // GLM supports max_completion_tokens; avoid the deprecated max_tokens parameter.
+  assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
 });
 
@@ -200,4 +202,21 @@ test("worker supports customer-support reply drafting without inventing policy c
   assert.equal(data.mode, "ai");
   assert.equal(data.platform, "ecommerce");
   assert.match(data.answer, /order reference/i);
+});
+
+test("worker hides upstream AI error details from public clients", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Please help", platform: "general" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    AI: { async run() { throw Object.assign(new Error("provider-internal-token-or-request-id"), { status: 500 }); } }
+  });
+  assert.equal(response.status, 502);
+  const data = await response.json();
+  assert.equal(data.error, "AI service temporarily unavailable. Please try again.");
+  assert.doesNotMatch(JSON.stringify(data), /provider-internal-token-or-request-id/);
 });
