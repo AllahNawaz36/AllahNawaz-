@@ -23,7 +23,7 @@
 ## Verification status
 
 - **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
-- **CI status:** commit `8d9b43962f8fdb09820f93fb35d3ec451d9ccc56` passed. Later changes for in-memory token handling and Node API CORS/rate limits were added after that run and need a new run before claiming the latest head is green.
+- **CI status:** commit `c51b64c5e1bd421956291b0a500ff733ebdc9920` passed, including Node API CORS/rate-limit tests and in-memory-only admin token handling. Any later documentation commit still needs its own CI run before merge.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
 - **Wrong-token rejection against deployed Worker:** not verified in production.
