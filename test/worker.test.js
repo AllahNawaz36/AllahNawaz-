@@ -125,3 +125,29 @@ test("worker chat returns the AI response when a Workers AI binding is configure
   assert.equal(modelName, "@cf/meta/llama-3.1-8b-instruct");
   assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
 });
+
+test("worker supports customer-support reply drafting without inventing policy context", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: "Customer says their order is late. Draft a warm reply.",
+      platform: "ecommerce",
+      task: "support-reply"
+    })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    AI: { async run(model, input) {
+      assert.match(input.messages[0].content, /customer-support reply drafting assistant/i);
+      assert.match(input.messages[0].content, /Do not invent company policies/i);
+      assert.match(input.messages[0].content, /ecommerce/i);
+      return { response: "Thanks for reaching out. Could you share your order reference so we can check?" };
+    } }
+  });
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.mode, "ai");
+  assert.equal(data.platform, "ecommerce");
+  assert.match(data.answer, /order reference/i);
+});
