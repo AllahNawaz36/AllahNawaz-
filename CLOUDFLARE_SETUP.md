@@ -27,6 +27,6 @@ This adds an optional API for the existing GitHub Pages dashboard. You must auth
 - A Cloudflare Workers Builds failure can also occur if the Worker name in the dashboard does not match the `name` in `wrangler.toml`; check View Build History for the exact error.
 - If browser requests fail, verify `ALLOWED_ORIGIN` equals `https://allahnawaz36.github.io` and redeploy.
 - A 401 means the admin token is missing/incorrect. A 503 on lead endpoints means D1 or its schema is missing.
-- Workers AI chat works only after both `AI` and `CHAT_LIMITER` bindings are configured and the Worker URL is saved in dashboard settings. Without these, the API intentionally returns an unavailable error rather than pretending the chat is protected or live. The portfolio may use clearly labelled demo replies.
+- Workers AI chat works only after both `AI` and `CHAT_LIMITER` bindings are configured and the Worker URL is saved in dashboard settings. The API returns a generic error if upstream inference fails and does not expose provider error details. Without these, the API intentionally returns an unavailable error rather than pretending the chat is protected or live. The portfolio may use clearly labelled demo replies.
 - This chat can prepare plans and drafts; it does not itself send email, publish/schedule LinkedIn or Facebook posts, change ads, or edit Canva/Figma files. Those actions require separate integrations and permissions.
 - Do not store sensitive customer data until you have a privacy notice, retention/deletion process, and backup plan.
