@@ -175,7 +175,7 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
    return 'I can help with '+platform.options[platform.selectedIndex].text.toLowerCase()+'. Tell me your goal, audience, current challenge, and any deadline. For live account actions—such as publishing, scheduling, sending messages, or editing files—an authorised integration is required.';
  }
  let configuredApiBase = '';
- try { configuredApiBase = (localStorage.getItem('nazProApiBase') || '').trim().replace(/\/+$/, ''); } catch (_) {}
+ try { const savedApiBase = localStorage.getItem('nazProApiBase'); configuredApiBase = (savedApiBase ? JSON.parse(savedApiBase) : '').trim().replace(/\/+$/, ''); } catch (_) {}
  const CHAT_API_URL = window.NAZ_CHAT_API_URL || (configuredApiBase ? configuredApiBase + '/api/chat' : ''); // Reuses the dashboard's saved API endpoint.
  async function send(text){
    const clean=(text||'').trim();if(!clean)return;
