@@ -35,3 +35,54 @@ test("worker protects lead endpoints with a bearer token", async () => {
   assert.equal(response.status, 401);
   assert.match((await response.json()).error, /token/i);
 });
+
+test("worker rejects invalid JSON with a client error instead of crashing", async () => {
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/leads", {
+    method: "POST",
+    headers: {
+      Origin: "https://allahnawaz36.github.io",
+      Authorization: "Bearer this-is-a-long-test-token-that-is-over-32-chars",
+      "Content-Type": "application/json"
+    },
+    body: "{"
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars",
+    DB: { prepare() { return { async all() { return { results: [] }; } }; } }
+  });
+  assert.equal(response.status, 400);
+  assert.match((await response.json()).error, /Invalid JSON/i);
+});
+
+test("worker validates fields during partial updates", async () => {
+  const db = {
+    prepare(query) {
+      return {
+        bind() {
+          return {
+            async first() {
+              return { id: "lead-1", name: "Ada", email: "ada@example.com", source: "", service: "", project: "Design", budget: "", stage: 0, notes: "", createdAt: "2026-01-01T00:00:00.000Z" };
+            },
+            async run() { return { success: true }; },
+            async all() { return { results: [] }; }
+          };
+        }
+      };
+    }
+  };
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/leads/lead-1", {
+    method: "PATCH",
+    headers: {
+      Origin: "https://allahnawaz36.github.io",
+      Authorization: "Bearer this-is-a-long-test-token-that-is-over-32-chars",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email: "not-an-email" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars",
+    DB: db
+  });
+  assert.equal(response.status, 400);
+  assert.match((await response.json()).error, /valid email/i);
+});
