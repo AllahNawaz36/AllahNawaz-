@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f1eb">
+<meta name="description" content="Privacy and data-handling notice for Naz Business Assistant Pro.">
+<link rel="canonical" href="https://allahnawaz36.github.io/AllahNawaz-/privacy.html">
+<title>Privacy & Data Handling — Naz Business Assistant Pro</title>
+<style>
+:root{color-scheme:light;--bg:#f5f1eb;--panel:#fffdf9;--ink:#201d1a;--muted:#786f66;--line:#e4dbcf;--accent:#a94f2c}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{max-width:850px;margin:0 auto;padding:24px 16px 56px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,5vw,40px)}h1,h2{line-height:1.2;letter-spacing:-.03em}h1{font-size:clamp(28px,5vw,42px)}h2{font-size:20px;margin-top:30px}p,li{color:#4d463f}a{color:var(--accent)}.notice{border:1px solid #d9b777;background:#fff6df;border-radius:12px;padding:14px;color:#533d16}.meta{font-size:13px;color:var(--muted)}ul{padding-left:22px}.back{display:inline-block;margin-bottom:18px}
+</style>
+</head>
+<body><main class="wrap">
+<a class="back" href="./">← Back to Naz Business Assistant Pro</a>
+<article class="panel">
+<p class="meta">Last updated: 19 October 2026</p>
+<h1>Privacy &amp; Data Handling</h1>
+<p>This notice explains the current behavior of the Naz Business Assistant Pro demo website. It is an operational transparency notice, not legal advice or a claim that a particular deployment is compliant with every applicable law.</p>
+<p class="notice"><strong>Important:</strong> This is a demo/starter. Do not enter real customer, confidential, financial, health, password, token or other sensitive data until you have reviewed the actual deployment, privacy obligations, access controls, retention/deletion process and backup/restore plan.</p>
+<h2>What may be stored</h2>
+<ul>
+<li>Workspace content such as drafts, tasks, FAQ entries, checklists and settings may be stored in this browser using local storage.</li>
+<li>Lead records may be stored locally in the browser, in a JSON file on a Node server you operate, or in Cloudflare D1 if you configure that Worker backend.</li>
+<li>Exported backups are files you download. They may contain workspace and lead data; keep them private and delete them securely when no longer needed.</li>
+<li>If you configure a backend AI service, messages submitted to the chat may be sent to that configured service to generate a response. Do not send personal or confidential information through the demo.</li>
+</ul>
+<h2>Third-party services</h2>
+<p>The dashboard now uses built-in icon fallbacks and system fonts rather than loading icon scripts or fonts from third-party CDNs. If you open LinkedIn, Metricool, GitHub, Cloudflare or another external link, that service operates under its own privacy terms. This static site may still be served and logged by GitHub Pages according to GitHub's policies.</p>
+<h2>Access, retention and deletion</h2>
+<p>This repository does not implement a complete retention schedule or automatic deletion policy. Browser data may remain until you clear the site's browser storage. Server-side lead data may remain in the configured JSON store or D1 database until the operator deletes it. Backups can contain deleted records and must be managed separately. Before production use, the operator must document retention periods, provide a workable deletion process, restrict access, and test backups and restoration.</p>
+<h2>Security limits</h2>
+<p>Authentication, CORS, rate limiting, database bindings and storage security depend on the backend and its deployment configuration. A successful local test does not prove the public endpoint is secure. Never put secrets or API tokens in public HTML, repository files, screenshots or chat. Do not assume a social post was scheduled or published unless the provider itself confirms it.</p>
+<h2>Your choices</h2>
+<ul>
+<li>Use fictional/test data while evaluating the demo.</li>
+<li>Do not configure a backend URL unless you control or trust that service.</li>
+<li>Review and protect exported backups.</li>
+<li>Use external social tools only after confirming the signed-in account and destination are yours.</li>
+</ul>
+<h2>Changes and contact</h2>
+<p>This notice may need updating when the deployment, data flows or integrations change. Before using the application commercially, replace this operational notice with a reviewed policy that identifies the actual operator, contact method, lawful basis where applicable, data subject rights, processors and relevant jurisdictions.</p>
+<p><a href="./">Return to the dashboard</a></p>
+</article></main></body></html>
