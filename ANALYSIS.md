@@ -4,6 +4,11 @@
 **Review branch:** `audit/free-social-workflow-2026-10-19`  
 **Scope:** `index.html`, `portfolio.html`, `server.js`, `worker.mjs`, Python workflow, tests, CI and setup/security documentation.
 
+## Latest continuation (2026-10-19)
+
+- The dashboard icon fallback now draws a small local SVG icon set when the Lucide runtime is unavailable, instead of substituting emoji characters. This keeps the interface more consistent without adding a CDN dependency; visual checks on target Android browsers and the fresh CI run are still pending.
+- Cloudflare's PR status reported a failed preview build for `f477a07`. Repository tools did not expose the detailed build log, so the cause is not confirmed. Inspect the Cloudflare build log before retrying or claiming a live deploy. The GitHub Actions suite passed for `f477a07`, which is a separate check and does not prove a Cloudflare deployment.
+
 ## Executive summary
 
 This repository is a useful demo/starter with honest feature limits, a local-first dashboard, an optional Node API, an optional Cloudflare Worker + D1 API, and a Python workflow that defaults to dry-run. It is **not yet a production social-publishing service**. The website can prepare drafts and hand off to a scheduling tool; the website itself does not confirm a post was scheduled or published.
