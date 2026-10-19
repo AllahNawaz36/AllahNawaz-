@@ -97,6 +97,27 @@ test("worker validates fields during partial updates", async () => {
   assert.match((await response.json()).error, /valid email/i);
 });
 
+test("worker hides internal database errors from API clients", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/leads", {
+    method: "POST",
+    headers: {
+      Origin: "https://allahnawaz36.github.io",
+      Authorization: "Bearer this-is-a-long-test-token-that-is-over-32-chars",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: "Ada", email: "ada@example.com", project: "Design" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars",
+    DB: { prepare() { return { bind() { return { async run() { throw new Error("internal-db-secret-path"); } }; } }; } }
+  });
+  assert.equal(response.status, 500);
+  const data = await response.json();
+  assert.equal(data.error, "Unable to create lead. Please try again.");
+  assert.doesNotMatch(JSON.stringify(data), /internal-db-secret-path/);
+});
+
 test("worker chat clearly reports when Workers AI is not configured", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
