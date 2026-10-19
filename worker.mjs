@@ -124,8 +124,14 @@ export default {
       if (!env.AI || typeof env.AI.run !== "function") {
         return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
       }
+      let input;
       try {
-        const input = await bodyObject(request);
+        input = await bodyObject(request);
+      } catch (error) {
+        const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 400;
+        return response({ error: status === 413 ? "Request body too large." : "Invalid JSON body." }, status, cors);
+      }
+      try {
         const message = typeof input.message === "string" ? input.message.trim() : "";
         const platforms = new Set(["general", "uiux", "website", "saas", "ecommerce", "branding", "seo", "automation", "figma-canva", "social-platforms", "hire"]);
         const platform = platforms.has(input.platform) ? input.platform : "general";
