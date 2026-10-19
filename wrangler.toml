@@ -5,10 +5,12 @@ compatibility_date = "2026-10-19"
 [vars]
 ALLOWED_ORIGIN = "https://allahnawaz36.github.io"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "naz-business-assistant"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+# D1 binding is intentionally omitted until a real database_id is available.
+# After creating the D1 database in Cloudflare, add its actual ID here:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "naz-business-assistant"
+# database_id = "PASTE_REAL_D1_DATABASE_ID_HERE"
 
 [ai]
 binding = "AI"
