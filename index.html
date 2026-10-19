@@ -128,7 +128,7 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 @media(max-width:720px){.ai-launcher{right:12px;bottom:84px;padding:12px 14px}.ai-chat-panel{right:10px;bottom:145px;width:calc(100vw - 20px);height:min(560px,calc(100dvh - 170px))}}
 @media(prefers-reduced-motion:reduce){.ai-launcher,.ai-chat-panel{transition:none}}
 
-</style>
+.icon-fallback{display:inline-grid!important;place-items:center;width:var(--icon-size,18px);height:var(--icon-size,18px);min-width:var(--icon-size,18px);font-family:system-ui,sans-serif;font-size:15px;line-height:1;stroke:none;vertical-align:middle;overflow:visible}.navbtn .ico .icon-fallback{width:18px;height:18px;min-width:18px;margin:0}.mobile-nav .icon-fallback{width:19px;height:19px;min-width:19px;margin:0}.icons-fallback .navbtn .ico{display:grid;place-items:center}.icons-fallback button .icon-fallback{margin-right:7px}</style>
 </head>
 <body>
 <div class="shell">
@@ -572,7 +572,7 @@ function read(key,fallback=[]){try{const x=JSON.parse(localStorage.getItem(key))
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch{toast("Browser storage is unavailable.");return false}}
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800)}
 function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function refreshIcons(){if(window.lucide&&typeof window.lucide.createIcons==="function"){window.lucide.createIcons({attrs:{"stroke-width":1.8}});document.documentElement.classList.add("icons-ready")}else{document.querySelectorAll("[data-lucide]").forEach(el=>{const fallback=el.getAttribute("data-fallback")||"•";el.replaceWith(document.createTextNode(fallback))})}}
+function refreshIcons(){if(window.lucide&&typeof window.lucide.createIcons==="function"){window.lucide.createIcons({attrs:{"stroke-width":1.8}});document.documentElement.classList.add("icons-ready");document.documentElement.classList.remove("icons-fallback")}else{document.documentElement.classList.add("icons-fallback");document.querySelectorAll("[data-lucide]").forEach(el=>{const fallback=el.getAttribute("data-fallback")||"•";el.textContent=fallback;el.removeAttribute("data-lucide");el.classList.add("icon-fallback");el.setAttribute("aria-hidden","true")})}}
 // UI/UX Design Studio — client-side templates, no external AI claims.
 function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>alert("Copied to clipboard")).catch(()=>alert("Copy blocked by browser; select and copy the text from the preview."))}else{alert("Clipboard is unavailable in this browser.")}}function downloadText(filename,text){const blob=new Blob([text],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
 let uxBriefText="",uxFlowText="";
