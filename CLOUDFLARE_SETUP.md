@@ -18,7 +18,7 @@ Cloudflare documents a Workers Free plan with 100,000 requests/day and D1 allowa
 3. Open that D1 database and run the SQL in `schema.sql` in its Console.
 4. Create a Worker named `naz-business-assistant-api`. Use **Connect to Git** if available and select this repository, or paste the contents of `worker.mjs` into the editor.
 5. Configure the D1 binding named **DB** to the database you created.
-6. In Worker Settings → Bindings, add a Workers AI binding named `AI` if your account offers Workers AI. The chat endpoint uses `@cf/meta/llama-3.1-8b-instruct`; verify current model availability and account limits in Cloudflare's dashboard.
+6. The repository's `wrangler.toml` declares a Workers AI binding named `AI`. If deploying through the Cloudflare dashboard instead of Wrangler, add the Workers AI binding manually with that exact name. The chat endpoint uses `@cf/meta/llama-3.1-8b-instruct`; verify current model availability and account limits in Cloudflare's dashboard.
 7. In Worker Settings → Variables and Secrets, add:
    - Secret `ADMIN_TOKEN`: use a unique random value of at least 32 characters. Keep it private.
    - Variable `ALLOWED_ORIGIN`: `https://allahnawaz36.github.io`
@@ -32,6 +32,6 @@ Cloudflare documents a Workers Free plan with 100,000 requests/day and D1 allowa
 - Never commit `ADMIN_TOKEN` or paste it into public files/screenshots.
 - If browser requests fail, verify the exact GitHub Pages origin in `ALLOWED_ORIGIN` and check that the Worker was redeployed.
 - A 401 means the token is missing/incorrect. A 503 means the D1 binding or schema is missing.
-- Workers AI chat is optional and works only after the `AI` binding is configured and `CHAT_API_URL` is set in `portfolio.html`. Without this, the portfolio uses clearly labelled demo replies.
+- Workers AI chat is optional and works only after the `AI` binding is configured and the Worker URL is saved in dashboard settings. Without this, the portfolio uses clearly labelled demo replies. Do not publish this public endpoint for high-volume use until a suitable rate limit/abuse control is configured.
 - Topic-aware AI chat answers client questions and can prepare plans/drafts; it does not itself send email, publish/schedule LinkedIn or Facebook posts, change ads, or edit Canva/Figma files. Those actions require separate integrations and permissions. The UI shows demo guidance until the Worker URL is configured and the AI binding is verified.
 - Do not store sensitive customer data until you have a privacy notice, retention/deletion process, and backup plan.
