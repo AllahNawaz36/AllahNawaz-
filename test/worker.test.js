@@ -9,7 +9,8 @@ test("worker health endpoint responds without database credentials", async () =>
   assert.deepEqual(await response.json(), {
     ok: true,
     service: "naz-business-assistant",
-    storage: "not-configured"
+    storage: "not-configured",
+    ai: "not-configured"
   });
 });
 
@@ -90,4 +91,35 @@ test("worker validates fields during partial updates", async () => {
   });
   assert.equal(response.status, 400);
   assert.match((await response.json()).error, /valid email/i);
+});
+
+test("worker chat clearly reports when Workers AI is not configured", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "What projects are in this portfolio?" })
+  }), { ALLOWED_ORIGIN: "https://allahnawaz36.github.io" });
+  assert.equal(response.status, 503);
+  assert.match((await response.json()).error, /AI is not configured/i);
+});
+
+test("worker chat returns the AI response when a Workers AI binding is configured", async () => {
+  const worker = await getWorker();
+  let modelName = "";
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "What design services are offered?" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    AI: { async run(model, input) {
+      modelName = model;
+      assert.equal(input.messages.at(-1).content, "What design services are offered?");
+      return { response: "UI/UX and product design services." };
+    } }
+  });
+  assert.equal(response.status, 200);
+  assert.equal(modelName, "@cf/meta/llama-3.1-8b-instruct");
+  assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai" });
 });
