@@ -44,7 +44,7 @@ test("social account reminder does not falsely claim the connected Metricool bra
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
   assert.match(html, /connected publishing account has not been verified/i);
   assert.match(html, /Do not schedule or publish until you confirm the correct brand and LinkedIn profile/i);
-  assert.doesNotMatch(html, /You confirmed ANJAN MALIK JAN is your parent Metricool account/i);
+  assert.doesNotMatch(html, /You confirmed .* is your parent Metricool account/i);
 });
 
 
