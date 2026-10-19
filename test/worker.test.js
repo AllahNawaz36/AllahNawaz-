@@ -305,3 +305,23 @@ test("worker fails closed when chat rate limiting is unavailable", async () => {
   assert.equal(data.error, "Chat protection is temporarily unavailable. Please try again later.");
   assert.doesNotMatch(JSON.stringify(data), /rate service unavailable/);
 });
+
+
+test("worker rejects oversized declared request bodies before parsing JSON", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: {
+      Origin: "https://allahnawaz36.github.io",
+      "Content-Type": "application/json",
+      "Content-Length": "1000001"
+    },
+    body: "{}"
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    AI: { async run() { throw new Error("AI should not run for oversized requests"); } }
+  });
+  assert.equal(response.status, 413);
+  assert.deepEqual(await response.json(), { error: "Request body too large." });
+});
