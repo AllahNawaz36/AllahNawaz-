@@ -69,9 +69,24 @@ test("mobile navigation keeps icon and label in separate aligned elements", () =
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
   const nav = html.match(/<nav class="mobile-nav"[\s\S]*?<\/nav>/)?.[0];
   assert.ok(nav, "mobile navigation should exist");
-  assert.equal((nav.match(/class="mobile-nav-icon"/g) || []).length, 8, "each mobile navigation item should have an icon wrapper");
-  assert.equal((nav.match(/class="mobile-nav-label"/g) || []).length, 8, "each mobile navigation item should have a dedicated label");
+  assert.equal((nav.match(/class="mobile-nav-icon"/g) || []).length, 6, "each primary mobile navigation item should have an icon wrapper");
+  assert.equal((nav.match(/class="mobile-nav-label"/g) || []).length, 6, "each primary mobile navigation item should have a dedicated label");
   assert.match(nav, /aria-current="page"/, "the active navigation item should be identified accessibly");
   assert.match(html, /\.mobile-nav button \.mobile-nav-icon \.icon,.mobile-nav button \.mobile-nav-icon svg\{display:block;width:19px;height:19px/, "mobile icons should share consistent dimensions");
   assert.match(html, /\.mobile-nav button \.mobile-nav-label\{display:block;width:100%;height:auto/, "mobile labels should not inherit icon wrapper sizing");
+});
+
+
+test("mobile More menu exposes all secondary pages and supports accessible open/close", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const panel = html.match(/<div id="mobileMorePanel"[\\s\\S]*?<\\/div>/)?.[0];
+  assert.ok(panel, "mobile More panel should exist");
+  for (const page of ["social", "automation", "seo", "email", "comms", "support", "tasks", "analytics", "settings"]) {
+    assert.match(panel, new RegExp('data-page="' + page + '"'), "More menu should expose " + page);
+  }
+  assert.match(html, /id="mobileMoreButton"[^>]*aria-controls="mobileMorePanel"[^>]*aria-expanded="false"/, "More button should describe its controlled panel");
+  assert.match(html, /mobileMoreButton\.addEventListener\("click"/, "More button should open and close the panel");
+  assert.match(html, /event\.key==="Escape"/, "Escape should close the panel");
+  assert.match(html, /if\(morePanel\)morePanel\.hidden=true/, "choosing a page should close the panel");
+  assert.match(html, /\.mobile-more-panel:not\(\[hidden\]\)\{position:fixed/, "open menu should be positioned above the mobile bottom bar");
 });
