@@ -23,7 +23,8 @@
 ## Verification status
 
 - **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
-- **CI status:** commit `c51b64c5e1bd421956291b0a500ff733ebdc9920` passed, including Node API CORS/rate-limit tests and in-memory-only admin token handling. Any later documentation commit still needs its own CI run before merge.
+- **CI status:** the earlier repository CI run passed. The current branch also updates the Cloudflare Workers AI model after upstream deprecation; check PR #3's latest Checks/Actions result for the current head before merging.
+- **Workers AI model compatibility:** the old `@cf/meta/llama-3.1-8b-instruct` was deprecated on May 30, 2026. The branch now references `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on Workers Free in its July 28, 2026 update. Live inference is not verified; Workers AI has a shared free daily quota of 10,000 Neurons and may stop responding after that quota is used.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
 - **Wrong-token rejection against deployed Worker:** not verified in production.
@@ -59,7 +60,7 @@
 - [ ] Deploy Cloudflare Worker on the free plan; do not approve paid upgrades.
 - [ ] Set a random `ADMIN_TOKEN` (32+ characters) as a Cloudflare Secret.
 - [ ] Confirm `ALLOWED_ORIGIN` is exactly the GitHub Pages origin.
-- [ ] Confirm `CHAT_LIMITER` and Workers AI binding `AI` in the live Worker.
+- [ ] Confirm `CHAT_LIMITER` and Workers AI binding `AI` in the live Worker; smoke-test `@cf/zai-org/glm-4.7-flash` without enabling paid billing.
 - [ ] Create D1, apply `schema.sql`, and verify synthetic lead CRUD.
 - [ ] Verify `/api/health`; confirm expected fields, then test invalid token and disallowed Origin.
 - [ ] Confirm the signed-in social brand/profile is yours and check the plan's free capabilities.
