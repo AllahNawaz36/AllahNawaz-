@@ -351,4 +351,19 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 <!-- Portfolio kept focused on selected work and direct contact links. -->
 
 
+
+<style>
+/* Visibility safety fix: portfolio content must never depend on animation JS to appear. */
+.reveal,
+.reveal.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.visible { transition: none !important; }
+}
+</style>
+
 </body></html>
