@@ -113,6 +113,13 @@ export default {
 
     if (path === "/api/chat") {
       if (request.method !== "POST") return response({ error: "Method not allowed." }, 405, cors);
+      // Fail closed if rate limiting is not configured; public AI calls can consume quota.
+      if (!env.CHAT_LIMITER || typeof env.CHAT_LIMITER.limit !== "function") {
+        return response({ error: "Chat protection is not configured. Add the CHAT_LIMITER binding before enabling public AI chat." }, 503, cors);
+      }
+      const clientKey = request.headers.get("cf-connecting-ip") || "unknown-client";
+      const rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
+      if (!rateLimit.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
       if (!env.AI || typeof env.AI.run !== "function") {
         return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
       }
