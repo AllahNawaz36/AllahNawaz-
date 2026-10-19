@@ -5,7 +5,7 @@
   "description": "Naz Business Assistant Pro dashboard and authenticated leads API",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js",
+    "check": "node --check server.js && node --check worker.mjs",
     "test": "node --test test/*.test.js"
   },
   "engines": {
