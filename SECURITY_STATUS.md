@@ -23,7 +23,7 @@
 ## Verification status
 
 - **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
-- **CI status:** the earlier repository CI run passed. The current branch also updates the Cloudflare Workers AI model after upstream deprecation; check PR #3's latest Checks/Actions result for the current head before merging.
+- **CI status:** latest observed branch head `10554317e21fb1e73356f4965fbae7143a0db8f9` passed the full GitHub Actions job in run [39252122937](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39252122937), including Node checks/tests, inline JavaScript/HTML checks, Python compilation/tests and the dry-run smoke test. Any subsequent code commit requires a fresh run.
 - **Workers AI model compatibility:** the old `@cf/meta/llama-3.1-8b-instruct` was deprecated on May 30, 2026. The branch now references `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on Workers Free in its July 28, 2026 update. Live inference is not verified; Workers AI has a shared free daily quota of 10,000 Neurons and may stop responding after that quota is used.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
