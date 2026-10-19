@@ -145,8 +145,6 @@ export default {
         return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
       }
     }
-      return response({ error: "Origin not allowed." }, 403);
-    }
 
     if (path === "/api/leads" || path.startsWith("/api/leads/")) {
       if (!authorized(request, env)) return response({ error: "Admin token required or invalid." }, 401, cors);
