@@ -394,7 +394,7 @@ $("approveWhatsApp").addEventListener("click",()=>{
  if(!$("whatsappApproveCheck").checked){toast("Please confirm you reviewed the recipient and message.");return}
  const d=pendingWhatsAppDraft;
  const raw=String(d.phone||"").trim();
- const phone=raw.replace(/\\D/g,"");
+ const phone=raw.replace(/\D/g,"");
  if(raw && (phone.length<8||phone.length>15||phone.startsWith("0"))){toast("Use international format, e.g. 923001234567, without a leading 0.");return}
  const url=phone?"https://wa.me/"+phone+"?text="+encodeURIComponent(d.message):"https://wa.me/?text="+encodeURIComponent(d.message);
  const opened=window.open(url,"_blank","noopener,noreferrer");
@@ -405,7 +405,7 @@ document.querySelectorAll("[data-comms-open]").forEach(btn=>btn.addEventListener
  const d=getCommsDraft();if(!d.message){setCommsStatus("Write a message first.");toast("Write a message first.");return}
  const enc=encodeURIComponent(d.message),phone=d.phone.replace(/[^0-9]/g,""),site=location.origin+location.pathname,platform=btn.dataset.commsOpen;let url="",note="";
  if(platform==="whatsapp"){
-  pendingWhatsAppDraft={...d};$("whatsappApprovalPreview").textContent="To: "+(d.name||"Not specified")+(d.phone?"\\nPhone: "+d.phone:"\\nPhone: not specified — choose a recipient in WhatsApp")+"\\n\\nMessage:\\n"+d.message;
+  pendingWhatsAppDraft={...d};$("whatsappApprovalPreview").textContent="To: "+(d.name||"Not specified")+(d.phone?"\nPhone: "+d.phone:"\nPhone: not specified — choose a recipient in WhatsApp")+"\n\nMessage:\n"+d.message;
   $("whatsappApproveCheck").checked=false;$("whatsappApprovalPanel").style.display="block";
   setCommsStatus("Approval required. Review the preview and confirm before WhatsApp opens.");$("whatsappApprovalPanel").scrollIntoView({behavior:"smooth",block:"nearest"});return;
  }else if(platform==="sms"){url="sms:"+(phone||"")+"?body="+enc;note="SMS composer opened. Check recipient and press Send."}
