@@ -7,7 +7,8 @@ A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflar
 ## What works
 
 - Browser dashboard for leads, tasks, content drafts, campaign planning, manual SEO checks, FAQs and KPI calculations.
-- Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN` (local/self-hosted).\n- Optional Cloudflare Worker API with D1 persistent lead storage, origin restrictions, and private token protection. See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
+- Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN` (local/self-hosted).
+- Optional Cloudflare Worker API with D1 persistent lead storage, origin restrictions, and private token protection. See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
 - Python workflow runner with a brand-aware content prompt, planning stages and an explicit approval gate.
 - Safe-by-default Python dry run (`DRY_RUN=1`).
 
