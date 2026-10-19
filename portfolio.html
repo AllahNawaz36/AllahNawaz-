@@ -111,6 +111,10 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 @keyframes assistIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 .assist-head{padding:17px 17px 14px;background:linear-gradient(135deg,#262d20,#171a15);border-bottom:1px solid #33382c;display:flex;align-items:center;gap:11px}
 .assist-avatar{width:42px;height:42px;border-radius:15px;background:var(--lime);color:#141710;display:grid;place-items:center;font-weight:900}
+.assist-platform-row{padding:12px 13px 10px;background:#1b1e18;border-bottom:1px solid #30352b;display:grid;gap:6px}
+.assist-platform-row label{font-size:10px;color:#b4bea5;font-weight:700}
+.assist-platform-row select{width:100%;min-width:0;border:1px solid #414638;background:#10120f;color:#f4f4ee;border-radius:10px;padding:10px;font:12px "DM Sans",sans-serif}
+.assist-platform-row select:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 .assist-headtext{flex:1;min-width:0}.assist-headtext strong{display:block;font-size:14px}.assist-headtext small{font-size:11px;color:#b4bea5}.assist-status{display:inline-block;width:7px;height:7px;background:#75df8d;border-radius:50%;margin-right:5px}
 .assist-close{background:#ffffff0c;color:#e9ebdf;border:1px solid #ffffff1b;border-radius:10px;width:33px;height:33px;cursor:pointer;font-size:19px}
 .assist-messages{flex:1;overflow:auto;padding:16px 13px;display:flex;flex-direction:column;gap:11px;scroll-behavior:smooth}
@@ -136,53 +140,62 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
   </a>
 </div>
 <section class="assist-window" id="assistWindow" role="dialog" aria-label="Allah Nawaz design assistant" aria-modal="false">
-  <header class="assist-head"><div class="assist-avatar">AN.</div><div class="assist-headtext"><strong>Allah’s Design Assistant</strong><small><span class="assist-status"></span>Portfolio guide · AI-ready</small></div><button class="assist-close" id="assistClose" aria-label="Close chat">×</button></header>
-  <div class="assist-messages" id="assistMessages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Chat messages"><div class="assist-msg bot">Hi there! 👋 Welcome to Allah Nawaz’s portfolio. I can help you explore UI/UX work, skills, experience, or start a project conversation. What would you like to know?</div></div>
+  <header class="assist-head"><div class="assist-avatar">AN.</div><div class="assist-headtext"><strong>Allah’s Design Assistant</strong><small><span class="assist-status"></span>Client questions · platform-aware</small></div><button class="assist-close" id="assistClose" aria-label="Close chat">×</button></header>
+  <div class="assist-platform-row"><label for="assistPlatform">What do you need help with?</label><select id="assistPlatform" aria-label="Choose a service or platform"><option value="general">General enquiry</option><option value="uiux">UI/UX & product design</option><option value="website">Website & landing pages</option><option value="saas">SaaS dashboards & web apps</option><option value="ecommerce">E-commerce & product pages</option><option value="branding">Social media & branding</option><option value="seo">SEO & digital marketing</option><option value="automation">Business automation & AI workflows</option><option value="figma-canva">Figma & Canva workflows</option><option value="social-platforms">LinkedIn & Facebook content</option><option value="hire">Hiring, budget & project scope</option></select></div>
+  <div class="assist-messages" id="assistMessages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Chat messages"><div class="assist-msg bot">Hi! 👋 I can answer questions about design services, websites, SaaS, e-commerce, social content, SEO, automation, and project scope. Choose a topic above and ask your question. For publishing or account changes, I’ll tell you honestly if a live integration is required.</div></div>
   <div class="assist-quick" id="assistQuick"><button type="button" data-question="Show me your projects">View projects</button><button type="button" data-question="What services do you offer?">Services</button><button type="button" data-question="Tell me about your experience">Experience</button><button type="button" data-question="I want to hire you">Hire / Contact</button></div>
   <form class="assist-compose" id="assistForm" aria-label="Message the portfolio assistant"><input id="assistInput" autocomplete="off" maxlength="500" placeholder="Ask about design or projects…" aria-label="Type your question"><button class="assist-send" aria-label="Send message" type="submit">➤</button></form>
-  <div class="assist-footnote">AI replies need a connected backend · Demo replies otherwise</div>
+  <div class="assist-footnote">Platform-specific guidance · Live AI requires a connected backend</div>
 </section>
 <script>
 (function(){
- const toggle=document.getElementById('assistChatToggle'),win=document.getElementById('assistWindow'),close=document.getElementById('assistClose'),messages=document.getElementById('assistMessages'),form=document.getElementById('assistForm'),input=document.getElementById('assistInput'),quick=document.getElementById('assistQuick');
- if(!toggle||!win)return;
+ const toggle=document.getElementById('assistChatToggle'),win=document.getElementById('assistWindow'),close=document.getElementById('assistClose'),messages=document.getElementById('assistMessages'),form=document.getElementById('assistForm'),input=document.getElementById('assistInput'),quick=document.getElementById('assistQuick'),platform=document.getElementById('assistPlatform');
+ if(!toggle||!win||!platform)return;
  function openChat(){win.classList.add('open');toggle.setAttribute('aria-expanded','true');setTimeout(()=>input.focus(),100)}
  function closeChat(){win.classList.remove('open');toggle.setAttribute('aria-expanded','false')}
  toggle.addEventListener('click',()=>win.classList.contains('open')?closeChat():openChat());close.addEventListener('click',closeChat);
  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChat()});
  function addMessage(text,who){const el=document.createElement('div');el.className='assist-msg '+who;el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight}
- function reply(raw){const q=raw.toLowerCase();
-   if(/project|portfolio|behance|work sample|case study/.test(q))return 'You can explore these projects:\n• WellnessWell — Shilajit social media campaign\n• Jalal Electronics — product marketing ads\n• T-Tech Solutions — SaaS UX concept\n\nOpen the Selected Work section or visit Behance: behance.net/allahnawaz175';
-   if(/service|offer|hire|price|cost|freelance|available|job|collaborat/.test(q))return 'Allah works across UI/UX design, responsive web and mobile interfaces, wireframes, prototypes, design systems, and visual/marketing creatives. For a project or hiring enquiry, use the LinkedIn contact button. Share your project scope and timeline to start the conversation.';
-   if(/experience|company|t-tech|click masters|background/.test(q))return 'Allah worked as a UI/UX & Graphic Designer at T-Tech Solutions in Islamabad from May to November 2025, focusing on responsive interfaces, reusable design patterns, and marketing visuals. His portfolio also includes marketing-oriented creative work with Click Masters Digital Marketing Agency.';
-   if(/skill|tool|figma|framer|adobe|software/.test(q))return 'Tools and skills listed here include Figma, prototyping, Framer, Adobe Creative Suite, wireframing, responsive UI, design systems, typography, and visual design.';
-   if(/contact|whatsapp|email|linkedin|talk|message/.test(q))return 'You can connect through LinkedIn: linkedin.com/in/allah-nawaz-productdesigner/ or tap the LinkedIn contact button. The LinkedIn contact button opens Allah’s profile so you can send a connection or message request.';
-   if(/hello|hi\b|hey|salam|assalam/.test(q))return 'Hello! 👋 I can show you projects, explain design services, share experience, or help you get in touch. What are you interested in?';
-   if(/location|based|where/.test(q))return 'Allah Nawaz is based in Islamabad, Pakistan and focuses on UI/UX, product design, SaaS, e-commerce, and visual design.';
-   return 'I’m a portfolio assistant, so I can answer common questions about Allah’s projects, skills, experience, and design services. Try “Show me your projects”, “What services do you offer?”, or “I want to hire you”. For a detailed brief, contact Allah through LinkedIn.';
+ function reply(raw,topic){const q=raw.toLowerCase();
+   if(/hello|hi\\b|hey|salam|assalam/.test(q))return 'Hello! 👋 I can help with '+platform.options[platform.selectedIndex].text.toLowerCase()+'. Tell me what you are trying to achieve and I’ll guide you.';
+   if(/project|portfolio|behance|work sample|case study/.test(q))return 'You can explore WellnessWell social media design, Jalal Electronics product marketing, Prime Estimate, Conectly, and an influencer-marketing concept in Selected Work. Portfolio: https://www.behance.net/allahnawaz175';
+   if(topic==='uiux')return 'For UI/UX or product design, I can help scope user flows, wireframes, prototypes, responsive screens, accessibility, and design systems. To recommend the right deliverables, what product are you building and who will use it?';
+   if(topic==='website')return 'For a website or landing page, start with the audience, primary conversion goal, key sections, mobile layout, and a clear call to action. Share your business type and goal and I can suggest a page structure. Website build or deployment needs a separately confirmed technical setup.';
+   if(topic==='saas')return 'For a SaaS dashboard, I’d clarify the main user roles, highest-priority tasks, data hierarchy, empty/error/loading states, and responsive behaviour before polishing the UI. What workflow should users complete most often?';
+   if(topic==='ecommerce')return 'For e-commerce, focus on clear product imagery, price/offer hierarchy, trust information, delivery/returns, mobile usability, and a low-friction checkout. I can help with product pages and campaign creatives; live store changes require store access and an approved integration.';
+   if(topic==='branding')return 'For social media and branding, keep a consistent visual system, readable type, platform-appropriate dimensions, and one clear message per creative. Which platform, audience, and campaign goal are you targeting?';
+   if(topic==='seo')return 'For SEO and digital marketing, start with search intent, useful landing-page content, technical accessibility, page speed, and measurable goals. I can draft a plan or content; live analytics, ad changes, and publishing require connected accounts and permission.';
+   if(topic==='automation')return 'For business automation, map the trigger, input data, steps, approval point, and failure handling first. Routine work can be automated, while public posts, emails, ad spend, and account changes should wait for explicit approval and verified integrations. Which task do you want to automate?';
+   if(topic==='figma-canva')return 'For Figma and Canva workflows, I can help plan components, reusable templates, brand kits, design handoff, and export sizes. I cannot read or edit your private files unless the relevant account integration is connected and authorised. What are you creating?';
+   if(topic==='social-platforms')return 'For LinkedIn or Facebook, I can help prepare platform-specific copy, hooks, hashtags, post concepts, and visual briefs. I cannot claim a post is published or scheduled unless a connected publishing tool confirms it. Which platform and objective are you working on?';
+   if(topic==='hire'||/service|offer|hire|price|cost|freelance|available|job|collaborat|budget/.test(q))return 'Allah Nawaz works across UI/UX and product design, responsive web/mobile interfaces, SaaS, e-commerce creatives, and visual marketing design. Pricing depends on scope, deliverables, timeline, and complexity, so I won’t invent a quote. Share your goal, required deliverables, budget range, and target date to discuss next steps.';
+   if(/experience|company|t-tech|click masters|background/.test(q))return 'Allah worked as a UI/UX & Graphic Designer at T-Tech Solutions in Islamabad from May to November 2025, focusing on responsive interfaces, reusable patterns, and marketing visuals. The portfolio also includes marketing-oriented creative work with Click Masters Digital Marketing Agency.';
+   if(/skill|tool|figma|framer|adobe|software/.test(q))return 'Tools and skills listed here include Figma, Framer, Adobe Creative Suite, prototyping, wireframing, responsive UI, design systems, typography, and visual design.';
+   if(/contact|whatsapp|email|linkedin|talk|message/.test(q))return 'You can connect through LinkedIn: https://www.linkedin.com/in/allah-nawaz-productdesigner/. The link opens Allah’s profile so you can send a connection or message request.';
+   return 'I can help with '+platform.options[platform.selectedIndex].text.toLowerCase()+'. Tell me your goal, audience, current challenge, and any deadline. For live account actions—such as publishing, scheduling, sending messages, or editing files—an authorised integration is required.';
  }
- const CHAT_API_URL = ''; // Set this to your deployed Worker URL plus "/api/chat" to enable live AI.
+ const CHAT_API_URL = window.NAZ_CHAT_API_URL || ''; // Set to your deployed Worker URL plus "/api/chat".
  async function send(text){
    const clean=(text||'').trim();if(!clean)return;
    addMessage(clean,'user');input.value='';quick.style.display='none';
    const submit=form.querySelector('button[type="submit"]');if(submit)submit.disabled=true;
+   platform.disabled=true;
    try{
      if(CHAT_API_URL){
-       const response=await fetch(CHAT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:clean})});
+       const response=await fetch(CHAT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:clean,platform:platform.value,language:/[\\u0600-\\u06FF]/.test(clean)?'Urdu':/\\b(kya|kaise|mujhe|chahiye|hai|hain|karna|batao|salam)\\b/i.test(clean)?'Roman Urdu':'match user'})});
        const data=await response.json().catch(()=>({}));
        if(!response.ok)throw new Error(data.error||'AI service is not available right now.');
        if(typeof data.answer!=='string'||!data.answer.trim())throw new Error('AI returned an empty response.');
        addMessage(data.answer.trim(),'bot');
      }else{
-       addMessage(reply(clean)+'\n\n(Note: demo reply. Live AI is not connected yet.)','bot');
+       addMessage(reply(clean,platform.value)+'\\n\\n(Demo guidance: live AI is not connected yet.)','bot');
      }
    }catch(error){
      addMessage('Live AI is temporarily unavailable. '+(error.message||'Please try again later.')+' You can still contact Allah through LinkedIn.','bot');
-   }finally{if(submit)submit.disabled=false;input.focus()}
+   }finally{if(submit)submit.disabled=false;platform.disabled=false;input.focus()}
  }
  form.addEventListener('submit',e=>{e.preventDefault();send(input.value)});
  quick.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>send(b.dataset.question||b.textContent)));
-})();
-</script>
+})();</script>
 
 </body></html>
