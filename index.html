@@ -241,7 +241,7 @@
           <div class="cardhead"><h3>WhatsApp approval</h3><span class="pill">Review before opening</span></div>
           <p class="mini">Check the recipient and exact message below. Approving opens WhatsApp with a draft; this website does not send it.</p>
           <div class="result" id="whatsappApprovalPreview" style="white-space:pre-wrap;overflow-wrap:anywhere"></div>
-          <label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0"><input id="whatsappApproveCheck" type="checkbox" style="margin-top:4px"> I reviewed the recipient and message and approve opening this WhatsApp draft.</label>
+          <label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0"><input id="whatsappApproveCheck" type="checkbox" style="margin-top:4px"> I confirm I am allowed to contact this recipient, reviewed the number and message, and approve opening this WhatsApp draft.</label>
           <div class="actions" style="display:flex;flex-wrap:wrap;gap:8px">
             <button class="btn primary" type="button" id="approveWhatsApp">Approve &amp; open WhatsApp</button>
             <button class="btn" type="button" id="cancelWhatsAppApproval">Cancel</button>
@@ -397,9 +397,8 @@ $("approveWhatsApp").addEventListener("click",()=>{
  const phone=raw.replace(/\D/g,"");
  if(raw && (phone.length<8||phone.length>15||phone.startsWith("0"))){toast("Use international format, e.g. 923001234567, without a leading 0.");return}
  const url=phone?"https://wa.me/"+phone+"?text="+encodeURIComponent(d.message):"https://wa.me/?text="+encodeURIComponent(d.message);
- const opened=window.open(url,"_blank","noopener,noreferrer");
- if(opened){setCommsStatus("Approved: WhatsApp opened with your draft. Review it there and press Send manually.");closeWhatsAppApproval()}
- else{setCommsStatus("Popup blocked. Allow pop-ups and tap Approve & open WhatsApp again. Nothing was sent.");}
+ const link=document.createElement("a");link.href=url;link.target="_blank";link.rel="noopener noreferrer";link.style.display="none";document.body.append(link);link.click();link.remove();
+ setCommsStatus("Approved: WhatsApp link requested with your draft. If WhatsApp did not open, allow external-app links or open WhatsApp manually. Review the recipient and press Send inside WhatsApp.");closeWhatsAppApproval();
 });
 document.querySelectorAll("[data-comms-open]").forEach(btn=>btn.addEventListener("click",async()=>{
  const d=getCommsDraft();if(!d.message){setCommsStatus("Write a message first.");toast("Write a message first.");return}
