@@ -100,6 +100,16 @@ test("offline icon fallback draws aligned local SVG icons when the icon CDN is u
 });
 
 
+test("Social Publisher includes a downloadable accessible LinkedIn visual concept", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /id="socialPosterSvg"[^>]*viewBox="0 0 360 450"/, "visual should use a 4:5 poster artboard");
+  assert.match(html, /aria-labelledby="socialPosterTitle socialPosterDesc"/, "poster should expose an accessible title and description");
+  assert.match(html, /id="downloadSocialVisual"/, "users should be able to download the vector visual");
+  assert.match(html, /clone\.setAttribute\("width","1080"\);clone\.setAttribute\("height","1350"\)/, "download should use a 1080 by 1350 artboard");
+  assert.match(html, /image\/svg\+xml;charset=utf-8/, "download should be a valid SVG asset");
+  assert.match(html, /export as PNG in Canva/i, "UI should explain that some schedulers require PNG or JPG");
+});
+
 test("mobile navigation keeps icon and label in separate aligned elements", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
   const nav = html.match(/<nav class="mobile-nav"[\s\S]*?<\/nav>/)?.[0];
