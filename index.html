@@ -78,6 +78,28 @@ main{padding-top:27px}
 }
 @media(max-width:380px){.toolcards{grid-template-columns:minmax(0,1fr)}.topbar h1{font-size:23px}.top-actions .btn{padding:7px 8px}}
 
+
+/* Accessibility and final responsive navigation pass */
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 72%,white);outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.social-hero h2,.cardhead h3{display:flex;align-items:center;gap:8px}
+.social-hero h2 .icon{width:23px;height:23px;min-width:23px;margin:0;top:0}
+.cardhead h3 .icon{width:17px;height:17px;min-width:17px;margin:0;top:0;color:var(--accent)}
+.mobile-nav{scrollbar-width:none;overscroll-behavior-x:contain}
+.mobile-nav::-webkit-scrollbar{display:none}
+@media(max-width:720px){
+ .mobile-nav{justify-content:flex-start;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;touch-action:pan-x}
+ .mobile-nav button{flex:0 0 62px;width:62px;scroll-snap-align:start}
+ .mobile-nav button.active{box-shadow:inset 0 2px var(--accent)}
+ .social-hero h2{font-size:23px}
+}
+@media(max-width:380px){.mobile-nav button{flex-basis:56px;width:56px}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
 </style>
 </head>
 <body>
@@ -179,10 +201,10 @@ main{padding-top:27px}
 
   <section class="page" id="page-social">
     <p class="intro">LinkedIn content, visual direction and publishing workflow in one place. Create and review your draft here, then use Metricool to complete scheduling. This page does not pretend to publish until a secure Metricool API integration is configured.</p>
-    <div class="social-hero"><div><h2>📣 Social Publisher</h2><p>Plan a useful LinkedIn post, add a visual concept, copy the caption and continue to Metricool’s planner.</p></div><a class="btn" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Open Metricool ↗</a></div>
+    <div class="social-hero"><div><h2><i data-lucide="send" data-fallback="↗" class="icon" aria-hidden="true"></i> Social Publisher</h2><p>Plan a useful LinkedIn post, add a visual concept, copy the caption and continue to Metricool’s planner.</p></div><a class="btn" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Open Metricool ↗</a></div>
     <div class="grid">
       <div class="card span-5">
-        <div class="cardhead"><h3>✍️ Post brief</h3><span class="pill">LinkedIn</span></div>
+        <div class="cardhead"><h3><i data-lucide="pen-line" data-fallback="✎" class="icon" aria-hidden="true"></i> Post brief</h3><span class="pill">LinkedIn</span></div>
         <form id="socialPostForm" class="formgrid">
           <div class="field full"><label for="socialTopic">Post topic *</label><input id="socialTopic" required maxlength="180" value="One small UX detail that makes a product easier to use" placeholder="What do you want to share?"></div>
           <div class="field"><label for="socialGoal">Post goal</label><select id="socialGoal"><option>Start a conversation</option><option>Share a learning</option><option>Show a design process</option><option>Promote a service</option><option>Share a case study</option></select></div>
@@ -527,7 +549,7 @@ $("uxCopyResearch").addEventListener("click",()=>{if(!uxResearchText){setResult(
 
 function updateUxChecklist(containerId,scoreId){const checks=[...document.querySelectorAll("#"+containerId+" input[type=checkbox]")],n=checks.filter(x=>x.checked).length;$(scoreId).textContent=n+" of "+checks.length+" checks reviewed"+(n===checks.length?" — all marked complete":"");}
 document.querySelectorAll("#uxAuditChecks input,#uxAccessChecks input").forEach(el=>el.addEventListener("change",()=>{updateUxChecklist("uxAuditChecks","uxAuditScore");updateUxChecklist("uxAccessChecks","uxAccessScore")}));
-function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));const names={overview:"Overview",leads:"Lead CRM",marketing:"Marketing Planner",content:"Content Studio",design:"UI/UX Design Studio",social:"Social Publisher",automation:"Automation Studio",seo:"SEO Toolkit",email:"Email & Follow-ups",comms:"Communication Hub",support:"Customer Support",tasks:"Tasks & Projects",analytics:"Analytics",settings:"Connections & Settings"};$("pageTitle").textContent=names[name]||"Workspace";if(name==="leads")loadLeads();if(name==="tasks")renderTasks();if(name==="content")renderDrafts();if(name==="support")renderFaqs();if(name==="overview")updateOverview();if(name==="settings")checkBackend();if(name==="comms")renderCommsDrafts();refreshIcons()}
+function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll("[data-page]").forEach(b=>{const active=b.dataset.page===name;b.classList.toggle("active",active);if(active)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});const names={overview:"Overview",leads:"Lead CRM",marketing:"Marketing Planner",content:"Content Studio",design:"UI/UX Design Studio",social:"Social Publisher",automation:"Automation Studio",seo:"SEO Toolkit",email:"Email & Follow-ups",comms:"Communication Hub",support:"Customer Support",tasks:"Tasks & Projects",analytics:"Analytics",settings:"Connections & Settings"};$("pageTitle").textContent=names[name]||"Workspace";if(name==="leads")loadLeads();if(name==="tasks")renderTasks();if(name==="content")renderDrafts();if(name==="support")renderFaqs();if(name==="overview")updateOverview();if(name==="settings")checkBackend();if(name==="comms")renderCommsDrafts();refreshIcons()}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.goto)));
 $("themeToggle").addEventListener("click",toggleTheme);
