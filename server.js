@@ -32,6 +32,7 @@ function applyCors(req, res) {
 }
 
 function rateLimited(req, pathname) {
+  if (!pathname.startsWith("/api/")) return false;
   const now = Date.now();
   const group = pathname.startsWith("/api/leads") ? "leads" : "general";
   const key = (req.socket.remoteAddress || "unknown") + ":" + group;
