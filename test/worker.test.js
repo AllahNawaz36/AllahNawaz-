@@ -220,3 +220,51 @@ test("worker hides upstream AI error details from public clients", async () => {
   assert.equal(data.error, "AI service temporarily unavailable. Please try again.");
   assert.doesNotMatch(JSON.stringify(data), /provider-internal-token-or-request-id/);
 });
+
+
+test("worker hides internal database errors for lead reads and deletes", async () => {
+  const worker = await getWorker();
+  const token = "this-is-a-long-test-token-that-is-over-32-chars";
+  const lead = { id: "lead-1", name: "Ada", email: "ada@example.com", source: "", service: "", project: "Design", budget: "", stage: 0, notes: "", createdAt: "2026-01-01T00:00:00.000Z" };
+  const cases = [
+    {
+      method: "GET",
+      path: "/api/leads",
+      expected: "Unable to load leads. Please try again.",
+      DB: { prepare() { return { async all() { throw new Error("private-db-read-detail"); } }; } }
+    },
+    {
+      method: "GET",
+      path: "/api/leads/lead-1",
+      expected: "Unable to load lead. Please try again.",
+      DB: { prepare() { return { bind() { return { async first() { throw new Error("private-db-lookup-detail"); } }; } }; } }
+    },
+    {
+      method: "DELETE",
+      path: "/api/leads/lead-1",
+      expected: "Unable to delete lead. Please try again.",
+      DB: { prepare(query) { return { bind() { return {
+        async first() { return lead; },
+        async run() { throw new Error("private-db-delete-detail"); }
+      }; } }; } }
+    }
+  ];
+
+  for (const item of cases) {
+    const response = await worker.fetch(new Request("https://example.workers.dev" + item.path, {
+      method: item.method,
+      headers: {
+        Origin: "https://allahnawaz36.github.io",
+        Authorization: "Bearer " + token
+      }
+    }), {
+      ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+      ADMIN_TOKEN: token,
+      DB: item.DB
+    });
+    assert.equal(response.status, 503, item.method + " " + item.path);
+    const data = await response.json();
+    assert.equal(data.error, item.expected);
+    assert.doesNotMatch(JSON.stringify(data), /private-db-(read|lookup|delete)-detail/);
+  }
+});
