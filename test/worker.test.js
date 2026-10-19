@@ -102,9 +102,32 @@ test("worker chat clearly reports when Workers AI is not configured", async () =
     method: "POST",
     headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
     body: JSON.stringify({ message: "What projects are in this portfolio?" })
-  }), { ALLOWED_ORIGIN: "https://allahnawaz36.github.io" });
+  }), { ALLOWED_ORIGIN: "https://allahnawaz36.github.io", CHAT_LIMITER: { async limit() { return { success: true }; } } });
   assert.equal(response.status, 503);
   assert.match((await response.json()).error, /AI is not configured/i);
+});
+
+
+test("worker fails closed when the public chat rate limiter is missing", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Hello" })
+  }), { ALLOWED_ORIGIN: "https://allahnawaz36.github.io", AI: { async run() { return { response: "Should not run" }; } } });
+  assert.equal(response.status, 503);
+  assert.match((await response.json()).error, /CHAT_LIMITER/i);
+});
+
+test("worker returns 429 when the public chat rate limit is exceeded", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Hello" })
+  }), { ALLOWED_ORIGIN: "https://allahnawaz36.github.io", CHAT_LIMITER: { async limit() { return { success: false }; } }, AI: { async run() { return { response: "Should not run" }; } } });
+  assert.equal(response.status, 429);
+  assert.match((await response.json()).error, /Too many chat requests/i);
 });
 
 test("worker chat returns the AI response when a Workers AI binding is configured", async () => {
