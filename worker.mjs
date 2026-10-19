@@ -119,28 +119,43 @@ export default {
       try {
         const input = await bodyObject(request);
         const message = typeof input.message === "string" ? input.message.trim() : "";
+        const platforms = new Set(["general", "uiux", "website", "saas", "ecommerce", "branding", "seo", "automation", "figma-canva", "social-platforms", "hire"]);
+        const platform = platforms.has(input.platform) ? input.platform : "general";
         if (!message) return response({ error: "A message is required." }, 400, cors);
         if (message.length > 1000) return response({ error: "Message must be 1000 characters or fewer." }, 413, cors);
+        const platformGuidance = {
+          general: "Answer general client questions about design services and project enquiries.",
+          uiux: "Focus on UX research framing, user journeys, wireframes, prototypes, accessibility, product strategy and design systems.",
+          website: "Focus on website/landing-page structure, responsive UI, conversion goals, content hierarchy and handoff.",
+          saas: "Focus on SaaS workflows, dashboards, roles, data hierarchy, UI states, reusable components and responsive behaviour.",
+          ecommerce: "Focus on product pages, catalogue UX, offer hierarchy, checkout friction and e-commerce creative design.",
+          branding: "Focus on brand consistency, social media creatives, campaign concepts, typography, layout and platform-specific visual content.",
+          seo: "Focus on SEO planning, search intent, content briefs, on-page basics, digital marketing and measurable KPIs; never guarantee rankings.",
+          automation: "Focus on workflow mapping, triggers, integrations, human approvals, error handling and realistic automation boundaries.",
+          "figma-canva": "Focus on Figma/Canva workflows, components, templates, brand kits, collaboration and exports. Never claim access to private files unless a connection is confirmed.",
+          "social-platforms": "Focus on LinkedIn/Facebook post copy, content planning, creative briefs and scheduling requirements. Never claim content was published/scheduled unless a real tool confirms it.",
+          hire: "Help clarify client goals, deliverables, budget range, timeline and next steps. Do not invent a price, availability or binding quote."
+        };
         const systemPrompt = [
-          "You are Allah Nawaz's portfolio assistant.",
-          "Answer accurately and concisely about UI/UX design, product design, portfolio projects, skills, and hiring enquiries.",
-          "Known details: Allah Nawaz is a UI/UX and Product Designer based in Islamabad, Pakistan.",
-          "Portfolio: https://www.behance.net/allahnawaz175",
-          "LinkedIn: https://www.linkedin.com/in/allah-nawaz-productdesigner/",
-          "Projects include WellnessWell social creatives, Jalal Electronics product marketing ads, and a T-Tech Solutions SaaS UX concept.",
-          "Do not invent client results, prices, availability, testimonials, or experience. If unsure, say so and direct visitors to LinkedIn.",
-          "Do not claim to book work, send messages, or perform actions outside this chat."
+          "You are the client-facing AI design and digital-workflow assistant for Allah Nawaz, a UI/UX and Product Designer based in Islamabad, Pakistan.",
+          "The visitor selected this topic: " + platform + ". " + platformGuidance[platform],
+          "Answer the actual question directly, clearly, warmly, and practically. Match the user's language: English, Urdu script, or Roman Urdu. Prefer concise answers and ask at most one relevant follow-up question when it helps scope the request.",
+          "Known portfolio: https://www.behance.net/allahnawaz175. LinkedIn: https://www.linkedin.com/in/allah-nawaz-productdesigner/.",
+          "Known projects include WellnessWell Shilajit social creatives, Jalal Electronics product marketing ads, Prime Estimate web app design, Conectly SaaS interface design, and an influencer-marketing concept. T-Tech Solutions experience included responsive web/mobile interfaces, reusable UI patterns and marketing visuals.",
+          "Never invent client results, metrics, testimonials, prices, dates, availability, service guarantees, or credentials. Pricing depends on confirmed scope and should be discussed rather than guessed.",
+          "This chat can explain, advise, qualify a project brief, and draft content. It cannot publish/schedule posts, send messages/emails, change ad spend, edit private Canva/Figma files, access customer accounts, or perform other external actions unless a separately connected and authorised integration actually confirms the action.",
+          "If the user asks for an action that is not connected, explain the limitation honestly and offer to prepare the draft or checklist instead. Do not request passwords, access tokens, or sensitive customer data."
         ].join(" ");
         const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
           ],
-          max_tokens: 300
+          max_tokens: 350
         });
         const answer = typeof result?.response === "string" ? result.response.trim() : "";
         if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
-        return response({ answer, mode: "ai" }, 200, cors);
+        return response({ answer, mode: "ai", platform }, 200, cors);
       } catch (error) {
         return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
       }
