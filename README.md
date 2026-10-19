@@ -34,6 +34,8 @@ Open http://127.0.0.1:8080. In the dashboard's Leads area, select **Admin Login*
 
 Health check: `GET /api/health`. Lead listing/creation/editing/deletion is under `/api/leads` and requires `Authorization: Bearer <ADMIN_TOKEN>`.
 
+For a separate frontend/API deployment, set `ALLOWED_ORIGIN` on the Node process to the exact frontend origin (default: `https://allahnawaz36.github.io`). Do not use `*`. The Node API applies simple in-process per-IP limits: 30 lead-route requests/minute and 120 other requests/minute. These counters reset when the process restarts and do not coordinate across multiple instances; use platform-level protections before public exposure. Keep the admin token out of source code and screenshots. The in-memory token is cleared when the dashboard page refreshes.
+
 ## Run the Python workflow
 
 Requires Python 3.10+.
