@@ -6,7 +6,8 @@
 
 ## Latest continuation (2026-10-19)
 
-- The dashboard icon fallback now draws a small local SVG icon set when the Lucide runtime is unavailable, instead of substituting emoji characters. This keeps the interface more consistent without adding a CDN dependency; visual checks on target Android browsers and the updated frontend test and full GitHub Actions run passed in [run 39255566872](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39255566872).
+- The dashboard icon fallback now draws a small local SVG icon set when the Lucide runtime is unavailable, instead of substituting emoji characters. This keeps the interface more consistent without adding a CDN dependency; the icon change and its test passed in [run 39255566872](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39255566872).
+- Social Publisher now contains a 4:5 inline SVG concept for a LinkedIn UX post, with a download action that exports a 1080 × 1350 vector file. The new frontend regression test is awaiting [run 39284155142](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39284155142); visual review on Android and PNG export remain outstanding.
 - Cloudflare's PR status reported a failed preview build for `f477a07`. Repository tools did not expose the detailed build log, so the cause is not confirmed. Inspect the Cloudflare build log before retrying or claiming a live deploy. The GitHub Actions suite passed for `f477a07`, which is a separate check and does not prove a Cloudflare deployment.
 
 ## Executive summary
