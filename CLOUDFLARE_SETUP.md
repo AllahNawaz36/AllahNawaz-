@@ -1,37 +1,32 @@
 # Card-free Cloudflare Workers deployment
 
-This adds an optional API for the existing GitHub Pages dashboard. It does not silently deploy itself: you must authorize Cloudflare and create the free D1 database in your own account.
+This adds an optional API for the existing GitHub Pages dashboard. You must authorize Cloudflare in your own account. Do not choose a paid plan.
 
 ## What this provides
-- Cloudflare Worker API for health checks, protected lead CRUD, and Workers AI chat with topic-aware answers for UI/UX, websites, SaaS, e-commerce, branding, SEO, automation, Figma/Canva, LinkedIn/Facebook, and hiring enquiries.
-- D1 SQL storage instead of ephemeral server filesystem storage.
+- Cloudflare Worker API for health checks, protected lead CRUD, and Workers AI chat.
+- D1 SQL storage for leads once the real database binding is configured.
 - CORS restricted to the project's GitHub Pages origin by default.
 - Private `ADMIN_TOKEN` secret; no token is placed in browser source.
 - The current GitHub Pages dashboard stays live if backend setup is incomplete.
 
-## Free-plan note
-Cloudflare documents a Workers Free plan with 100,000 requests/day and D1 allowances. Limits can change; check the current official pricing page before deployment: https://developers.cloudflare.com/workers/platform/pricing/
-
 ## Deploy from the Cloudflare dashboard (Android-friendly)
-1. Sign up / sign in: https://dash.cloudflare.com/
-2. Open **Workers & Pages** and create a D1 database named `naz-business-assistant`.
-3. Open that D1 database and run the SQL in `schema.sql` in its Console.
-4. Create a Worker named `naz-business-assistant-api`. Use **Connect to Git** if available and select this repository, or paste the contents of `worker.mjs` into the editor.
-5. Configure the D1 binding named **DB** to the database you created.
-6. The repository's `wrangler.toml` declares a Workers AI binding named `AI`. If deploying through the Cloudflare dashboard instead of Wrangler, add the Workers AI binding manually with that exact name. The chat endpoint uses `@cf/meta/llama-3.1-8b-instruct`; verify current model availability and account limits in Cloudflare's dashboard.
-7. In Worker Settings → Variables and Secrets, add:
-   - Secret `ADMIN_TOKEN`: use a unique random value of at least 32 characters. Keep it private.
-   - Variable `ALLOWED_ORIGIN`: `https://allahnawaz36.github.io`
-8. Deploy the Worker and copy its HTTPS URL, for example `https://naz-business-assistant-api.<your-subdomain>.workers.dev`.
-9. For live portfolio chat, open the GitHub Pages dashboard → Connections & Settings. Save your Worker base URL (for example `https://your-worker.workers.dev`) in **API endpoint** and press **Check backend**. The portfolio chat reads the saved `nazProApiBase` from browser storage on the same GitHub Pages origin and calls `/api/chat` automatically; alternatively set `window.NAZ_CHAT_API_URL` before the chat script runs. This public chat endpoint must never contain an admin token. The visitor’s selected topic is sent as `platform` so the AI can tailor the answer.
-10. Open the dashboard → Connections & Settings → API endpoint. Paste the Worker URL (without a trailing slash), save, and run **Check backend**.
-11. In Lead CRM, use **Admin login** and enter the same secret token. Create a test lead, refresh, edit its stage, then delete the test record.
-12. Confirm `<worker-url>/api/health` returns `ok: true` and reports AI as configured. Send a test request to `/api/chat` from the portfolio after deployment.
+1. Sign in at https://dash.cloudflare.com/.
+2. Open Workers & Pages and create/connect a Worker using this repository.
+3. The Worker name in Cloudflare must match `naz-business-assistant-api` in `wrangler.toml`. If the build reports a name mismatch, rename the Worker to that exact name or update the config name to match the Worker.
+4. Deploy the Worker. The D1 block is intentionally commented out in `wrangler.toml` so a fake database ID cannot break the first deployment.
+5. Configure Workers AI binding named `AI` if the dashboard does not pick it up from `wrangler.toml`. The chat endpoint uses `@cf/meta/llama-3.1-8b-instruct`; verify current model availability and account limits in Cloudflare's dashboard.
+6. In Worker Settings → Variables and Secrets, add secret `ADMIN_TOKEN` using a unique random value of at least 32 characters. Keep it private. The `ALLOWED_ORIGIN` variable is already defined in `wrangler.toml`.
+7. To enable Lead CRM storage, create a D1 database named `naz-business-assistant`, copy its real database ID, uncomment the D1 block in `wrangler.toml`, replace the placeholder with the actual ID, and commit the change. Never deploy with a fake ID. Then run the SQL in `schema.sql` in the D1 Console and deploy again.
+8. Copy the deployed Worker HTTPS URL, for example `https://naz-business-assistant-api.<your-subdomain>.workers.dev`.
+9. Open the GitHub Pages dashboard → Connections & Settings. Save the Worker URL in API endpoint (without a trailing slash) and press Check backend.
+10. Confirm `<worker-url>/api/health` returns `ok: true`. Its `ai` field should say `configured` when Workers AI is bound. The `storage` field will say `not-configured` until D1 is configured.
+11. For Lead CRM, use Admin login and enter the same `ADMIN_TOKEN` secret. Test with a sample lead only after the database and schema are configured.
 
 ## Security / troubleshooting
 - Never commit `ADMIN_TOKEN` or paste it into public files/screenshots.
-- If browser requests fail, verify the exact GitHub Pages origin in `ALLOWED_ORIGIN` and check that the Worker was redeployed.
-- A 401 means the token is missing/incorrect. A 503 means the D1 binding or schema is missing.
-- Workers AI chat is optional and works only after the `AI` binding is configured and the Worker URL is saved in dashboard settings. Without this, the portfolio uses clearly labelled demo replies. Do not publish this public endpoint for high-volume use until a suitable rate limit/abuse control is configured.
-- Topic-aware AI chat answers client questions and can prepare plans/drafts; it does not itself send email, publish/schedule LinkedIn or Facebook posts, change ads, or edit Canva/Figma files. Those actions require separate integrations and permissions. The UI shows demo guidance until the Worker URL is configured and the AI binding is verified.
+- A Cloudflare Workers Builds failure can also occur if the Worker name in the dashboard does not match the `name` in `wrangler.toml`; check View Build History for the exact error.
+- If browser requests fail, verify `ALLOWED_ORIGIN` equals `https://allahnawaz36.github.io` and redeploy.
+- A 401 means the admin token is missing/incorrect. A 503 on lead endpoints means D1 or its schema is missing.
+- Workers AI chat is optional and works only after the `AI` binding is configured and the Worker URL is saved in dashboard settings. Without this, the portfolio uses clearly labelled demo replies.
+- This chat can prepare plans and drafts; it does not itself send email, publish/schedule LinkedIn or Facebook posts, change ads, or edit Canva/Figma files. Those actions require separate integrations and permissions.
 - Do not store sensitive customer data until you have a privacy notice, retention/deletion process, and backup plan.
