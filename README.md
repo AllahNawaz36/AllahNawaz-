@@ -1,5 +1,7 @@
 # Naz Business Assistant Pro
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FAllahNawaz36%2FAllahNawaz-)
+
 A starter dashboard plus a separate Python workflow runner. This repository is **not** a fully connected AI/social automation service yet.
 
 ## What works
@@ -45,7 +47,7 @@ For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and
 
 - **GitHub Pages is static hosting only.** It can show the dashboard interface, but cannot run `server.js`; the API buttons will not connect there.
 - To use central lead storage, deploy the repository as a Node.js Web Service on a Node-capable host such as Render. Set start command to `npm start` and configure a strong `ADMIN_TOKEN` as a private environment variable.
-- If the dashboard is hosted separately from the API, the frontend currently uses same-origin `/api/... ` paths; a separate-domain deployment needs a configured API base URL and strict CORS. Do not expose the admin token in client-side source.
+- If the dashboard is hosted separately from the API, the frontend currently uses same-origin `/api/...` paths; a separate-domain deployment needs a configured API base URL and strict CORS. Do not expose the admin token in client-side source.
 - A free host may sleep and/or erase local files. The JSON lead store is demo storage only. Use a persistent database, backups, access controls, privacy notice and retention/deletion process before handling real customer data.
 
 ## Honest feature limits
