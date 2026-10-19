@@ -268,3 +268,22 @@ test("worker hides internal database errors for lead reads and deletes", async (
     assert.doesNotMatch(JSON.stringify(data), /private-db-(read|lookup|delete)-detail/);
   }
 });
+
+
+test("worker reports malformed chat JSON as a client error", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: {
+      Origin: "https://allahnawaz36.github.io",
+      "Content-Type": "application/json"
+    },
+    body: "{"
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    AI: { async run() { throw new Error("AI should not run for invalid JSON"); } }
+  });
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { error: "Invalid JSON body." });
+});
