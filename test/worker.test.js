@@ -110,16 +110,18 @@ test("worker chat returns the AI response when a Workers AI binding is configure
   const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
     method: "POST",
     headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
-    body: JSON.stringify({ message: "What design services are offered?" })
+    body: JSON.stringify({ message: "What design services are offered?", platform: "saas" })
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
     AI: { async run(model, input) {
       modelName = model;
       assert.equal(input.messages.at(-1).content, "What design services are offered?");
+      assert.match(input.messages[0].content, /saas/i);
+      assert.match(input.messages[0].content, /dashboards/i);
       return { response: "UI/UX and product design services." };
     } }
   });
   assert.equal(response.status, 200);
   assert.equal(modelName, "@cf/meta/llama-3.1-8b-instruct");
-  assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai" });
+  assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
 });
