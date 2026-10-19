@@ -99,10 +99,52 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     if (request.method === "GET" && path === "/api/health") {
-      return response({ ok: true, service: "naz-business-assistant", storage: env.DB ? "d1" : "not-configured" }, 200, cors);
+      return response({
+        ok: true,
+        service: "naz-business-assistant",
+        storage: env.DB ? "d1" : "not-configured",
+        ai: env.AI ? "configured" : "not-configured"
+      }, 200, cors);
     }
 
     if (origin === "" && request.headers.has("Origin")) {
+      return response({ error: "Origin not allowed." }, 403);
+    }
+
+    if (path === "/api/chat") {
+      if (request.method !== "POST") return response({ error: "Method not allowed." }, 405, cors);
+      if (!env.AI || typeof env.AI.run !== "function") {
+        return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
+      }
+      try {
+        const input = await bodyObject(request);
+        const message = typeof input.message === "string" ? input.message.trim() : "";
+        if (!message) return response({ error: "A message is required." }, 400, cors);
+        if (message.length > 1000) return response({ error: "Message must be 1000 characters or fewer." }, 413, cors);
+        const systemPrompt = [
+          "You are Allah Nawaz's portfolio assistant.",
+          "Answer accurately and concisely about UI/UX design, product design, portfolio projects, skills, and hiring enquiries.",
+          "Known details: Allah Nawaz is a UI/UX and Product Designer based in Islamabad, Pakistan.",
+          "Portfolio: https://www.behance.net/allahnawaz175",
+          "LinkedIn: https://www.linkedin.com/in/allah-nawaz-productdesigner/",
+          "Projects include WellnessWell social creatives, Jalal Electronics product marketing ads, and a T-Tech Solutions SaaS UX concept.",
+          "Do not invent client results, prices, availability, testimonials, or experience. If unsure, say so and direct visitors to LinkedIn.",
+          "Do not claim to book work, send messages, or perform actions outside this chat."
+        ].join(" ");
+        const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: message }
+          ],
+          max_tokens: 300
+        });
+        const answer = typeof result?.response === "string" ? result.response.trim() : "";
+        if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
+        return response({ answer, mode: "ai" }, 200, cors);
+      } catch (error) {
+        return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
+      }
+    }
       return response({ error: "Origin not allowed." }, 403);
     }
 
