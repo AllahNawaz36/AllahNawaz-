@@ -45,8 +45,38 @@ function authorized(request, env) {
 }
 
 async function bodyObject(request) {
-  const text = await request.text();
-  if (text.length > 1_000_000) throw Object.assign(new Error("Request body too large."), { status: 413 });
+  const maxBytes = 1_000_000;
+  const declaredLength = Number(request.headers.get("content-length"));
+  if (Number.isFinite(declaredLength) && declaredLength > maxBytes) {
+    throw Object.assign(new Error("Request body too large."), { status: 413 });
+  }
+  if (!request.body) return {};
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maxBytes) {
+        await reader.cancel();
+        throw Object.assign(new Error("Request body too large."), { status: 413 });
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  const text = new TextDecoder().decode(bytes);
   if (!text) return {};
   let value;
   try { value = JSON.parse(text); } catch { throw Object.assign(new Error("Invalid JSON body."), { status: 400 }); }
