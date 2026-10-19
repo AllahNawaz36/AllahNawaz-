@@ -96,29 +96,49 @@ function readBody(req) {
   return new Promise((resolve, reject) => {
     let body = "";
     let bytes = 0;
+    let settled = false;
+    let tooLarge = false;
+    const rejectOnce = error => {
+      if (settled) return;
+      settled = true;
+      reject(error);
+    };
+    const declaredLength = Number(req.headers["content-length"]);
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+      rejectOnce(Object.assign(new Error("Request body too large."), { status: 413 }));
+      req.resume();
+      return;
+    }
     req.setEncoding("utf8");
     req.on("data", chunk => {
+      if (tooLarge || settled) return;
       bytes += Buffer.byteLength(chunk, "utf8");
       if (bytes > MAX_BODY_BYTES) {
-        reject(Object.assign(new Error("Request body too large."), { status: 413 }));
-        req.destroy();
+        tooLarge = true;
+        body = "";
+        rejectOnce(Object.assign(new Error("Request body too large."), { status: 413 }));
         return;
       }
       body += chunk;
     });
     req.on("end", () => {
-      if (!body) return resolve({});
+      if (settled || tooLarge) return;
+      if (!body) {
+        settled = true;
+        return resolve({});
+      }
       try {
         const parsed = JSON.parse(body);
         if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-          return reject(Object.assign(new Error("JSON object required."), { status: 400 }));
+          return rejectOnce(Object.assign(new Error("JSON object required."), { status: 400 }));
         }
+        settled = true;
         resolve(parsed);
       } catch {
-        reject(Object.assign(new Error("Invalid JSON body."), { status: 400 }));
+        rejectOnce(Object.assign(new Error("Invalid JSON body."), { status: 400 }));
       }
     });
-    req.on("error", reject);
+    req.on("error", error => rejectOnce(error));
   });
 }
 
@@ -150,9 +170,14 @@ function validateLead(input, partial = false) {
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, "http://localhost");
-    const pathname = decodeURIComponent(url.pathname);
 
     if (!applyCors(req, res)) return;
+    let pathname;
+    try {
+      pathname = decodeURIComponent(url.pathname);
+    } catch {
+      return send(res, 400, { error: "Invalid URL encoding." });
+    }
     if (req.method === "OPTIONS") {
       if (!req.headers.origin) return send(res, 400, { error: "Origin header required." });
       res.writeHead(204);
