@@ -20,12 +20,12 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 ### Medium
 
-1. **CDN integrity protection remains incomplete** — `index.html:21`. The dashboard no longer loads the Lucide CDN script; it uses built-in icon fallbacks. Both static pages no longer request Google Fonts and use system-font fallbacks. This removes those third-party runtime asset requests instead of relying on an unverified SRI hash.
-2. **Browser-stored admin token increases XSS impact** — `index.html:649-650`. The token is not embedded in source and is tab-scoped, but JavaScript running in the page can read it. Keep the page's scripts/dependencies tightly controlled; a stronger authenticated session is preferable if this becomes a multi-user service.
+1. **Third-party runtime assets removed** — `index.html`, `portfolio.html`. The dashboard no longer loads Lucide from a CDN, and both static pages use system fonts instead of Google Fonts. This removes these external runtime requests; it is not a full CSP review.
+2. **Admin token remains exposed to active page JavaScript** — `index.html` admin login handlers. The token is now kept in memory only and is cleared on refresh; this reduces persistence but same-origin script can still read it while the page is open. A stronger authenticated session is preferable for multi-user service.
 3. **Public chat abuse controls require deployment testing** — `worker.mjs:115-125`, `wrangler.toml:20-27`. The Worker fails closed without `CHAT_LIMITER`, and the configured IP limit is 10 requests/60 seconds. Shared mobile/carrier IPs can affect multiple users; this is not a complete anti-abuse system.
-4. **Node API is for trusted/self-hosted use** — `server.js:8-18, 112-173`. It requires a 32+ character admin token and checks protected lead routes, but no explicit CORS/rate-limit middleware is apparent. Do not expose it publicly without additional hardening.
+4. **Node API basic CORS/rate limiting added, not production-grade** — `server.js:13-56, 142-160`. Cross-origin browser requests are limited to `ALLOWED_ORIGIN` (defaults to the GitHub Pages origin) and in-memory per-IP request limits now apply. Limits reset on restart and do not coordinate across instances; a reverse proxy/WAF and deployment-specific review are still needed before public exposure.
 5. **Dependency reproducibility needs work** — `requirements.txt:1-3`. Direct Python dependencies are now exact-pinned to `anthropic==1.13.0`, `PyYAML==6.0.3`, and `requests==2.34.2`. Transitive dependencies are still resolved by pip and are not locked with hashes.
-6. **External font requests remain** — `index.html:22-23`, `portfolio.html` head. Google Fonts add third-party requests and can slow rendering on mobile networks. Test fallback fonts and consider self-hosting if offline/third-party-minimal behavior is required.
+6. **Font rendering needs device-level review** — `index.html`, `portfolio.html`. System fonts avoid external font requests; verify visual hierarchy and wrapping on target Android browsers.
 7. **AI service must not be implied by local fallbacks** — `index.html:546, 747`, `worker.mjs:124-175`. The support reply UI now uses honest draft wording and a local fallback; live AI requires the configured backend. Do not paste private customer messages into the demo or use it as an automated response sender.
 8. **Health checks need real runtime evidence** — `index.html:639-644`, `worker.mjs:101-108`. The dashboard can show local-only or unavailable states. A configured URL or visible binding label is not proof of database persistence or provider connectivity.
 
@@ -42,6 +42,8 @@ The free-first path remains **draft → human review → copy caption/media → 
 - Removed the external Lucide CDN script and Google Fonts requests; the dashboard uses built-in icon fallbacks and system fonts, avoiding the unverified-SRI dependency.
 - Added a user-facing `privacy.html` notice and linked it from Settings; it explicitly warns against real customer data because automated retention/deletion is not implemented.
 - Pinned direct Python dependencies to exact release versions.
+- Changed the dashboard admin token from `sessionStorage` persistence to in-memory-only handling; refresh clears it.
+- Added Node API CORS allowlisting and per-IP in-memory rate limits; added tests for disallowed origins, allowed preflight and repeated-request limiting.
 - Renamed the support tool to **Customer-support reply draft** and removed raw backend error text from its local fallback.
 - Updated regression tests to match the current account-verification warning and cover request timeout / honest draft wording.
 - Changed Worker lead create/update handlers to return generic 500 messages for unexpected database failures while preserving expected 4xx validation messages.
@@ -61,12 +63,13 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 ## CI and verification status
 
-The repository defines `npm run check`, `npm test`, Python compilation, `python -m unittest discover -s tests -v`, and a dry-run smoke command in `.github/workflows/ci.yml`. This document does not claim those commands passed for this branch until the pull-request CI run completes. A passing test suite still does not verify live Cloudflare bindings or a third-party social account.
+The latest observed GitHub Actions run on commit `8d9b43962f8fdb09820f93fb35d3ec451d9ccc56` passed. Newer commits for in-memory admin token handling and Node CORS/rate limits have been added afterward, so those latest edits still need a fresh CI run. A passing test suite still does not verify live Cloudflare bindings or a third-party social account.
 
 ## Remaining risks
 
 - Python direct dependencies are pinned, but a fully reproducible transitive lockfile with hashes is not complete.
 - The privacy notice is informational; automated retention/deletion and tested backup/restore are still not implemented.
 - Deployed Cloudflare Worker, D1 schema, rate limiting and health endpoint are not verified from this repository session.
+- Node API rate limits are process-local and not a replacement for edge/WAF controls; confirm the correct `ALLOWED_ORIGIN` for the actual deployment.
 - Correct social account identity is still a manual prerequisite; no scheduling or publishing action was taken.
 - Privacy notice, retention/deletion, backup/restore and production incident monitoring are still required before real customer data.
