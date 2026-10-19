@@ -14,7 +14,7 @@
 - Worker CORS is limited to the configured origin (default: `https://allahnawaz36.github.io`); the deployed `ALLOWED_ORIGIN` must remain restricted to the actual dashboard origin.
 - Node API now applies a CORS allowlist (default `https://allahnawaz36.github.io`) and basic per-IP in-memory rate limits (30 lead-route requests/minute; 120 other requests/minute). These limits reset on process restart and do not coordinate between replicas; do not treat them as sufficient standalone production abuse protection.
 - Worker request bodies are size-limited and lead fields are validated. Public chat fails closed when `CHAT_LIMITER` is absent. Upstream AI errors are now returned as a generic 502 without exposing provider error text or request details.
-- Unexpected database errors from Worker lead create/update handlers now return generic client-facing 500 messages; detailed database errors are not included in those response bodies.
+- Unexpected database errors across Worker lead create, list, lookup, update and delete paths now return generic client-facing messages; detailed database errors are not included in those response bodies.
 - Dashboard API calls now time out after 12 seconds rather than remaining pending indefinitely.
 - Python workflow defaults to dry-run; workflow stages are planning-only and do not send posts or email.
 - Social Publisher remains a draft-and-manual-handoff workflow. Its local checklist is not evidence that a post was scheduled.
