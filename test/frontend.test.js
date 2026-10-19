@@ -91,6 +91,11 @@ test("offline icon fallback draws aligned local SVG icons when the icon CDN is u
   assert.match(html, /el\.classList\.add\("icon-fallback"\)/, "fallback icons should receive a dedicated style");
   assert.match(html, /\.icon-fallback\{display:inline-grid!important;place-items:center/, "fallback icon alignment styles should exist");
   assert.match(html, /"chart-no-axes-combined":\[/, "common dashboard icons should have explicit local paths");
+  const iconNames = [...html.matchAll(/data-lucide="([^"]+)"/g)].map(match => match[1]);
+  const shapeBlock = html.match(/const shapes=\{([\s\S]*?)\n \};/)?.[1] || "";
+  const shapeNames = new Set([...shapeBlock.matchAll(/(?:^|\n\s*)(?:"([^"]+)"|([\w-]+)):\[/g)].map(match => match[1] || match[2]));
+  assert.ok(iconNames.length > 0, "dashboard should use named icons");
+  assert.deepEqual([...new Set(iconNames)].filter(name => !shapeNames.has(name)), [], "every dashboard icon should have a matching offline SVG shape");
 });
 
 
