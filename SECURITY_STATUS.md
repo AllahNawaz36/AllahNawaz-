@@ -9,9 +9,10 @@
 
 ## Controls observed
 
-- The admin token is not hard-coded in `index.html`; the Node API refuses to start if `ADMIN_TOKEN` is shorter than 32 characters.
+- The admin token is not hard-coded in `index.html`; the Node API refuses to start if `ADMIN_TOKEN` is shorter than 32 characters. The dashboard now keeps the token in page memory only rather than `sessionStorage`; refresh clears it, but active same-origin JavaScript can still access it.
 - Lead CRUD endpoints in the Worker require a Bearer token. Token comparison is length-checked and timing-safe.
-- Worker CORS is limited to the configured origin (default: `https://allahnawaz36.github.io`); the deployed `ALLOWED_ORIGIN` must remain restricted to that origin.
+- Worker CORS is limited to the configured origin (default: `https://allahnawaz36.github.io`); the deployed `ALLOWED_ORIGIN` must remain restricted to the actual dashboard origin.
+- Node API now applies a CORS allowlist (default `https://allahnawaz36.github.io`) and basic per-IP in-memory rate limits (30 lead-route requests/minute; 120 other requests/minute). These limits reset on process restart and do not coordinate between replicas; do not treat them as sufficient standalone production abuse protection.
 - Worker request bodies are size-limited and lead fields are validated. Public chat fails closed when `CHAT_LIMITER` is absent.
 - Unexpected database errors from Worker lead create/update handlers now return generic client-facing 500 messages; detailed database errors are not included in those response bodies.
 - Dashboard API calls now time out after 12 seconds rather than remaining pending indefinitely.
@@ -22,7 +23,7 @@
 ## Verification status
 
 - **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
-- **CI for this branch:** pending until the pull-request workflow completes; do not infer a pass from earlier runs on another commit.
+- **CI status:** commit `8d9b43962f8fdb09820f93fb35d3ec451d9ccc56` passed. Later changes for in-memory token handling and Node API CORS/rate limits were added after that run and need a new run before claiming the latest head is green.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
 - **Wrong-token rejection against deployed Worker:** not verified in production.
@@ -32,11 +33,11 @@
 ## Remaining security risks
 
 1. **Customer privacy and recovery:** a visible `privacy.html` notice is now linked from Settings. It is informational only; a formal reviewed policy, data-minimization controls, enforced retention/deletion, backup/restore test and incident plan are still required before storing real customer data.
-2. **Browser token exposure:** tab-scoped `sessionStorage` is better than a hard-coded token but remains readable by same-origin JavaScript. Keep dependencies controlled and avoid untrusted scripts; consider a stronger authenticated session if multiple users will access this system.
+2. **Browser token exposure:** the token is now in memory only and is cleared on refresh, reducing persistence. It remains readable by same-origin JavaScript while the page is open; keep scripts trusted and consider a stronger authenticated session for multi-user use.
 3. **External runtime assets:** the Lucide CDN and Google Fonts requests were removed from the static pages; built-in icon fallbacks and system fonts are used. Validate visual rendering on target Android browsers.
 4. **Dependency pinning:** direct Python packages are exact-pinned; transitive dependency lockfile/hashes remain outstanding.
 5. **Public AI rate limiting:** `CHAT_LIMITER` is configured for 10 requests per client IP per 60 seconds. Shared carrier IPs can affect multiple visitors, and this alone is not a complete abuse-prevention solution.
-6. **Node API exposure:** `server.js` is intended for trusted/self-hosted use. Add explicit rate limiting and a reviewed CORS policy before public exposure.
+6. **Node API exposure:** basic CORS and per-process rate limits now exist in `server.js`. Set `ALLOWED_ORIGIN` to the exact deployed frontend origin. Limits are not distributed and should be backed by edge/WAF controls before public exposure.
 7. **Deployment uncertainty:** configured bindings in `wrangler.toml` are not proof of runtime configuration. Confirm the actual deployed Worker, AI binding, rate-limit binding, D1 binding/schema and HTTPS endpoint.
 8. **Social account identity:** no automated scheduling/publishing integration is enabled. Verify your own brand/profile in the provider directly before manually scheduling; do not use the unrelated/unverified connection.
 
@@ -51,9 +52,10 @@
 
 ## Manual checklist before any production use
 
-- [ ] Complete a reviewed SRI/local-vendoring solution for the icon script.
+- [x] Remove the external icon CDN and Google Fonts requests; verify the system-font/icon fallback rendering on target devices.
 - [ ] Create and test the privacy notice, retention/deletion rules and backup/restore procedure.
-- [ ] Pin/lock Python dependencies after reviewing safe versions.
+- [x] Pin direct Python dependencies to exact versions.
+- [ ] Create a reproducible transitive lockfile with hashes after reviewing the resolved dependency tree.
 - [ ] Deploy Cloudflare Worker on the free plan; do not approve paid upgrades.
 - [ ] Set a random `ADMIN_TOKEN` (32+ characters) as a Cloudflare Secret.
 - [ ] Confirm `ALLOWED_ORIGIN` is exactly the GitHub Pages origin.
