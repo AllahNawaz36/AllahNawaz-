@@ -22,9 +22,10 @@
 
 ## Verification status
 
-- **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
+- **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`. Latest UI change replaces emoji-only icon fallbacks with local inline SVG icons; this latest commit still needs a fresh CI run.
 - **CI status:** latest verified Worker request-size/rate-limit changes passed full GitHub Actions run [39253045825](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39253045825), including Node checks/tests, inline JavaScript/HTML checks, Python compilation/tests and the dry-run smoke test. Any subsequent commit requires a fresh run.
 - **Workers AI model compatibility:** the old `@cf/meta/llama-3.1-8b-instruct` was deprecated on May 30, 2026. The branch now references `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on Workers Free in its July 28, 2026 update. Live inference is not verified; Workers AI has a shared free daily quota of 10,000 Neurons and may stop responding after that quota is used.
+- **Cloudflare build preview:** Cloudflare's PR status reported a failed preview build for commit `f477a07` on 2026-10-19. The exact build log was not accessible through repository tools, so the root cause is unconfirmed; inspect Cloudflare Dashboard → Workers & Pages → `allahnawaz` → Builds before claiming deployment success.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
 - **Wrong-token rejection against deployed Worker:** not verified in production.
@@ -53,7 +54,7 @@
 
 ## Manual checklist before any production use
 
-- [x] Remove the external icon CDN and Google Fonts requests; verify the system-font/icon fallback rendering on target devices.
+- [x] Remove the external icon CDN and Google Fonts requests; add local SVG icon fallback rendering. Visual verification on target Android browsers remains outstanding.
 - [ ] Create and test the privacy notice, retention/deletion rules and backup/restore procedure.
 - [x] Pin direct Python dependencies to exact versions.
 - [ ] Create a reproducible transitive lockfile with hashes after reviewing the resolved dependency tree.
