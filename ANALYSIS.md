@@ -17,6 +17,7 @@ The free-first path remains **draft → human review → copy caption/media → 
 1. **Customer-data lifecycle is incomplete** — `index.html:566-567`, `schema.sql:1-15`, `SECURITY_STATUS.md`. A full privacy notice, retention/deletion process and tested backup/restore plan are not established. Do not enter real customer data until these controls exist and the deployed API/authentication have been verified.
 2. **Provider account is unverified** — `index.html:283-304`, `METRICOOL_SETUP.md:5-15`. The UI correctly pauses publishing and documents that the returned Metricool brand is not verified as the user's. Do not schedule or publish through that connection. Manual scheduling is allowed only after the user checks their own account/brand and explicitly approves the post.
 3. **Live Worker is not proven by repository code** — `worker.mjs:101-108, 115-125`, `CLOUDFLARE_SETUP.md`, `SECURITY_STATUS.md`. A health handler and binding checks exist, but they do not establish that production bindings, auth, database schema, rate limiting, and recovery are correctly configured. Test the deployed `/api/health`, wrong-token rejection, synthetic lead CRUD, and restore path before real data.
+4. **AI model compatibility needed refresh** — the previous `@cf/meta/llama-3.1-8b-instruct` model was deprecated by Cloudflare on May 30, 2026. The branch now uses `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on the Workers Free plan in its July 28, 2026 update. Availability, model output, account limits and daily free quota still need a live account test.
 
 ### Medium
 
@@ -47,6 +48,7 @@ The free-first path remains **draft → human review → copy caption/media → 
 - Renamed the support tool to **Customer-support reply draft** and removed raw backend error text from its local fallback.
 - Updated regression tests to match the current account-verification warning and cover request timeout / honest draft wording.
 - Changed Worker lead create/update handlers to return generic 500 messages for unexpected database failures while preserving expected 4xx validation messages.
+- Replaced Cloudflare's deprecated `@cf/meta/llama-3.1-8b-instruct` model with `@cf/zai-org/glm-4.7-flash`, updated the model assertion, and refreshed the card-free setup guide. Current Cloudflare docs show GLM-4.7-Flash remains available on Workers Free, subject to the shared 10,000-Neuron daily allowance.
 - Added a Worker regression test to ensure internal database error strings are not returned to API clients.
 - Updated this analysis and the security status.
 
