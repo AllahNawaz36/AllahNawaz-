@@ -7,6 +7,7 @@ A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflar
 ## What works
 
 - Browser dashboard for leads, tasks, content drafts, campaign planning, manual SEO checks, FAQs and KPI calculations.
+- Communication Hub with a two-step WhatsApp approval flow: review the recipient and message, approve opening the WhatsApp draft, then press Send inside WhatsApp. Drafts stay in this browser; this is not background/API sending.
 - Automation Studio: video-edit briefs (aspect ratios, trim/cut, captions, music and thumbnail checklist), a local publishing approval queue, browser-local reports, and downloadable proposal/invoice/meeting-note/CSV templates.
 - Automation Studio outputs are saved in this browser; they do not edit media, send messages, upload files or publish/schedule posts.
 - Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN` (local/self-hosted).
