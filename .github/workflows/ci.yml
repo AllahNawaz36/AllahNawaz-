@@ -20,6 +20,7 @@ jobs:
           from collections import Counter
           from html.parser import HTMLParser
           from pathlib import Path
+          import re
           import subprocess
           import tempfile
           from urllib.parse import unquote
@@ -79,12 +80,17 @@ jobs:
                   })
                   if unsafe_blank_links:
                       raise SystemExit(f"{page} has target=_blank links without rel=noopener: {unsafe_blank_links}")
+                  script_source = "\\n".join(parser.scripts)
+                  element_refs = sorted(set(re.findall(r"""getElementById\(\s*["']([^"']+)["']\s*\)""", script_source)))
+                  missing_elements = sorted(set(element_refs) - known_ids)
+                  if missing_elements:
+                      raise SystemExit(f"{page} JavaScript references missing element IDs: {missing_elements}")
                   for index, script in enumerate(parser.scripts):
                       path = Path(temp) / (page.replace(".html", "") + "-" + str(index) + ".js")
                       path.write_text(script, encoding="utf-8")
                       subprocess.run(["node", "--check", str(path)], check=True)
                   total_scripts += len(parser.scripts)
-                  print(f"{page}: {len(parser.scripts)} inline script(s); IDs unique; in-page links valid; new-tab links safe.")
+                  print(f"{page}: {len(parser.scripts)} inline script(s); IDs unique; DOM references valid; in-page links valid; new-tab links safe.")
           print(f"Validated {total_scripts} inline script(s) across both HTML pages.")
           PY
       - uses: actions/setup-python@v5
