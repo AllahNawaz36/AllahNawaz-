@@ -54,3 +54,12 @@ test("UX research tools split multiline input and produce readable line breaks",
   assert.match(html, /USABILITY TEST PLAN\\nObjective:/, "usability plan should contain readable line breaks");
   assert.match(html, /RESEARCH NOTES — SYNTHESIS TEMPLATE\\nContext/, "research synthesis should contain readable line breaks");
 });
+
+
+test("icon fallbacks preserve aligned icon elements when the icon CDN is unavailable", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /el\.textContent=fallback/, "fallback text should stay inside the icon element");
+  assert.match(html, /el\.classList\.add\("icon-fallback"\)/, "fallback icons should receive a dedicated style");
+  assert.doesNotMatch(html, /el\.replaceWith\(document\.createTextNode\(fallback\)\)/, "fallback must not destroy the icon wrapper and break alignment");
+  assert.match(html, /\.icon-fallback\{display:inline-grid!important;place-items:center/, "fallback icon alignment styles should exist");
+});
