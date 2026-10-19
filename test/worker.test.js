@@ -287,3 +287,21 @@ test("worker reports malformed chat JSON as a client error", async () => {
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { error: "Invalid JSON body." });
 });
+
+
+test("worker fails closed when chat rate limiting is unavailable", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Hello" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { throw new Error("rate service unavailable"); } },
+    AI: { async run() { throw new Error("AI should not run"); } }
+  });
+  assert.equal(response.status, 503);
+  const data = await response.json();
+  assert.equal(data.error, "Chat protection is temporarily unavailable. Please try again later.");
+  assert.doesNotMatch(JSON.stringify(data), /rate service unavailable/);
+});
