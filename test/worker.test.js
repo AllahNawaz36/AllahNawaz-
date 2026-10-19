@@ -34,6 +34,7 @@ test("worker protects lead endpoints with a bearer token", async () => {
     headers: { Origin: "https://allahnawaz36.github.io" }
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
     ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars"
   });
   assert.equal(response.status, 401);
@@ -52,6 +53,7 @@ test("worker rejects invalid JSON with a client error instead of crashing", asyn
     body: "{"
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
     ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars",
     DB: { prepare() { return { async all() { return { results: [] }; } }; } }
   });
@@ -86,6 +88,7 @@ test("worker validates fields during partial updates", async () => {
     body: JSON.stringify({ email: "not-an-email" })
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
     ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars",
     DB: db
   });
@@ -113,6 +116,7 @@ test("worker chat returns the AI response when a Workers AI binding is configure
     body: JSON.stringify({ message: "What design services are offered?", platform: "saas" })
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
     AI: { async run(model, input) {
       modelName = model;
       assert.equal(input.messages.at(-1).content, "What design services are offered?");
@@ -138,6 +142,7 @@ test("worker supports customer-support reply drafting without inventing policy c
     })
   }), {
     ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
     AI: { async run(model, input) {
       assert.match(input.messages[0].content, /customer-support reply drafting assistant/i);
       assert.match(input.messages[0].content, /Do not invent company policies/i);
