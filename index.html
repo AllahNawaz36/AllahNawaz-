@@ -100,6 +100,34 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 
+
+/* Real AI assistant widget — uses the configured API, never simulates a response */
+.ai-launcher{position:fixed;right:20px;bottom:22px;z-index:30;display:flex;align-items:center;gap:9px;border:0;border-radius:999px;padding:13px 17px;background:var(--accent);color:#fff;font-weight:750;box-shadow:0 10px 30px #0002;cursor:pointer}
+.ai-launcher .icon{width:19px;height:19px;min-width:19px;margin:0;top:0}
+.ai-chat-panel{position:fixed;right:20px;bottom:82px;z-index:31;width:min(390px,calc(100vw - 28px));height:min(570px,calc(100dvh - 125px));display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:0 18px 60px #0003}
+.ai-chat-panel[hidden]{display:none}
+.ai-chat-head{display:flex;align-items:center;gap:10px;padding:15px;border-bottom:1px solid var(--line)}
+.ai-chat-mark{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:color-mix(in srgb,var(--accent) 12%,var(--panel));color:var(--accent)}
+.ai-chat-mark .icon{margin:0;top:0}
+.ai-chat-head-copy{flex:1;min-width:0}
+.ai-chat-head-copy strong{display:block;font-size:14px}
+.ai-chat-head-copy small{display:block;margin-top:3px;color:var(--muted);font-size:11px}
+.ai-chat-close{width:36px;height:36px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink)}
+.ai-chat-topic{padding:10px 12px 0}
+.ai-chat-topic label{display:block;margin-bottom:5px;color:var(--muted);font-size:11px}
+.ai-chat-topic select{width:100%;min-height:38px;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--panel);color:var(--ink)}
+.ai-chat-log{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px}
+.ai-chat-message{max-width:91%;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-chat-message.user{align-self:flex-end;background:color-mix(in srgb,var(--accent) 11%,var(--panel));border-color:color-mix(in srgb,var(--accent) 24%,var(--line))}
+.ai-chat-message.assistant{align-self:flex-start}
+.ai-chat-compose{display:flex;align-items:flex-end;gap:8px;padding:11px;border-top:1px solid var(--line)}
+.ai-chat-compose textarea{flex:1;min-width:0;min-height:43px;max-height:110px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--panel);color:var(--ink);font:inherit;font-size:13px}
+.ai-chat-send{min-width:44px;height:43px;border:0;border-radius:12px;background:var(--accent);color:white;display:grid;place-items:center}
+.ai-chat-send .icon{margin:0;top:0}
+.ai-chat-note{padding:0 12px 10px;color:var(--muted);font-size:10px;line-height:1.45}
+@media(max-width:720px){.ai-launcher{right:12px;bottom:84px;padding:12px 14px}.ai-chat-panel{right:10px;bottom:145px;width:calc(100vw - 20px);height:min(560px,calc(100dvh - 170px))}}
+@media(prefers-reduced-motion:reduce){.ai-launcher,.ai-chat-panel{transition:none}}
+
 </style>
 </head>
 <body>
@@ -726,6 +754,47 @@ buildSocialPost();
 $("campaignForm").addEventListener("submit",e=>{e.preventDefault();const business=$("campBusiness").value.trim(),goal=$("campGoal").value,audience=$("campAudience").value.trim()||"Define one primary audience",budget=$("campBudget").value.trim()||"Set after resource planning",duration=$("campDuration").value,offer=$("campOffer").value.trim()||"State one credible customer benefit";$("campaignResult").textContent=`CAMPAIGN BRIEF\nOffer: ${business}\nGoal: ${goal}\nAudience: ${audience}\nBudget: ${budget}\nDuration: ${duration}\nOffer angle: ${offer}\n\nPLAN\n1. Create one educational post addressing the audience's key problem.\n2. Share one proof-based example or process breakdown.\n3. Publish one clear offer with a single CTA.\n4. Record lead source and follow up with qualified inquiries.\n5. Review results weekly and change one variable at a time.\n\nKPIs: qualified leads, CTR, landing-page conversion rate, cost per lead (paid campaigns), and lead-to-client conversion.\n\nPlanning template only; no performance is guaranteed.`;});
 
 checkBackend().then(()=>{updateSeo();updateOverview();renderDrafts();renderTasks();renderFaqs();renderCommsDrafts()});
+
+/* AI assistant widget: only displays responses returned by the configured server */
+(()=>{
+ const panel=document.getElementById("aiChatPanel"),launcher=document.getElementById("aiChatLauncher"),close=document.getElementById("aiChatClose"),form=document.getElementById("aiChatForm"),input=document.getElementById("aiChatInput"),send=document.getElementById("aiChatSend"),log=document.getElementById("aiChatLog"),status=document.getElementById("aiChatStatus"),topic=document.getElementById("aiChatTopic");
+ if(!panel||!launcher||!form||!input||!send||!log||!status||!topic)return;
+ const setOpen=open=>{panel.hidden=!open;launcher.setAttribute("aria-expanded",String(open));if(open)input.focus()};
+ launcher.addEventListener("click",()=>setOpen(panel.hidden));close.addEventListener("click",()=>{setOpen(false);launcher.focus()});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden){setOpen(false);launcher.focus()}});
+ const addMessage=(text,role)=>{const el=document.createElement("div");el.className="ai-chat-message "+role;el.textContent=text;log.appendChild(el);log.scrollTop=log.scrollHeight;return el};
+ const updateStatus=()=>{status.textContent=typeof apiBase==="function"&&apiBase()?"API endpoint configured · availability not yet verified":"Backend not configured · local demo only"};
+ updateStatus();
+ form.addEventListener("submit",async e=>{
+  e.preventDefault();const message=input.value.trim();if(!message)return;
+  if(typeof apiBase!=="function"||!apiBase()){addMessage("AI is not connected yet. Open Connections & Settings → API endpoint and enter your deployed Cloudflare Worker HTTPS URL. GitHub Pages alone cannot run the AI backend.","assistant");return}
+  addMessage(message,"user");input.value="";input.disabled=true;send.disabled=true;const pending=addMessage("Thinking…","assistant");status.textContent="Waiting for backend response…";
+  try{
+   const base=apiBase().replace(/\/+$/,"");const res=await fetch(base+"/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,platform:topic.value})});
+   const data=await res.json().catch(()=>({error:"Server returned an invalid response."}));
+   if(!res.ok)throw new Error(data.error||("Request failed ("+res.status+")."));
+   pending.textContent=typeof data.answer==="string"&&data.answer.trim()?data.answer:"The server returned no answer. Please try again.";status.textContent="Connected · AI response received";
+  }catch(err){pending.textContent="I couldn't get an AI response: "+(err.message||"Network error")+". Check the API URL, Cloudflare Worker health, AI binding, rate-limit binding and allowed origin in Settings.";status.textContent="AI request failed · check backend setup"}
+  finally{input.disabled=false;send.disabled=false;input.focus();log.scrollTop=log.scrollHeight}
+ });
+ if(window.lucide&&typeof window.lucide.createIcons==="function")window.lucide.createIcons({attrs:{"stroke-width":1.8}});
+})();
+
 </script>
+
+<div id="aiChatPanel" class="ai-chat-panel" role="dialog" aria-modal="false" aria-labelledby="aiChatTitle" hidden>
+  <div class="ai-chat-head"><div class="ai-chat-mark" aria-hidden="true"><i data-lucide="messages-square" data-fallback="✉" class="icon"></i></div>
+    <div class="ai-chat-head-copy"><strong id="aiChatTitle">Naz AI Assistant</strong><small id="aiChatStatus">Checking configured API…</small></div>
+    <button id="aiChatClose" class="ai-chat-close" type="button" aria-label="Close AI assistant"><i data-lucide="x" data-fallback="×" class="icon"></i></button>
+  </div>
+  <div class="ai-chat-topic"><label for="aiChatTopic">What do you need help with?</label><select id="aiChatTopic">
+    <option value="general">General business / design</option><option value="uiux">UI/UX & Product Design</option><option value="website">Website & Landing Pages</option><option value="saas">SaaS Dashboard</option><option value="ecommerce">E-commerce</option><option value="branding">Branding & Creatives</option><option value="seo">SEO & Marketing</option><option value="automation">Business Automation</option><option value="figma-canva">Figma & Canva</option><option value="social-platforms">LinkedIn & Social Content</option><option value="hire">Project Enquiry</option>
+  </select></div>
+  <div id="aiChatLog" class="ai-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="ai-chat-message assistant">Assalam-o-alaikum! I can help with design questions, project briefs and content planning. Responses require your backend AI endpoint to be configured.</div></div>
+  <form id="aiChatForm" class="ai-chat-compose"><textarea id="aiChatInput" maxlength="1000" rows="2" aria-label="Your message" placeholder="Type in English or Roman Urdu…" required></textarea><button id="aiChatSend" class="ai-chat-send" type="submit" aria-label="Send message"><i data-lucide="send" data-fallback="➤" class="icon"></i></button></form>
+  <div class="ai-chat-note">Drafting and advice only. This assistant does not publish posts, send messages or change accounts.</div>
+</div>
+<button id="aiChatLauncher" class="ai-launcher" type="button" aria-controls="aiChatPanel" aria-expanded="false"><i data-lucide="message-circle" data-fallback="◉" class="icon" aria-hidden="true"></i> Ask Naz AI</button>
+
 </body>
 </html>
