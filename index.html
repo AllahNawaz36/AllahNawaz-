@@ -252,8 +252,8 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
   </section>
 
   <section class="page" id="page-social">
-    <p class="intro">LinkedIn content, visual direction and publishing workflow in one place. Create and review your draft here, then use Metricool to complete scheduling. This page does not pretend to publish until a secure Metricool API integration is configured.</p>
-    <div class="social-hero"><div><h2><i data-lucide="send" data-fallback="↗" class="icon" aria-hidden="true"></i> Social Publisher</h2><p>Plan a useful LinkedIn post, add a visual concept, copy the caption and continue to Metricool’s planner.</p></div><a class="btn" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Open Metricool ↗</a></div>
+    <p class="intro">LinkedIn content, visual direction and a free-first publishing workflow in one place. Create and review your draft here, then use LinkedIn’s own composer or a verified free scheduler. This page does not publish or schedule posts itself.</p>
+    <div class="social-hero"><div><h2><i data-lucide="send" data-fallback="↗" class="icon" aria-hidden="true"></i> Social Publisher</h2><p>Plan a useful LinkedIn post, add a visual concept, copy the caption and continue to LinkedIn for manual scheduling.</p></div><a class="btn" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Open Metricool ↗</a></div>
     <div class="grid">
       <div class="card span-5">
         <div class="cardhead"><h3><i data-lucide="pen-line" data-fallback="✎" class="icon" aria-hidden="true"></i> Post brief</h3><span class="pill">LinkedIn</span></div>
@@ -275,14 +275,14 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
         <div class="actions">
           <button class="btn" type="button" id="copySocialCaption">📋 Copy caption</button>
           <button class="btn" type="button" id="saveSocialDraft">💾 Save draft</button>
-          <button class="btn primary" type="button" id="openMetricoolPlanner">🗓️ Copy caption & open Metricool</button>
+          <button class="btn primary" type="button" id="copyCaptionOpenLinkedIn">🗓️ Copy caption & open LinkedIn</button>
         </div>
         <p class="mini">The visual brief is a design instruction, not a generated image. Add the finished image/video inside Metricool before scheduling if you want media attached.</p>
       </div>
       <div class="card span-6">
         <div class="cardhead"><h3>🔗 Connection & publishing status</h3><span class="pill">Live check required</span></div>
         <div class="status-note" id="socialConnectionNote" role="alert"><strong>⛔ Publishing is paused — account verification required.</strong><p>The connected publishing account has not been verified. Do not schedule or publish until you confirm the correct brand and LinkedIn profile in Metricool. No post has been scheduled by this dashboard.</p></div>
-        <div class="actions"><a class="btn primary" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Open Metricool planner ↗</a><a class="btn" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener noreferrer">View LinkedIn ↗</a></div>
+        <div class="actions"><a class="btn primary" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener noreferrer">Open LinkedIn composer ↗</a><a class="btn" href="https://app.metricool.com/" target="_blank" rel="noopener noreferrer">Metricool (optional, if your plan supports it) ↗</a></div>
       </div>
       <div class="card span-6">
         <div class="cardhead"><h3>🧾 Publishing checklist</h3><span class="pill">Before schedule</span></div>
@@ -299,9 +299,9 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
         <div class="cardhead"><h3>🪜 Simple workflow</h3><span class="pill">Android-friendly</span></div>
         <div class="social-step"><div class="stepico">1</div><div><strong>Create the draft here</strong><p>Fill the brief and tap Build post draft. Replace any generic wording with your real experience.</p></div></div>
         <div class="social-step"><div class="stepico">2</div><div><strong>Copy the caption and visual brief</strong><p>Use the copy buttons; create or export the visual in your design app separately.</p></div></div>
-        <div class="social-step"><div class="stepico">3</div><div><strong>Open Metricool and select LinkedIn</strong><p>Paste the caption, upload the visual, select date/time in Asia/Karachi, and review the preview.</p></div></div>
-        <div class="social-step"><div class="stepico">4</div><div><strong>Schedule and verify</strong><p>After scheduling, check Metricool’s planner for the scheduled entry. After the time passes, verify the published post on LinkedIn.</p></div></div>
-        <p class="status-note">Important: this hosted chatbot cannot use the separate Metricool connector available inside ChatGPT. Direct scheduling from this website needs a secure backend and Metricool API token. Metricool currently lists API access on Advanced and Custom plans, not Free or Starter. Never put API keys or access tokens in public HTML or GitHub.</p>
+        <div class="social-step"><div class="stepico">3</div><div><strong>Open LinkedIn or a verified free scheduler</strong><p>Paste the caption, upload the visual, and choose a future date/time in Asia/Karachi only if your selected tool offers scheduling on its free plan.</p></div></div>
+        <div class="social-step"><div class="stepico">4</div><div><strong>Approve, schedule and verify</strong><p>Review the final text, media, destination and time. Schedule only after your explicit approval; if no free scheduling option is available, publish manually after approval. Verify the result on LinkedIn.</p></div></div>
+        <p class="status-note">Free-first rule: this website prepares drafts but does not schedule posts. Prefer LinkedIn’s native composer or a free scheduler only after confirming that scheduling is included in your own account. Metricool API access is not assumed to be free; do not upgrade or use an unverified brand. Never put API keys or access tokens in public HTML or GitHub.</p>
       </div>
     </div>
   </section>
@@ -794,7 +794,7 @@ async function copyTextFromElement(id){const txt=$(id)?.textContent?.trim()||"";
 $("copySocialCaption").addEventListener("click",()=>copyTextFromElement("socialCaptionResult"));
 $("copySocialVisual").addEventListener("click",()=>copyTextFromElement("socialVisualResult"));
 $("saveSocialDraft").addEventListener("click",()=>{const caption=currentSocialCaption(),visual=currentSocialVisual();if(!caption)return toast("Build the post draft first.");const saved=saveDraftRecord("LinkedIn · "+$("socialTopic").value.trim(),caption+"\n\n"+visual);if(saved)toast("Caption and visual brief saved in local drafts.")});
-$("openMetricoolPlanner").addEventListener("click",async()=>{const caption=currentSocialCaption();if(!caption)return toast("Build and review the caption first.");try{await navigator.clipboard.writeText(caption);toast("Caption copied. Metricool will open; paste it into your LinkedIn post.")}catch{toast("Open Metricool and copy the caption from this preview manually.")}window.open("https://app.metricool.com/","_blank","noopener,noreferrer")});
+$("copyCaptionOpenLinkedIn").addEventListener("click",async()=>{const caption=currentSocialCaption();if(!caption)return toast("Build and review the caption first.");try{await navigator.clipboard.writeText(caption);toast("Caption copied. LinkedIn will open; review it and schedule only after approval.")}catch{toast("Open LinkedIn and copy the caption from this preview manually.")}window.open("https://www.linkedin.com/feed/","_blank","noopener,noreferrer")});
 function renderSocialChecks(){const state=read(SOCIAL_CHECK_KEY,{});document.querySelectorAll("[data-social-check]").forEach(c=>c.checked=!!state[c.dataset.socialCheck])}
 document.querySelectorAll("[data-social-check]").forEach(c=>c.addEventListener("change",()=>{const state=read(SOCIAL_CHECK_KEY,{});state[c.dataset.socialCheck]=c.checked;write(SOCIAL_CHECK_KEY,state)}));
 renderSocialChecks();
