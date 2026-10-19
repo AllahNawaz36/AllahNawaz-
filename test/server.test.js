@@ -80,6 +80,18 @@ test("backend health and token-protected lead CRUD", async () => {
     assert.equal(deleted.status, 200);
     const afterDelete = await fetch(base + "/api/leads", { headers });
     assert.equal((await afterDelete.json()).leads.length, 0);
+
+    let rateLimitedResponse = false;
+    for (let i = 0; i < 35; i++) {
+      const response = await fetch(base + "/api/leads");
+      if (response.status === 429) {
+        rateLimitedResponse = true;
+        assert.equal(response.headers.get("retry-after"), "60");
+        break;
+      }
+    }
+    assert.equal(rateLimitedResponse, true, "lead API should rate-limit repeated requests");
+
   } finally {
     child.kill("SIGTERM");
     await new Promise(resolve => {
