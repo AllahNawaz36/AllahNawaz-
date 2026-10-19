@@ -63,7 +63,7 @@ The free-first path remains **draft → human review → copy caption/media → 
 
 ## CI and verification status
 
-The latest observed GitHub Actions run on commit `8d9b43962f8fdb09820f93fb35d3ec451d9ccc56` passed. Newer commits for in-memory admin token handling and Node CORS/rate limits have been added afterward, so those latest edits still need a fresh CI run. A passing test suite still does not verify live Cloudflare bindings or a third-party social account.
+The latest observed GitHub Actions run on commit `c51b64c5e1bd421956291b0a500ff733ebdc9920` passed, including the in-memory admin-token change, Node CORS allowlist, API-only per-IP rate limiting, and regression tests. Later documentation updates should trigger CI again before merge. A passing test suite still does not verify live Cloudflare bindings or a third-party social account.
 
 ## Remaining risks
 
