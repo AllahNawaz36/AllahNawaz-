@@ -13,7 +13,7 @@
 - Lead CRUD endpoints in the Worker require a Bearer token. Token comparison is length-checked and timing-safe.
 - Worker CORS is limited to the configured origin (default: `https://allahnawaz36.github.io`); the deployed `ALLOWED_ORIGIN` must remain restricted to the actual dashboard origin.
 - Node API now applies a CORS allowlist (default `https://allahnawaz36.github.io`) and basic per-IP in-memory rate limits (30 lead-route requests/minute; 120 other requests/minute). These limits reset on process restart and do not coordinate between replicas; do not treat them as sufficient standalone production abuse protection.
-- Worker request bodies are size-limited and lead fields are validated. Public chat fails closed when `CHAT_LIMITER` is absent. Upstream AI errors are now returned as a generic 502 without exposing provider error text or request details.
+- Worker request bodies are capped at 1,000,000 bytes while streaming (and rejected early when a larger Content-Length is declared); lead fields are validated. Public chat fails closed when `CHAT_LIMITER` is absent or throws, returning a generic 503 rather than bypassing the limiter. Upstream AI errors are returned as a generic 502 without exposing provider error text or request details.
 - Unexpected database errors across Worker lead create, list, lookup, update and delete paths now return generic client-facing messages; detailed database errors are not included in those response bodies.
 - Dashboard API calls now time out after 12 seconds rather than remaining pending indefinitely.
 - Python workflow defaults to dry-run; workflow stages are planning-only and do not send posts or email.
@@ -23,7 +23,7 @@
 ## Verification status
 
 - **Repository edits:** committed to feature branch `audit/free-social-workflow-2026-10-19`.
-- **CI status:** latest observed branch head `10554317e21fb1e73356f4965fbae7143a0db8f9` passed the full GitHub Actions job in run [39252122937](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39252122937), including Node checks/tests, inline JavaScript/HTML checks, Python compilation/tests and the dry-run smoke test. Any subsequent code commit requires a fresh run.
+- **CI status:** latest verified Worker request-size/rate-limit changes passed full GitHub Actions run [39253045825](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39253045825), including Node checks/tests, inline JavaScript/HTML checks, Python compilation/tests and the dry-run smoke test. Any subsequent commit requires a fresh run.
 - **Workers AI model compatibility:** the old `@cf/meta/llama-3.1-8b-instruct` was deprecated on May 30, 2026. The branch now references `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on Workers Free in its July 28, 2026 update. Live inference is not verified; Workers AI has a shared free daily quota of 10,000 Neurons and may stop responding after that quota is used.
 - **Live `/api/health`:** not verified in this work session.
 - **D1 persistence and schema:** not verified in a deployed Cloudflare account.
