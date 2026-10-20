@@ -190,7 +190,31 @@ h1,h2,h3,p{overflow-wrap:break-word}
 @media(max-width:430px){#social-content .app-hub{padding:16px}#social-content .app-hub-heading{align-items:flex-start;flex-direction:column;gap:7px}#social-content .app-hub-grid{grid-template-columns:1fr}#social-content .app-tile{padding:13px}}
 </style>
 
-</head>
+<style>
+/* Polished source-research banner and platform-branded video cover thumbnails. */
+#social-content .social-research-banner{display:grid;grid-template-columns:190px minmax(0,1fr);gap:24px;align-items:center;margin:0 0 26px;padding:20px;border:1px solid var(--line,#34382e);border-radius:24px;background:linear-gradient(115deg,rgba(213,255,114,.08),rgba(255,255,255,.015))}
+#social-content .social-research-art{position:relative;display:grid;place-items:center;min-height:160px;overflow:hidden;border-radius:18px;background:radial-gradient(circle at 50% 50%,rgba(213,255,114,.22),transparent 46%),linear-gradient(145deg,#242a1b,#121410)}
+#social-content .research-orbit{position:absolute;border:1px solid rgba(213,255,114,.3);border-radius:50%;transform:rotate(-28deg)}
+#social-content .orbit-one{width:135px;height:65px}.research-orbit.orbit-two{width:95px;height:135px}
+#social-content .research-monogram{font:800 28px/1 Manrope,sans-serif;letter-spacing:-2px;color:#d5ff72}
+#social-content .research-spark{position:absolute;top:22px;right:26px;color:#d5ff72;font-size:24px}
+#social-content .social-research-copy h3{margin:5px 0 8px;font-size:clamp(19px,2.3vw,25px);letter-spacing:-.7px}
+#social-content .social-research-copy p{margin:0;color:var(--muted,#b5bba9);font-size:13px;line-height:1.7}
+#social-content .research-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#social-content .research-links a{display:inline-flex;padding:8px 10px;border:1px solid var(--line,#34382e);border-radius:999px;color:#e9eedf;text-decoration:none;font-size:11px}
+#social-content .research-links a:hover{border-color:#d5ff72;color:#d5ff72}
+#social-content .social-preview{position:relative;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;text-decoration:none;color:#fff}
+#social-content .social-preview-facebook{background:radial-gradient(ellipse at 50% 25%,rgba(24,119,242,.5),transparent 52%),linear-gradient(135deg,#0d2344,#111a2b 60%,#121410)}
+#social-content .social-preview-tiktok{background:radial-gradient(ellipse at 45% 25%,rgba(37,244,238,.17),transparent 45%),radial-gradient(ellipse at 58% 65%,rgba(254,44,85,.19),transparent 50%),linear-gradient(135deg,#151515,#080808)}
+#social-content .preview-brand{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;font:800 42px/1 Arial,sans-serif}
+#social-content .fb-brand{background:#1877f2;color:#fff;padding-top:8px}
+#social-content .tt-brand{font-size:50px;text-shadow:-3px 0 #25f4ee,3px 0 #fe2c55}
+#social-content .preview-play{position:absolute;top:50%;left:50%;display:grid;place-items:center;width:42px;height:42px;padding-left:3px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:rgba(0,0,0,.35);transform:translate(-50%,-50%)}
+#social-content .preview-caption{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;letter-spacing:2px;font-weight:800}
+#social-content .preview-caption small{font-size:10px;font-weight:500;letter-spacing:0;color:rgba(255,255,255,.72)}
+@media(max-width:650px){#social-content .social-research-banner{grid-template-columns:1fr;gap:16px}#social-content .social-research-art{min-height:120px}}
+</style>
+\n</head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div id="scrollProgress" aria-hidden="true"></div>
@@ -334,24 +358,21 @@ h1,h2,h3,p{overflow-wrap:break-word}
     </div>
     <p class="app-hub-disclaimer"><span aria-hidden="true">ⓘ</span> These are branded quick links, not authenticated live integrations. Posting, scheduling, and account data require each platform’s official authorization/API.</p>
   </div>
+  <div class="social-research-banner reveal">
+    <div class="social-research-art" aria-hidden="true"><span class="research-orbit orbit-one"></span><span class="research-orbit orbit-two"></span><span class="research-monogram">AMJ</span><span class="research-spark">✳</span></div>
+    <div class="social-research-copy"><div class="overline">Public-source research</div><h3>AnjanMalikJan · Social video references</h3><p>Exact-name web searches surfaced scattered mentions, but I could not confidently verify a single matching public creator profile across all platforms. The links below help review public results without attributing unrelated content to the wrong person.</p><div class="research-links"><a href="https://www.google.com/search?q=%22AnjanMalikJan%22" target="_blank" rel="noopener noreferrer">Google exact-name results ↗</a><a href="https://www.google.com/search?q=site%3Afacebook.com+%22AnjanMalikJan%22" target="_blank" rel="noopener noreferrer">Facebook results ↗</a><a href="https://www.google.com/search?q=site%3Ainstagram.com+%22AnjanMalikJan%22" target="_blank" rel="noopener noreferrer">Instagram results ↗</a><a href="https://www.google.com/search?q=site%3Atiktok.com+%22AnjanMalikJan%22" target="_blank" rel="noopener noreferrer">TikTok results ↗</a><a href="https://www.google.com/search?q=site%3Ayoutube.com+%22AnjanMalikJan%22" target="_blank" rel="noopener noreferrer">YouTube results ↗</a></div></div>
+  </div>
   <div class="social-content-grid"><article class="social-feature reveal">
-      <div class="social-feature-top"><span class="social-platform">Facebook · Reel</span><span class="social-status">Link added</span></div>
-      <div class="social-preview" aria-label="Facebook Reel preview unavailable until public media metadata is accessible">
-        <div class="social-play" aria-hidden="true">▶</div>
-        <span>Open original Facebook Reel</span>
-      </div>
-      <div class="social-feature-copy"><h3>Featured Facebook Reel</h3><p>Shared Reel link supplied for the social showcase. The public creator name, caption, and video thumbnail could not be independently confirmed, so the original source is linked without guessed metadata.</p><a class="btn primary" href="https://www.facebook.com/share/r/19upZcb5nY/" target="_blank" rel="noopener noreferrer">Watch on Facebook ↗</a></div>
+      <div class="social-feature-top"><span class="social-platform">Facebook · Reel</span><span class="social-status">Source link</span></div>
+      <a class="social-preview social-preview-facebook" href="https://www.facebook.com/share/r/19upZcb5nY/" target="_blank" rel="noopener noreferrer" aria-label="Open the supplied Facebook Reel"><span class="preview-brand fb-brand" aria-hidden="true">f</span><span class="preview-play" aria-hidden="true">▶</span><span class="preview-caption">FACEBOOK REEL <small>Tap to open original video ↗</small></span></a>
+      <div class="social-feature-copy"><h3>Featured Facebook Reel</h3><p>Original shared Reel link supplied for this showcase. This branded cover is a navigation thumbnail—not the original video frame—because the Reel thumbnail and creator details could not be reliably fetched.</p><a class="btn primary" href="https://www.facebook.com/share/r/19upZcb5nY/" target="_blank" rel="noopener noreferrer">Watch on Facebook ↗</a></div>
     </article>
-    
     <article class="social-feature reveal">
-      <div class="social-feature-top"><span class="social-platform">TikTok · Shared link</span><span class="social-status">Link added</span></div>
-      <div class="social-preview" aria-label="TikTok video preview unavailable until the public video destination is confirmed">
-        <div class="social-play" aria-hidden="true">▶</div>
-        <span>Open original TikTok</span>
-      </div>
-      <div class="social-feature-copy"><h3>Featured TikTok video</h3><p>This shared TikTok link is saved as the source. Its final public video destination and creator details could not be confirmed from the short URL in this review, so no thumbnail or video description is guessed.</p><a class="btn primary" href="https://vt.tiktok.com/ZSgStrMYC/" target="_blank" rel="noopener noreferrer">Watch on TikTok ↗</a></div>
+      <div class="social-feature-top"><span class="social-platform">TikTok · Shared video</span><span class="social-status">Source link</span></div>
+      <a class="social-preview social-preview-tiktok" href="https://vt.tiktok.com/ZSgStrMYC/" target="_blank" rel="noopener noreferrer" aria-label="Open the supplied TikTok video"><span class="preview-brand tt-brand" aria-hidden="true">♪</span><span class="preview-play" aria-hidden="true">▶</span><span class="preview-caption">TIKTOK VIDEO <small>Tap to open original video ↗</small></span></a>
+      <div class="social-feature-copy"><h3>Featured TikTok video</h3><p>Original short link is preserved. Its final destination and creator identity remain unverified, so this branded cover avoids inventing a video thumbnail or caption.</p><a class="btn primary" href="https://vt.tiktok.com/ZSgStrMYC/" target="_blank" rel="noopener noreferrer">Watch on TikTok ↗</a></div>
     </article>
-    <aside class="social-note reveal"><div class="overline">Next to verify</div><h3>Build the full social showcase</h3><p>Once the public account and individual posts are confirmed, this area can feature selected videos with platform labels, clear titles, and responsive embeds where supported.</p><ul><li>Facebook videos</li><li>Instagram Reels</li><li>YouTube Shorts / videos</li><li>TikTok clips</li></ul><p class="social-small">Only publicly accessible links should be featured. Original creator credit and links will be preserved.</p></aside>
+    <aside class="social-note reveal"><div class="overline">Next to add</div><h3>Complete creator showcase</h3><p>Share the canonical profile URL or exact @handle from each platform to verify and add the right public videos.</p><ul><li>Facebook profile / Reels</li><li>Instagram profile / Reels</li><li>YouTube channel / Shorts</li><li>TikTok profile / clips</li></ul><p class="social-small">Only verified public content will be attributed to AnjanMalikJan. Platform-specific embeds and true video thumbnails depend on public availability and embed/API access.</p></aside>
   </div>
 </div></section>
 <section class="section" id="contact"><div class="wrap"><div class="contact reveal"><div><div class="overline">06 / Have a project in mind?</div><h2>Let’s make something meaningful.</h2><p>Looking for a UI/UX or Product Designer? I’d be happy to connect, learn about your challenge, and explore how thoughtful design can help.</p><div class="tags" style="margin-top:16px"><span class="tag">Islamabad, Pakistan · Remote</span><span class="tag">B2B SaaS · Web & mobile</span></div></div><div class="heroactions"><a class="btn" href="mailto:allahnawazmalik175@gmail.com">Email me ↗</a><a class="btn" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer">WhatsApp me ↗</a></div><p class="contact-phone" style="margin-top:14px;color:var(--muted);font-size:13px">Direct contact: <a href="tel:+923055742436" style="color:var(--text);font-weight:700">+92 305 574 2436</a> · <a href="mailto:allahnawazmalik175@gmail.com" style="color:var(--text)">allahnawazmalik175@gmail.com</a></p></div></div></section>
