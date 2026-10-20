@@ -246,3 +246,63 @@ test("worker supports customer-support reply drafting without inventing policy c
   assert.equal(data.platform, "ecommerce");
   assert.match(data.answer, /order reference/i);
 });
+
+
+test("worker returns validated structured AI output when requested", async () => {
+  const worker = await getWorker();
+  let sentBody;
+  const geminiFetch = async (_url, options) => {
+    sentBody = JSON.parse(options.body);
+    return new Response(JSON.stringify({
+      candidates: [{ content: { parts: [{ text: JSON.stringify({
+        summary: "A practical first draft.",
+        assumptions: ["Audience is a small business."],
+        nextSteps: ["Verify the source.", "Review the draft."],
+        limitations: ["No live publishing integration is connected."]
+      }) }] } }]
+    }), { status: 200, headers: { "content-type": "application/json" } });
+  };
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Make a safe content plan.", responseFormat: "structured" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    GEMINI_API_KEY: "test-gemini-secret",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    GEMINI_FETCH: geminiFetch
+  });
+  const data = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(data.responseFormat, "structured");
+  assert.equal(data.answer, "A practical first draft.");
+  assert.deepEqual(data.structured.assumptions, ["Audience is a small business."]);
+  assert.deepEqual(data.structured.nextSteps, ["Verify the source.", "Review the draft."]);
+  assert.equal(sentBody.generationConfig.responseMimeType, "application/json");
+  assert.match(sentBody.systemInstruction.parts[0].text, /Return ONLY one valid JSON object/i);
+  assert.doesNotMatch(JSON.stringify(data), /test-gemini-secret/);
+});
+
+test("worker rejects malformed structured AI output instead of returning it as trusted data", async () => {
+  const worker = await getWorker();
+  const geminiFetch = async () => new Response(JSON.stringify({
+    candidates: [{ content: { parts: [{ text: JSON.stringify({
+      summary: "Looks fine.",
+      assumptions: "not-an-array",
+      nextSteps: [],
+      limitations: []
+    }) }] } }]
+  }), { status: 200, headers: { "content-type": "application/json" } });
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+    method: "POST",
+    headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Make a plan.", responseFormat: "structured" })
+  }), {
+    ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+    GEMINI_API_KEY: "test-gemini-secret",
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    GEMINI_FETCH: geminiFetch
+  });
+  assert.equal(response.status, 502);
+  assert.match((await response.json()).error, /did not match the required schema/i);
+});
