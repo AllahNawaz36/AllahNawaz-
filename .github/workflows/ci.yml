@@ -54,7 +54,7 @@ jobs:
 
           total_scripts = 0
           with tempfile.TemporaryDirectory() as temp:
-              for page in ("index.html", "portfolio.html"):
+              for page in ("index.html", "portfolio.html", "research.html"):
                   parser = PageChecker()
                   parser.feed(Path(page).read_text(encoding="utf-8"))
                   duplicates = sorted(key for key, count in Counter(parser.ids).items() if count > 1)
@@ -91,7 +91,7 @@ jobs:
                       subprocess.run(["node", "--check", str(path)], check=True)
                   total_scripts += len(parser.scripts)
                   print(f"{page}: {len(parser.scripts)} inline script(s); IDs unique; DOM references valid; in-page links valid; new-tab links safe.")
-          print(f"Validated {total_scripts} inline script(s) across both HTML pages.")
+          print(f"Validated {total_scripts} inline script(s) across all three HTML pages.")
           PY
       - uses: actions/setup-python@v5
         with:
