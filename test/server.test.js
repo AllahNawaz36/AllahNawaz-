@@ -45,6 +45,21 @@ test("backend health and token-protected lead CRUD", async () => {
     const health = await fetch(base + "/api/health");
     assert.deepEqual(await health.json(), { ok: true, service: "naz-business-assistant" });
 
+    const blockedOrigin = await fetch(base + "/api/health", { headers: { Origin: "https://attacker.example" } });
+    assert.equal(blockedOrigin.status, 403);
+
+    const malformedPath = await fetch(base + "/api/leads/" + String.fromCharCode(37) + "ZZ", { headers });
+    assert.equal(malformedPath.status, 400);
+    assert.deepEqual(await malformedPath.json(), { error: "Invalid URL encoding." });
+
+    const preflight = await fetch(base + "/api/leads", {
+      method: "OPTIONS",
+      headers: { Origin: "https://allahnawaz36.github.io", "Access-Control-Request-Method": "POST", "Access-Control-Request-Headers": "authorization,content-type" }
+    });
+    assert.equal(preflight.status, 204);
+    assert.equal(preflight.headers.get("access-control-allow-origin"), "https://allahnawaz36.github.io");
+
+
     const unauthorized = await fetch(base + "/api/leads");
     assert.equal(unauthorized.status, 401);
 
@@ -69,6 +84,18 @@ test("backend health and token-protected lead CRUD", async () => {
     assert.equal(deleted.status, 200);
     const afterDelete = await fetch(base + "/api/leads", { headers });
     assert.equal((await afterDelete.json()).leads.length, 0);
+
+    let rateLimitedResponse = false;
+    for (let i = 0; i < 35; i++) {
+      const response = await fetch(base + "/api/leads");
+      if (response.status === 429) {
+        rateLimitedResponse = true;
+        assert.equal(response.headers.get("retry-after"), "60");
+        break;
+      }
+    }
+    assert.equal(rateLimitedResponse, true, "lead API should rate-limit repeated requests");
+
   } finally {
     child.kill("SIGTERM");
     await new Promise(resolve => {

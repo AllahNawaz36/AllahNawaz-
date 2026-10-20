@@ -45,8 +45,38 @@ function authorized(request, env) {
 }
 
 async function bodyObject(request) {
-  const text = await request.text();
-  if (text.length > 1_000_000) throw Object.assign(new Error("Request body too large."), { status: 413 });
+  const maxBytes = 1_000_000;
+  const declaredLength = Number(request.headers.get("content-length"));
+  if (Number.isFinite(declaredLength) && declaredLength > maxBytes) {
+    throw Object.assign(new Error("Request body too large."), { status: 413 });
+  }
+  if (!request.body) return {};
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maxBytes) {
+        await reader.cancel();
+        throw Object.assign(new Error("Request body too large."), { status: 413 });
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  const text = new TextDecoder().decode(bytes);
   if (!text) return {};
   let value;
   try { value = JSON.parse(text); } catch { throw Object.assign(new Error("Invalid JSON body."), { status: 400 }); }
@@ -119,13 +149,25 @@ export default {
         return response({ error: "Chat protection is not configured. Add the CHAT_LIMITER binding before enabling public AI chat." }, 503, cors);
       }
       const clientKey = request.headers.get("cf-connecting-ip") || "unknown-client";
-      const rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
-      if (!rateLimit.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
+      let rateLimit;
+      try {
+        rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
+      } catch {
+        // Fail closed if the abuse-control service is unavailable.
+        return response({ error: "Chat protection is temporarily unavailable. Please try again later." }, 503, cors);
+      }
+      if (!rateLimit?.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
       if (!env.AI || typeof env.AI.run !== "function") {
         return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
       }
+      let input;
       try {
-        const input = await bodyObject(request);
+        input = await bodyObject(request);
+      } catch (error) {
+        const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 400;
+        return response({ error: status === 413 ? "Request body too large." : "Invalid JSON body." }, status, cors);
+      }
+      try {
         const message = typeof input.message === "string" ? input.message.trim() : "";
         const platforms = new Set(["general", "uiux", "website", "saas", "ecommerce", "branding", "seo", "automation", "figma-canva", "social-platforms", "hire"]);
         const platform = platforms.has(input.platform) ? input.platform : "general";
@@ -159,18 +201,19 @@ export default {
           "This chat can explain, advise, qualify a project brief, and draft content. It cannot publish/schedule posts, send messages/emails, change ad spend, edit private Canva/Figma files, access customer accounts, or perform other external actions unless a separately connected and authorised integration actually confirms the action.",
           "If the user asks for an action that is not connected, explain the limitation honestly and offer to prepare the draft or checklist instead. Do not request passwords, access tokens, or sensitive customer data."
         ].join(" ");
-        const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+        const result = await env.AI.run("@cf/zai-org/glm-4.7-flash", {
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
           ],
-          max_tokens: 350
+          max_completion_tokens: 350
         });
         const answer = typeof result?.response === "string" ? result.response.trim() : "";
         if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
         return response({ answer, mode: "ai", platform }, 200, cors);
-      } catch (error) {
-        return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
+      } catch {
+        // Do not expose upstream provider messages, request IDs, or internal details to public clients.
+        return response({ error: "AI service temporarily unavailable. Please try again." }, 502, cors);
       }
     }
 
@@ -179,10 +222,14 @@ export default {
       if (!env.DB) return response({ error: "Database is not configured. Follow CLOUDFLARE_SETUP.md." }, 503, cors);
 
       if (request.method === "GET" && path === "/api/leads") {
-        const result = await env.DB.prepare(
-          "SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads ORDER BY createdAt DESC"
-        ).all();
-        return response({ leads: result.results || [] }, 200, cors);
+        try {
+          const result = await env.DB.prepare(
+            "SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads ORDER BY createdAt DESC"
+          ).all();
+          return response({ leads: result.results || [] }, 200, cors);
+        } catch {
+          return response({ error: "Unable to load leads. Please try again." }, 503, cors);
+        }
       }
 
       if (request.method === "POST" && path === "/api/leads") {
@@ -195,13 +242,25 @@ export default {
           ).bind(lead.id, lead.name, lead.email, lead.source || "", lead.service || "", lead.project, lead.budget || "", lead.stage, lead.notes || "", lead.createdAt).run();
           return response({ lead }, 201, cors);
         } catch (error) {
-          return response({ error: error.message || "Unable to create lead." }, error.status || 500, cors);
+          const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 500;
+          const message = status < 500 ? error.message : "Unable to create lead. Please try again.";
+          return response({ error: message }, status, cors);
         }
       }
 
-      const id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
+      let id = "";
+      try {
+        id = path.startsWith("/api/leads/") ? decodeURIComponent(path.slice("/api/leads/".length)) : "";
+      } catch {
+        return response({ error: "Invalid lead ID." }, 400, cors);
+      }
       if (!id || id.includes("/")) return response({ error: "Lead not found." }, 404, cors);
-      const found = await env.DB.prepare("SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads WHERE id = ?").bind(id).first();
+      let found;
+      try {
+        found = await env.DB.prepare("SELECT id, name, email, source, service, project, budget, stage, notes, createdAt FROM leads WHERE id = ?").bind(id).first();
+      } catch {
+        return response({ error: "Unable to load lead. Please try again." }, 503, cors);
+      }
       if (!found) return response({ error: "Lead not found." }, 404, cors);
 
       if (request.method === "PATCH") {
@@ -213,12 +272,18 @@ export default {
           ).bind(merged.name, merged.email, merged.source || "", merged.service || "", merged.project, merged.budget || "", merged.stage, merged.notes || "", id).run();
           return response({ lead: merged }, 200, cors);
         } catch (error) {
-          return response({ error: error.message || "Unable to update lead." }, error.status || 500, cors);
+          const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500 ? error.status : 500;
+          const message = status < 500 ? error.message : "Unable to update lead. Please try again.";
+          return response({ error: message }, status, cors);
         }
       }
       if (request.method === "DELETE") {
-        await env.DB.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
-        return response({ ok: true }, 200, cors);
+        try {
+          await env.DB.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
+          return response({ ok: true }, 200, cors);
+        } catch {
+          return response({ error: "Unable to delete lead. Please try again." }, 503, cors);
+        }
       }
       return response({ error: "Method not allowed." }, 405, cors);
     }

@@ -1,0 +1,118 @@
+# Repository Analysis — Naz Business Assistant Pro
+
+**Review date:** 2026-10-19  
+**Review branch:** `audit/free-social-workflow-2026-10-19`  
+**Scope:** `index.html`, `portfolio.html`, `server.js`, `worker.mjs`, Python workflow, tests, CI and setup/security documentation.
+
+## Latest continuation (2026-10-19)
+
+- The dashboard icon fallback now draws a small local SVG icon set when the Lucide runtime is unavailable, instead of substituting emoji characters. This keeps the interface more consistent without adding a CDN dependency; the icon change and its test passed in [run 39255566872](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39255566872).
+- Social Publisher now contains a 4:5 LinkedIn UX poster with direct 1080 × 1350 PNG export plus optional editable SVG download. The latest full CI run [39285458192](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39285458192) passed on the current PR head, including `npm run check`, `npm test`, inline JavaScript/HTML checks, Python compilation, Python unit tests, and the dry-run smoke test. Android visual review remains outstanding.
+- Cloudflare's PR status reported a failed preview build for `f477a07`. Repository tools did not expose the detailed build log, so the cause is not confirmed. Inspect the Cloudflare build log before retrying or claiming a live deploy. The GitHub Actions suite passed for `f477a07`, which is a separate check and does not prove a Cloudflare deployment.
+
+## Executive summary
+
+This repository is a useful demo/starter with honest feature limits, a local-first dashboard, an optional Node API, an optional Cloudflare Worker + D1 API, and a Python workflow that defaults to dry-run. It is **not yet a production social-publishing service**. The website can prepare drafts and hand off to a scheduling tool; the website itself does not confirm a post was scheduled or published.
+
+The free-first path remains **draft → human review → copy caption/media → schedule manually in the verified provider account → verify the planner entry**. Direct Metricool API scheduling is not enabled. The recorded ChatGPT Metricool connection returned a brand that was not verified as the user's, so no provider action is permitted until the user independently confirms the correct brand/profile.
+
+## Findings by severity
+
+### High
+
+1. **Customer-data lifecycle is incomplete** — `index.html:566-567`, `schema.sql:1-15`, `SECURITY_STATUS.md`. A full privacy notice, retention/deletion process and tested backup/restore plan are not established. Do not enter real customer data until these controls exist and the deployed API/authentication have been verified.
+2. **Provider account is unverified** — `index.html:283-304`, `METRICOOL_SETUP.md:5-15`. The UI correctly pauses publishing and documents that the returned Metricool brand is not verified as the user's. Do not schedule or publish through that connection. Manual scheduling is allowed only after the user checks their own account/brand and explicitly approves the post.
+3. **Live Worker is not proven by repository code** — `worker.mjs:101-108, 115-125`, `CLOUDFLARE_SETUP.md`, `SECURITY_STATUS.md`. A health handler and binding checks exist, but they do not establish that production bindings, auth, database schema, rate limiting, and recovery are correctly configured. Test the deployed `/api/health`, wrong-token rejection, synthetic lead CRUD, and restore path before real data.
+4. **AI model compatibility needed refresh** — the previous `@cf/meta/llama-3.1-8b-instruct` model was deprecated by Cloudflare on May 30, 2026. The branch now uses `@cf/zai-org/glm-4.7-flash`, which Cloudflare listed as available on the Workers Free plan in its July 28, 2026 update. Availability, model output, account limits and daily free quota still need a live account test.
+
+### Medium
+
+1. **Third-party runtime assets removed** — `index.html`, `portfolio.html`. The dashboard no longer loads Lucide from a CDN, and both static pages use system fonts instead of Google Fonts. This removes these external runtime requests; it is not a full CSP review.
+2. **Admin token remains exposed to active page JavaScript** — `index.html` admin login handlers. The token is now kept in memory only and is cleared on refresh; this reduces persistence but same-origin script can still read it while the page is open. A stronger authenticated session is preferable for multi-user service.
+3. **Public chat abuse controls require deployment testing** — `worker.mjs:115-125`, `wrangler.toml:20-27`. The Worker fails closed without `CHAT_LIMITER`, and the configured IP limit is 10 requests/60 seconds. Shared mobile/carrier IPs can affect multiple users; this is not a complete anti-abuse system.
+4. **Node API basic CORS/rate limiting added, not production-grade** — `server.js:13-56, 142-160`. Cross-origin browser requests are limited to `ALLOWED_ORIGIN` (defaults to the GitHub Pages origin) and in-memory per-IP request limits now apply. Limits reset on restart and do not coordinate across instances; a reverse proxy/WAF and deployment-specific review are still needed before public exposure.
+5. **Dependency reproducibility needs work** — `requirements.txt:1-3`. Direct Python dependencies are now exact-pinned to `anthropic==1.13.0`, `PyYAML==6.0.3`, and `requests==2.34.2`. Transitive dependencies are still resolved by pip and are not locked with hashes.
+6. **Font rendering needs device-level review** — `index.html`, `portfolio.html`. System fonts avoid external font requests; verify visual hierarchy and wrapping on target Android browsers.
+7. **AI service must not be implied by local fallbacks** — `index.html:546, 747`, `worker.mjs:124-175`. The support reply UI now uses honest draft wording and a local fallback; live AI requires the configured backend. Do not paste private customer messages into the demo or use it as an automated response sender.
+8. **Health checks need real runtime evidence** — `index.html:639-644`, `worker.mjs:101-108`. The dashboard can show local-only or unavailable states. A configured URL or visible binding label is not proof of database persistence or provider connectivity.
+
+### Low
+
+1. **Social scheduling remains a manual handoff** — `index.html:255-304, 410-420`. The UI creates drafts, copies text, and opens Metricool. The checklist is local state only and does not prove scheduling.
+2. **Accessibility needs device-level validation** — `index.html:571-609`, `portfolio.html:203-225, 285-316`. Focus styles, labels, ARIA, reduced-motion and keyboard Escape behavior exist. Verify keyboard/focus order, screen-reader announcements and Android touch targets in a real browser.
+3. **SEO/social metadata needs live validation** — `index.html:4-16`, `portfolio.html:4-20`. Canonical and Open Graph metadata exist. Confirm the published canonical URLs and social preview after deployment. A user-facing `privacy.html` notice now explains local/server storage limits and the no-real-customer-data rule.
+4. **Python tests are smoke tests** — `tests/test_workflow_smoke.py:1-32`. They cover dry-run and empty approval safety, not a live provider integration. Do not infer successful scheduling from these tests.
+
+## Implemented in this branch
+
+- Added a 12-second timeout to shared dashboard API requests and a user-facing timeout message, avoiding indefinite pending states.
+- Hardened Worker lead list, lookup and delete database failures to return generic 503 responses; added regression coverage to prevent database error details leaking through these routes.
+- Removed the external Lucide CDN script and Google Fonts requests; the dashboard uses built-in icon fallbacks and system fonts, avoiding the unverified-SRI dependency.
+- Added a user-facing `privacy.html` notice and linked it from Settings; it explicitly warns against real customer data because automated retention/deletion is not implemented.
+- Pinned direct Python dependencies to exact release versions.
+- Changed the dashboard admin token from `sessionStorage` persistence to in-memory-only handling; refresh clears it.
+- Added Node API CORS allowlisting and per-IP in-memory rate limits; added tests for disallowed origins, allowed preflight and repeated-request limiting.
+- Renamed the support tool to **Customer-support reply draft** and removed raw backend error text from its local fallback.
+- Updated regression tests to match the current account-verification warning and cover request timeout / honest draft wording.
+- Changed Worker lead create/update handlers to return generic 500 messages for unexpected database failures while preserving expected 4xx validation messages.
+- Replaced Cloudflare's deprecated `@cf/meta/llama-3.1-8b-instruct` model with `@cf/zai-org/glm-4.7-flash`, updated the model assertion, and refreshed the card-free setup guide. Current Cloudflare docs show GLM-4.7-Flash remains available on Workers Free, subject to the shared 10,000-Neuron daily allowance.
+- Added a Worker regression test to ensure internal database error strings are not returned to API clients.
+- Updated this analysis and the security status.
+
+- Hardened the Worker AI error path: unexpected provider failures return a generic 502 without echoing upstream error text, and switched the generation cap to the current `max_completion_tokens` parameter. Added a regression test for error redaction.
+
+## Free social workflow
+
+1. Draft the caption and visual brief in the dashboard.
+2. Review the facts, voice, hashtags, links, and image/video yourself.
+3. Confirm that the signed-in Metricool/Typefully account and selected brand/profile are yours.
+4. If the free plan supports the desired scheduling action, copy the caption and schedule manually in the provider. Otherwise use the social platform's own composer and schedule options where available.
+5. Do not schedule/publish until you explicitly approve the final copy, media, destination and time.
+6. Verify the scheduled item in the provider planner; later verify the actual post on the social network.
+
+**No API token is needed for manual copy-and-schedule.** Do not add a direct Metricool API implementation unless your own account/plan explicitly permits it. No paid upgrade is proposed.
+
+## CI and verification status
+
+The latest fully completed GitHub Actions run [39255566872](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39255566872) passed earlier regression checks. Newer runs for the Social Publisher PNG export are queued; latest observed run [39284759173](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39284759173) has no runner assigned yet. The CI workflow now cancels superseded runs for the same PR and caps job runtime at 15 minutes after start, but runner assignment is controlled by GitHub. Do not treat the newest tests as passing until completion. CI also cannot verify live Cloudflare bindings or a third-party social account.
+
+## Remaining risks
+
+- Python direct dependencies are pinned, but a fully reproducible transitive lockfile with hashes is not complete.
+- The privacy notice is informational; automated retention/deletion and tested backup/restore are still not implemented.
+- Deployed Cloudflare Worker, D1 schema, rate limiting and health endpoint are not verified from this repository session.
+- Node API rate limits are process-local and not a replacement for edge/WAF controls; confirm the correct `ALLOWED_ORIGIN` for the actual deployment.
+- Correct social account identity is still a manual prerequisite; no scheduling or publishing action was taken.
+- Privacy notice, retention/deletion, backup/restore and production incident monitoring are still required before real customer data.
+
+## Mobile UX follow-up (2026-10-20)
+
+- The account-verification reminder now uses a flexible text column on mobile, improved line height and wrapping, and touch-friendly buttons that stack on narrow screens.
+- The change is on the feature branch. CI passed for commit [880cac4](https://github.com/AllahNawaz36/AllahNawaz-/commit/880cac4c0683d2790013e1fce9bb3e5936a73c6f) in run [39373642729](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39373642729). This is code/test verification, not proof of Android rendering or live deployment.
+
+## Free-first media and voice tool directory (2026-10-20)
+
+- Added official links and cautious plan notes for Google Flow, Canva, CapCut, ElevenLabs, ChatGPT Voice, Figma and Metricool in the Automation Studio. This is a provider directory, not a claim that those services are embedded APIs in the website.
+- Figma identity check succeeded for the connected account; Metricool returned brand `ANJAN MALIK JAN` and a LinkedIn profile identifier. This confirms connector response only, not independent account ownership or publish permission. No social post was scheduled or published.
+- Google Flow access is marked eligibility-dependent because official Google pages surfaced differing rollout/plan guidance. Canva and voice generation quotas/features are described as limited/plan-dependent. Website-embedded live voice replies remain unimplemented.
+- Awaiting CI for this commit; no merge or direct push to `main`.
+
+## Google resource hub (2026-10-20)
+
+- Added official Google links to Automation Studio for Gemini API / AI Studio, PageSpeed Insights, Search Console, Trends, Analytics, Apps Script, Drive, YouTube Studio and Business Profile. These are resource links, not claimed API integrations.
+- Search Console private data requires OAuth authorization; Gemini API quotas depend on model/project tier; the directory warns users not to place API keys in frontend code. PageSpeed can be tried through the official web interface without claiming that the dashboard itself runs an API scan.
+- Added a frontend regression test for the Google directory, official authorization documentation and honest connection labels. Awaiting CI for the latest commits; no merge or push to `main`.
+
+- **Test follow-up:** the first new Google-directory regression assertion used an overly strict section matcher and failed; the matcher has been corrected to slice the Automation Studio section by its actual boundaries. Awaiting CI on the corrected test commit before calling the change verified.
+
+## Automation platform directory (2026-10-20)
+
+- Added official entry points for n8n Community Edition, Groq, Cloudflare Workers AI, GitHub Actions, Hugging Face Spaces, Ollama, Make, Zapier and GitHub automation examples.
+- Each card distinguishes a resource link from a connected integration and notes the relevant free-tier, hosting, quota or hardware caveat. n8n Cloud is not represented as free indefinitely; self-hosting requires an always-on maintained host. GitHub Actions is not presented as always-on hosting.
+- Added regression coverage for the directory, deployment caveats and API-secret handling. Live integrations, provider permissions, always-on scheduling and deployment remain unverified until account-side setup and end-to-end checks are complete.
+
+## Automation alternatives and launch safety (2026-10-20)
+
+- Added official links for Activepieces, Make and Pipedream as alternatives to n8n, with plan/quota and self-hosting caveats. These are external resources, not connected integrations.
+- Added approval-first workflow checklists for social scheduling, lead follow-up, weekly SEO reports, and reliability/recovery. The UI explicitly states that checklists do not execute workflows.
+- Added regression coverage for the official links, approval gate, secret-handling warning and non-execution disclaimer. Latest CI must pass before treating this commit as verified; PR remains open/unmerged.

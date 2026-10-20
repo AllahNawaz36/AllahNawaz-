@@ -2,14 +2,14 @@
 
 ## Latest live connection test — 2026-10-19
 
-- The Metricool connector currently returns one brand: `ANJAN MALIK JAN`.
-- The returned brand has LinkedIn, Instagram, TikTok and YouTube network entries, but the user has explicitly confirmed this brand is **not theirs**.
+- The Metricool connector currently returns a third-party brand that has not been verified as the user's.
+- The returned brand has social-network entries, but the user has not confirmed ownership. Treat it as **not theirs unless independently verified**.
 - **Safety result: BLOCKED.** Do not schedule, edit, approve, or publish anything to this brand. No posts were scheduled during this test.
-- This result confirms that the Metricool connection available to ChatGPT is pointing at the wrong Metricool account/brand. It does not prove which account is signed in to the user's Android browser.
-- Do not copy the returned brand ID or network identifiers into the user's project configuration.
+- This result means the Metricool connection available to ChatGPT is not verified for use by the user. It does not prove which account is signed in to the user's Android browser.
+- Do not copy the returned brand name, ID or network identifiers into the user's project configuration or public UI.
 
 ## What is already in place
-- The Social Publisher page in `index.html` can draft a LinkedIn caption, create a visual design brief, save the draft locally, copy text, and open Metricool.
+- The Social Publisher page in `index.html` can draft a LinkedIn caption, create a visual design brief, save the draft locally, copy text, and open LinkedIn. Metricool is an optional external handoff, not the default.
 - The website is hosted on GitHub Pages. GitHub Pages serves static HTML and cannot securely store private API tokens.
 - The separate Metricool connector in ChatGPT can access the Metricool account from ChatGPT, but the public website cannot call ChatGPT's connected tools.
 
@@ -17,25 +17,23 @@
 
 1. Open https://app.metricool.com/ in Chrome.
 2. Sign out of Metricool, then sign in using the user's own existing Metricool login method (email/Google/etc.). If Google sign-in is used, explicitly choose the correct Google account.
-3. Open the top-right menu → **Connections**. Confirm the displayed brand and account belong to the user. Do not connect the user's social accounts to the unrelated `ANJAN MALIK JAN` brand.
-4. If the browser shows the user's correct brand, return to ChatGPT → Settings → Apps/Connectors → Metricool. Disconnect the wrong connection if that option is shown, then reconnect and authorize using the user's own Metricool account.
+3. Open the top-right menu → **Connections**. Confirm the displayed brand and account belong to the user. Do not connect the user's social accounts to any brand that has not been independently verified as theirs.
+4. If the browser shows the user's correct brand, return to ChatGPT → Settings → Apps/Connectors → Metricool. Reconnect using the user's own Metricool account if the available controls permit it.
 5. Re-run the Metricool brand check. Continue only when the returned brand is clearly the user's. If the wrong brand still appears, stop and inspect the Metricool sign-in/connection account before any scheduling.
 
 Official connection dashboard: https://help.metricool.com/connection-dashboard-kn7ow
 
 ## Choose the correct path
 
-### Option A — Free-first (no Metricool API)
-1. Open the Naz Business Assistant Pro website.
-2. Open **Social Publisher**.
-3. Fill in the topic, audience, key point and visual brief.
-4. Tap **Build post draft** and review the copy.
-5. Tap **Copy caption**; create/export the visual in a design app if needed.
-6. Open Metricool, select the verified intended brand/profile, paste the caption, add media, choose a future time in `Asia/Karachi`, and schedule only after user approval.
-7. Confirm the post appears in Metricool's Planner. After the scheduled time, verify the post on the social network.
+### Option A — Free-first (manual copy-and-schedule; no Metricool API)
+1. Open the Naz Business Assistant Pro website and go to **Social Publisher**.
+2. Fill in the topic, audience, key point and visual brief; tap **Build post draft** and review the copy.
+3. Copy the caption and create/export the visual in a design app if needed.
+4. Open LinkedIn and confirm the signed-in profile is yours. Paste the caption, add the media, and review the final post.
+5. If LinkedIn or another scheduler offers scheduling on your current free plan, choose a future time in `Asia/Karachi`; otherwise publish manually only after explicit approval.
+6. Verify any scheduled entry in that provider's planner and later verify the post on the social network.
 
-This path is assisted/manual scheduling. The website does not claim a post was scheduled or published.
-
+This is a manual handoff. The website does not claim a post was scheduled or published. Typefully may be used only if your own account confirms the needed scheduling feature is included in its free plan.
 ### Option B — Direct scheduling from the website
 Metricool's current plan documentation says API access is available on **Advanced and Custom** plans, not Free or Starter. LinkedIn connection is also not included on the Free plan. If the account has an eligible plan:
 1. In Metricool, open **Account Settings → API** and create/copy the API access token.
