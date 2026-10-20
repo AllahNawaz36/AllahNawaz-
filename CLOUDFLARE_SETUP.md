@@ -19,7 +19,7 @@ This adds an optional API for the existing GitHub Pages dashboard. You must auth
 7. To enable Lead CRM storage, create a D1 database named `naz-business-assistant`, copy its real database ID, uncomment the D1 block in `wrangler.toml`, replace the placeholder with the actual ID, and commit the change. Never deploy with a fake ID. Then run the SQL in `schema.sql` in the D1 Console and deploy again.
 8. Copy the deployed Worker HTTPS URL, for example `https://naz-business-assistant-api.<your-subdomain>.workers.dev`.
 9. Open the GitHub Pages dashboard → Connections & Settings. Save the Worker URL in API endpoint (without a trailing slash) and press Check backend.
-10. Confirm `<worker-url>/api/health` returns `ok: true`. Its `ai` field should say `configured` when Workers AI is bound. The `storage` field will say `not-configured` until D1 is configured.
+10. Confirm `<worker-url>/api/health` returns `ok: true`. Check `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` before treating AI chat as ready. `status: "degraded"` means the API responds but chat setup is incomplete. The `storage` field will say `not-configured` until D1 is configured; `admin` should say `configured` after adding `ADMIN_TOKEN`.
 11. For Lead CRM, use Admin login and enter the same `ADMIN_TOKEN` secret. Test with a sample lead only after the database and schema are configured.
 
 ## Security / troubleshooting
