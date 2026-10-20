@@ -1,13 +1,4 @@
-test("mobile usability pass preserves touch targets, safe-area spacing and readable overlays", () => {
-  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  assert.match(html, /--tap-target:44px/, "interactive controls should have a clear touch target");
-  assert.match(html, /main\{padding-bottom:calc\(92px \+ env\(safe-area-inset-bottom\)\)\}/, "mobile content should not be hidden behind the fixed navigation");
-  assert.match(html, /\.ai-launcher\{right:12px;bottom:calc\(78px \+ env\(safe-area-inset-bottom\)\)/, "floating assistant should sit above mobile navigation");
-  assert.match(html, /\.ai-chat-panel\{right:10px;bottom:calc\(135px \+ env\(safe-area-inset-bottom\)\)/, "chat panel should fit above mobile navigation");
-  assert.match(html, /@media\(prefers-reduced-motion:reduce\)\{\.page\.active\{animation:none\}\}/, "page animation should respect reduced-motion preference");
-});
-
-const { test } = require("node:test");
+onst { test } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
@@ -129,4 +120,13 @@ test("Free AI Agent Hub keeps confirmed Pomelli link and working code/video prom
   assert.match(html, /video:"Act as a cinematic AI video director writing prompts for Google Flow/, "video task should have a prompt template");
   assert.match(html, /Google Flow/);
   assert.match(html, /external services are not connected to this dashboard/i, "external tools must not be presented as connected integrations");
+});
+
+test("mobile usability pass preserves touch targets, safe-area spacing and readable overlays", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /--tap-target:44px/, "interactive controls should have a clear touch target");
+  assert.match(html, /main\{padding-bottom:calc\(92px \+ env\(safe-area-inset-bottom\)\)\}/, "mobile content should not be hidden behind the fixed navigation");
+  assert.match(html, /\.ai-launcher\{right:12px;bottom:calc\(78px \+ env\(safe-area-inset-bottom\)\)/, "floating assistant should sit above mobile navigation");
+  assert.match(html, /\.ai-chat-panel\{right:10px;bottom:calc\(135px \+ env\(safe-area-inset-bottom\)\)/, "chat panel should fit above mobile navigation");
+  assert.match(html, /@media\(prefers-reduced-motion:reduce\)\{\.page\.active\{animation:none\}\}/, "page animation should respect reduced-motion preference");
 });
