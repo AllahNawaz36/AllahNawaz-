@@ -13,12 +13,12 @@ This adds an optional API for the existing GitHub Pages dashboard. You must auth
 
 ## Recovery when `naz-business-assistant-api` is missing (Android)
 
-Do not create a duplicate Worker just because this exact name is absent. Repository configuration names the Worker `naz-business-assistant-api`, while an older deployment note referenced `allahnaw`; neither name proves which service currently exists in the owner's Cloudflare account.
+Do not create a duplicate Worker just because this exact name is absent. Repository configuration names the Worker `naz-business-assistant-api`, while an older deployment note referenced `allahnawaz`; neither name proves which service currently exists in the owner's Cloudflare account.
 
 1. Open the Cloudflare dashboard home first: https://dash.cloudflare.com/
 2. Sign in and select the account you used when creating the Worker. Do not use a hard-coded account-specific deep link; it can return **Not Found** when the account or service does not match.
 3. Open **Workers & Pages** from the dashboard navigation. If the navigation item itself returns Not Found, reload the dashboard, verify the selected account, and try the dashboard home in a fresh browser tab. Cloudflare's official guide starts from Workers & Pages and then the application list: https://developers.cloudflare.com/workers/get-started/dashboard/
-4. Search the list for both `naz-business-assistant-api` and `allahnaw`. If one exists, open it and inspect **Deployments / Build History** and the newest build logs. If neither exists, stop here rather than creating a duplicate until the correct account is confirmed.
+4. Search the list for both `naz-business-assistant-api` and `allahnawaz`. If one exists, open it and inspect **Deployments / Build History** and the newest build logs. If neither exists, stop here rather than creating a duplicate until the correct account is confirmed.
 5. The dashboard Worker name must match the `name` in `wrangler.toml` (`naz-business-assistant-api`) for Git-connected deployments. If the existing Worker is actually named differently, review the account and deployment history before changing either name. Official troubleshooting: https://developers.cloudflare.com/workers/ci-cd/builds/troubleshoot/
 6. After a successful deployment, copy the actual assigned `workers.dev` URL and open `<that-url>/api/health`. Continue only if it returns JSON with `ok: true`. Then save the exact base URL (without a trailing slash) in the dashboard's **Connections & Settings** and press **Check backend**.
 
