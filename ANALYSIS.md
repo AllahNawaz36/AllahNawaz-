@@ -110,3 +110,9 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 - Added official entry points for n8n Community Edition, Groq, Cloudflare Workers AI, GitHub Actions, Hugging Face Spaces, Ollama, Make, Zapier and GitHub automation examples.
 - Each card distinguishes a resource link from a connected integration and notes the relevant free-tier, hosting, quota or hardware caveat. n8n Cloud is not represented as free indefinitely; self-hosting requires an always-on maintained host. GitHub Actions is not presented as always-on hosting.
 - Added regression coverage for the directory, deployment caveats and API-secret handling. Live integrations, provider permissions, always-on scheduling and deployment remain unverified until account-side setup and end-to-end checks are complete.
+
+## Automation alternatives and launch safety (2026-10-20)
+
+- Added official links for Activepieces, Make and Pipedream as alternatives to n8n, with plan/quota and self-hosting caveats. These are external resources, not connected integrations.
+- Added approval-first workflow checklists for social scheduling, lead follow-up, weekly SEO reports, and reliability/recovery. The UI explicitly states that checklists do not execute workflows.
+- Added regression coverage for the official links, approval gate, secret-handling warning and non-execution disclaimer. Latest CI must pass before treating this commit as verified; PR remains open/unmerged.
