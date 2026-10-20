@@ -48,6 +48,18 @@ The default is dry-run: it builds a prompt and planning output without sending p
 
 For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and then explicitly set `DRY_RUN=0`. Do not commit API keys. The AI stage uses the configured `CONTENT_MODEL` if provided; otherwise it uses the model ID in the code. Confirm your provider account supports that model before live use.
 
+## Current verification status (2026-10-20)
+
+The repository source and configuration have been inspected, but GitHub access alone cannot verify your Cloudflare account, current Worker deployment, bindings, secrets, or live API. Treat the backend as **not verified** until the live checks below pass.
+
+- The intended Worker name in `wrangler.toml` is `naz-business-assistant-api`.
+- The D1 binding is intentionally commented out until a real database ID is available. Lead storage will therefore report `not-configured` until you create D1, bind it as `DB`, apply `schema.sql`, and deploy.
+- Public chat is intentionally unavailable unless both an AI provider (`AI` binding or `GEMINI_API_KEY` secret) and the `CHAT_LIMITER` binding work.
+- `GET /api/health` can return HTTP 200 and `ok: true` while the service status is `degraded`. Check `status: "ready"`, `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` before treating chat as ready.
+- GitHub Pages is only the frontend. The actual deployed Worker URL must be entered in **Connections & Settings → API endpoint**.
+
+If Cloudflare shows **Not Found**, start from https://dash.cloudflare.com/, confirm the correct account, and open Workers & Pages from the dashboard. Do not rely on an account-specific deep link or create a second Worker until the account and existing deployment have been checked. See [Cloudflare recovery and deployment guide](CLOUDFLARE_SETUP.md).
+
 ## Deployment: important distinction
 
 - **GitHub Pages is static hosting only.** It can show the dashboard interface, but cannot run `server.js`. For a separate backend, open Connections & Settings → API endpoint and enter the deployed HTTPS API base URL.
