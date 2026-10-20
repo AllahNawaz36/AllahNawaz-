@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'portfolio.html'
+      - 'robots.txt'
+      - 'sitemap.xml'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -34,6 +36,8 @@ jobs:
         run: |
           mkdir -p _site
           cp portfolio.html _site/index.html
+          cp robots.txt _site/robots.txt
+          cp sitemap.xml _site/sitemap.xml
           touch _site/.nojekyll
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
