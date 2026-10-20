@@ -131,8 +131,10 @@ export default {
       const clientKey = request.headers.get("cf-connecting-ip") || "unknown-client";
       const rateLimit = await env.CHAT_LIMITER.limit({ key: clientKey });
       if (!rateLimit.success) return response({ error: "Too many chat requests. Please wait a minute and try again." }, 429, cors);
-      if (!env.AI || typeof env.AI.run !== "function") {
-        return response({ error: "AI is not configured. Add the Workers AI binding named AI." }, 503, cors);
+      const geminiAvailable = typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim().length > 0;
+      const workersAiAvailable = Boolean(env.AI && typeof env.AI.run === "function");
+      if (!geminiAvailable && !workersAiAvailable) {
+        return response({ error: "AI is not configured. Add a Gemini API key or the Workers AI binding named AI." }, 503, cors);
       }
       try {
         const input = await bodyObject(request);
