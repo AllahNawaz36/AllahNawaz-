@@ -430,4 +430,26 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 })();
 </script>
 
+
+<style>
+/* Contrast audit follow-up: stronger boundaries for interactive controls only.
+   Decorative card dividers stay subtle; controls remain identifiable without hover. */
+:root{--control-border:#727a60;--control-border-hover:#d5ff72}
+.btn.secondary{border-color:var(--control-border)}
+.menu,.chat-close,.chat-tool-links a,.chat-quick button,
+.chat-toolrow select,.chat-compose textarea{
+  border-color:var(--control-border)
+}
+.menu:hover,.chat-close:hover,.chat-tool-links a:hover,
+.chat-quick button:hover,.chat-toolrow select:hover,
+.chat-compose textarea:hover{border-color:var(--control-border-hover)}
+.menu:focus-visible,.chat-close:focus-visible,
+.chat-tool-links a:focus-visible,.chat-quick button:focus-visible,
+.chat-toolrow select:focus-visible,.chat-compose textarea:focus-visible,
+.btn.secondary:focus-visible{
+  outline:3px solid var(--control-border-hover);
+  outline-offset:3px
+}
+</style>
+
 </body></html>
