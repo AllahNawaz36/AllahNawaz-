@@ -592,4 +592,30 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 })();
 </script>
 
+
+
+<style>
+/* Final chatbot contrast pass: preserve the existing dark + lime design system. */
+.chat-panel{background:#141611;color:#f4f4ee;border-color:#727a60}
+.chat-head strong{color:#f4f4ee}
+.chat-head small{color:#c4c9b9}
+.chat-toolrow label{color:#dfe7d1}
+.chat-toolrow select{background:#10120e;color:#f4f4ee;border-color:#727a60}
+.chat-status{color:#c8d1b7}
+.chat-status[aria-live],.chat-tool-links a{color:#d5ff72}
+.chat-section-title{color:#d5ff72}
+.chat-section-grid a{color:#f0f3e8;border-color:#727a60;background:#1a1d17}
+.chat-section-grid a:hover,.chat-section-grid a:focus-visible{color:#d5ff72;border-color:#d5ff72}
+.chat-messages{background:#141611}
+.chat-msg{background:#20231d;color:#f4f4ee;border-color:#515747}
+.chat-msg.user{background:#29351f;color:#ffffff;border-color:#8da765}
+.chat-compose{background:#191b16;border-top-color:#515747}
+.chat-compose textarea{background:#10120e;color:#ffffff;border-color:#727a60}
+.chat-compose textarea::placeholder{color:#c4c9b9;opacity:1}
+.chat-send{background:#d5ff72;color:#151610}
+.chat-foot{color:#b8c0aa}
+.chat-panel :is(button,a,select,textarea):focus-visible{outline:3px solid #d5ff72;outline-offset:3px}
+@media(forced-colors:active){.chat-panel :is(button,a,select,textarea){forced-color-adjust:auto}}
+</style>
+
 </body></html>
