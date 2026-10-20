@@ -72,3 +72,9 @@
 
 - Added responsive layout rules for the account-verification reminder: flexible text column, safe wrapping, readable line height, and accessible-size action buttons on small screens.
 - CI passed for commit [880cac4](https://github.com/AllahNawaz36/AllahNawaz-/commit/880cac4c0683d2790013e1fce9bb3e5936a73c6f) in run [39373642729](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39373642729). Android visual confirmation, Cloudflare backend deployment, and social-account verification remain outstanding.
+
+## Free-first media and voice directory (2026-10-20)
+
+- Added a dashboard directory linking to official Google Flow, Canva, CapCut, ElevenLabs, ChatGPT Voice, Figma and Metricool pages, with warnings about free-tier quotas, eligibility, commercial-use limits, and unimplemented embedded voice streaming.
+- The connected Figma identity check and Metricool brand lookup returned data, but this is not independent proof of social-account ownership. No scheduling/publishing action was performed.
+- CI for this new directory commit is pending; deployment and live Android rendering remain unverified. Changes remain on the feature branch.
