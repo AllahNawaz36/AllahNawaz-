@@ -157,6 +157,7 @@ export default {
           hire: "Help clarify client goals, deliverables, budget range, timeline and next steps. Do not invent a price, availability or binding quote."
         };
         const task = input.task === "support-reply" ? "support-reply" : "client-chat";
+        const structuredMode = input.responseFormat === "structured";
         const systemPrompt = [
           task === "support-reply"
             ? "You are a careful customer-support reply drafting assistant. Draft a message on behalf of the business represented by the customer context; do not identify yourself as Allah Nawaz or claim to represent his portfolio."
@@ -169,8 +170,9 @@ export default {
           "Known projects include WellnessWell Shilajit social creatives, Jalal Electronics product marketing ads, Prime Estimate web app design, Conectly SaaS interface design, and an influencer-marketing concept. T-Tech Solutions experience included responsive web/mobile interfaces, reusable UI patterns and marketing visuals.",
           "Never invent client results, metrics, testimonials, prices, dates, availability, service guarantees, or credentials. Pricing depends on confirmed scope and should be discussed rather than guessed.",
           "This chat can explain, advise, qualify a project brief, and draft content. It cannot publish/schedule posts, send messages/emails, change ad spend, edit private Canva/Figma files, access customer accounts, or perform other external actions unless a separately connected and authorised integration actually confirms the action.",
-          "If the user asks for an action that is not connected, explain the limitation honestly and offer to prepare the draft or checklist instead. Do not request passwords, access tokens, or sensitive customer data."
-        ].join(" ");
+          "If the user asks for an action that is not connected, explain the limitation honestly and offer to prepare the draft or checklist instead. Do not request passwords, access tokens, or sensitive customer data.",
+          structuredMode ? "Return ONLY one valid JSON object with exactly these keys: summary (string), assumptions (array of strings), nextSteps (array of strings), limitations (array of strings). No markdown fences or extra keys. Use empty arrays when none apply. Keep summary concise, nextSteps to at most 5 items, assumptions and limitations to at most 5 items each. Do not include facts not supported by the user input or supplied context." : ""
+        ].filter(Boolean).join(" ");
         let answer = "";
         let aiProvider = "workers-ai";
         if (typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim()) {
@@ -189,7 +191,7 @@ export default {
             body: JSON.stringify({
               systemInstruction: { parts: [{ text: systemPrompt }] },
               contents: [{ role: "user", parts: [{ text: message }] }],
-              generationConfig: { maxOutputTokens: 500, temperature: 0.5 }
+              generationConfig: structuredMode ? { maxOutputTokens: 600, temperature: 0.2, responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { summary: { type: "STRING" }, assumptions: { type: "ARRAY", items: { type: "STRING" } }, nextSteps: { type: "ARRAY", items: { type: "STRING" } }, limitations: { type: "ARRAY", items: { type: "STRING" } } }, required: ["summary", "assumptions", "nextSteps", "limitations"] } } : { maxOutputTokens: 500, temperature: 0.5 }
             })
           });
           const payload = await geminiResponse.json().catch(() => ({}));
@@ -210,11 +212,22 @@ export default {
               { role: "system", content: systemPrompt },
               { role: "user", content: message }
             ],
-            max_tokens: 350
+            max_tokens: structuredMode ? 600 : 350,
+            ...(structuredMode ? { response_format: { type: "json_object" } } : {})
           });
           answer = typeof result?.response === "string" ? result.response.trim() : "";
         }
         if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
+        if (structuredMode) {
+          let structured;
+          try { structured = JSON.parse(answer); } catch { return response({ error: "AI returned invalid structured data. Please retry with a simpler request." }, 502, cors); }
+          const validString = value => typeof value === "string" && value.trim().length > 0 && value.length <= 2000;
+          const validList = value => Array.isArray(value) && value.length <= 5 && value.every(item => typeof item === "string" && item.length <= 500);
+          if (!structured || typeof structured !== "object" || Array.isArray(structured) || !validString(structured.summary) || !validList(structured.assumptions) || !validList(structured.nextSteps) || !validList(structured.limitations)) {
+            return response({ error: "AI output did not match the required schema. Please retry." }, 502, cors);
+          }
+          return response({ answer: structured.summary.trim(), structured: { summary: structured.summary.trim(), assumptions: structured.assumptions, nextSteps: structured.nextSteps, limitations: structured.limitations }, mode: "ai", provider: aiProvider, platform, responseFormat: "structured" }, 200, cors);
+        }
         return response({ answer, mode: "ai", provider: aiProvider, platform }, 200, cors);
       } catch (error) {
         return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
