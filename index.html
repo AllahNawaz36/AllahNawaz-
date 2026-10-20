@@ -494,6 +494,25 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
         </div>
       </div>
       <div class="card span-12">
+        <div class="cardhead"><h3>Free automation alternatives</h3><span class="pill">Compare before connecting</span></div>
+        <p class="mini">Use these official platforms to prototype automations. Free-plan quotas, execution limits and commercial terms can change. Treat them as external services until an authorized connection and successful test exist in this dashboard.</p>
+        <div class="grid" style="margin-top:14px">
+          <div class="card span-4"><div class="cardhead"><h3>Activepieces</h3><span class="pill">Open-source option</span></div><p>Visual automation with connectors and AI steps. Self-hosting requires maintenance; cloud plan limits vary. Useful alternative to compare with n8n.</p><a class="btn primary" href="https://www.activepieces.com/" target="_blank" rel="noopener noreferrer">Open Activepieces ↗</a><p class="mini"><a href="https://github.com/activepieces/activepieces" target="_blank" rel="noopener noreferrer">Official source repository</a>.</p></div>
+          <div class="card span-4"><div class="cardhead"><h3>Make</h3><span class="pill">Hosted · free quota</span></div><p>Visual scenarios for app-to-app workflows. Free plan has operation limits; check current pricing before building anything critical.</p><a class="btn primary" href="https://www.make.com/" target="_blank" rel="noopener noreferrer">Open Make ↗</a><p class="mini"><a href="https://www.make.com/en/pricing" target="_blank" rel="noopener noreferrer">Official plan limits</a>.</p></div>
+          <div class="card span-4"><div class="cardhead"><h3>Pipedream</h3><span class="pill">Developer workflows</span></div><p>Connect APIs, webhooks and scheduled jobs. Credits and deployment limits depend on the current plan; never assume unlimited execution.</p><a class="btn primary" href="https://pipedream.com/" target="_blank" rel="noopener noreferrer">Open Pipedream ↗</a><p class="mini"><a href="https://pipedream.com/pricing" target="_blank" rel="noopener noreferrer">Official pricing</a>.</p></div>
+        </div>
+      </div>
+      <div class="card span-12">
+        <div class="cardhead"><h3>Safe workflow launch checklist</h3><span class="pill">Approval-first</span></div>
+        <p class="mini">Use this before any real account action. A green checkbox here is a personal checklist only; it does not connect services or run a workflow.</p>
+        <div class="grid" style="margin-top:14px">
+          <div class="card span-6"><h3>1. Content-to-schedule</h3><ol><li>Draft copy and visual.</li><li>Check brand, links, spelling and platform format.</li><li>Show the exact account, time and timezone.</li><li>Require your approval before scheduling.</li><li>Verify the provider's returned scheduled-post ID and status.</li></ol></div>
+          <div class="card span-6"><h3>2. Lead-to-follow-up</h3><ol><li>Collect only necessary contact details with permission.</li><li>Validate fields and reject malformed input.</li><li>Store with access controls and a retention rule.</li><li>Draft a reply; require approval before sending.</li><li>Log success/failure without storing secrets.</li></ol></div>
+          <div class="card span-6"><h3>3. Weekly SEO report</h3><ol><li>Analyze public website speed.</li><li>Connect Search Console only through official authorization.</li><li>Label missing data instead of inventing metrics.</li><li>Generate a report with source links and date range.</li><li>Keep a manual export if the API is not configured.</li></ol></div>
+          <div class="card span-6"><h3>4. Reliability and recovery</h3><ol><li>Use server-side secrets, never frontend/API keys in Git.</li><li>Set rate limits, timeouts and bounded retries.</li><li>Prevent duplicate sends with idempotency where supported.</li><li>Keep audit logs and a manual pause/kill switch.</li><li>Test failure paths and restore/backup before production.</li></ol></div>
+        </div>
+      </div>
+      <div class="card span-12">
         <div class="cardhead"><h3>Automation & agent platforms</h3><span class="pill">Free-first · setup required</span></div>
         <p class="mini">These are trustworthy starting points for real workflows. A link is not an active integration: connect accounts securely, set limits, test each workflow and add approval gates before enabling live actions. Never paste passwords, access tokens or API keys into this page.</p>
         <div class="grid" style="margin-top:14px">
