@@ -84,3 +84,8 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 - Node API rate limits are process-local and not a replacement for edge/WAF controls; confirm the correct `ALLOWED_ORIGIN` for the actual deployment.
 - Correct social account identity is still a manual prerequisite; no scheduling or publishing action was taken.
 - Privacy notice, retention/deletion, backup/restore and production incident monitoring are still required before real customer data.
+
+## Mobile UX follow-up (2026-10-20)
+
+- The account-verification reminder now uses a flexible text column on mobile, improved line height and wrapping, and touch-friendly buttons that stack on narrow screens.
+- The change is on the feature branch. CI passed for commit [880cac4](https://github.com/AllahNawaz36/AllahNawaz-/commit/880cac4c0683d2790013e1fce9bb3e5936a73c6f) in run [39373642729](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39373642729). This is code/test verification, not proof of Android rendering or live deployment.
