@@ -64,3 +64,20 @@
 - Free tiers are limited and provider terms change; always verify current official plan pages before committing to a design.
 - No universal integration can bypass OAuth, app review, account eligibility, paid-only API access, or platform restrictions.
 - Never store passwords or private customer data in this catalog.
+
+## Free AI Agent Hub added to the dashboard
+
+The dashboard now includes a **Free AI Agent Hub** with launch links and a local prompt builder. It does not embed or connect these providers' accounts; each service opens separately, and its own terms, regional access and free quota apply.
+
+| Service | Official entry point | Honest usage note |
+|---|---|---|
+| Arena Agent Mode | https://arena.ai/agent | External agent workspace; verify current access and limits |
+| Poe | https://poe.com/ | Freemium; free message/model access is limited |
+| Monica | https://monica.im/ | Freemium; some tools may require payment |
+| Google AI Studio | https://aistudio.google.com/ | Free quotas may be available; limits and model access vary |
+| HuggingChat | https://huggingface.co/chat/ | External chat with available models; model availability can change |
+| Duck.ai | https://duck.ai/ | External chat; don't use it as a private customer-record system |
+
+The prompt builder produces reusable instructions for research, LinkedIn content and visual briefs, UI/UX reviews, lead workflows, free-first automation planning and SEO outlines. It saves only in browser-local drafts. It does not run the external agent, retrieve its response, publish content or send messages.
+
+The name **“Pamoly”** could not be reliably matched to an official AI-agent service from the supplied spelling. Do not add a guessed URL; ask for the exact link or screenshot and verify the official domain first.
