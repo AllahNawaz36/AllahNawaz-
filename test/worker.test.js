@@ -12,6 +12,7 @@ test("worker health endpoint responds without database credentials", async () =>
     service: "naz-business-assistant",
     storage: "not-configured",
     ai: "not-configured",
+    aiProvider: "none",
     chatProtection: "not-configured",
     admin: "not-configured",
     chatReady: false
@@ -187,10 +188,9 @@ test("worker health identifies Gemini as the configured AI provider", async () =
 
 test("worker uses Gemini when a secret is configured and never returns the key", async () => {
   const worker = await getWorker();
-  const originalFetch = global.fetch;
   let requestUrl = "";
   let requestHeaders;
-  global.fetch = async (url, options) => {
+  const geminiFetch = async (url, options) => {
     requestUrl = String(url);
     requestHeaders = options.headers;
     return new Response(JSON.stringify({
@@ -205,7 +205,8 @@ test("worker uses Gemini when a secret is configured and never returns the key",
     }), {
       ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
       GEMINI_API_KEY: "test-gemini-secret",
-      CHAT_LIMITER: { async limit() { return { success: true }; } }
+      CHAT_LIMITER: { async limit() { return { success: true }; } },
+      GEMINI_FETCH: geminiFetch
     });
     const data = await response.json();
     assert.equal(response.status, 200);
@@ -215,7 +216,7 @@ test("worker uses Gemini when a secret is configured and never returns the key",
     assert.equal(data.answer, "Gemini response for the dashboard.");
     assert.doesNotMatch(JSON.stringify(data), /test-gemini-secret/);
   } finally {
-    global.fetch = originalFetch;
+    // Test-only fetch injection avoids making a real network request.
   }
 });
 
