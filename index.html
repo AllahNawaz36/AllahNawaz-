@@ -152,6 +152,53 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 .mobile-more-panel{display:none}
 .mobile-more-panel[hidden]{display:none!important}
 @media(max-width:900px){.mobile-nav{justify-content:space-around;overflow:visible}.mobile-nav button{flex:1;min-width:0}.mobile-more-panel:not([hidden]){position:fixed;z-index:30;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 16px 45px #20150e24;max-height:min(60vh,420px);overflow-y:auto}.mobile-more-panel button{display:flex;min-width:0;min-height:62px;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px 4px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink);font-size:10px;font-weight:700;text-align:center;line-height:1.2}.mobile-more-panel button .icon{width:20px;height:20px;min-width:20px;margin:0;top:0;color:var(--accent)}.mobile-more-panel button span{overflow-wrap:anywhere}.mobile-more-panel button:active,.mobile-more-panel button:focus-visible{border-color:var(--accent);background:var(--panel2)}}
+
+/* User-friendly usability pass: predictable focus, readable forms, touch targets and mobile overlays */
+:root{--tap-target:44px}
+body{min-width:320px}
+button,a,input,select,textarea{touch-action:manipulation}
+button,.btn{min-height:var(--tap-target)}
+input[type="checkbox"],input[type="radio"]{width:18px;height:18px;accent-color:var(--accent);flex:0 0 auto}
+.field input::placeholder,.field textarea::placeholder,.toolbar input::placeholder{color:var(--muted);opacity:.82}
+.field input:disabled,.field textarea:disabled,.field select:disabled{opacity:.7;cursor:not-allowed}
+.page.active{animation:page-enter .16s ease-out}
+@keyframes page-enter{from{opacity:.78;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.empty{border:1px dashed var(--line);border-radius:12px;background:color-mix(in srgb,var(--panel) 65%,transparent)}
+.status-note{line-height:1.55;overflow-wrap:anywhere}
+.result{max-width:100%;line-height:1.65}
+.tablewrap{-webkit-overflow-scrolling:touch}
+.reminder-banner{align-self:stretch}
+.reminder-actions .btn{min-height:44px}
+.ai-launcher{min-height:48px}
+.ai-chat-panel{max-height:calc(100dvh - 112px)}
+@media(max-width:720px){
+ body{font-size:14px}
+ main{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+ .topbar{align-items:flex-start}
+ .topbar>div:first-child{min-width:0}
+ .topbar h1{overflow-wrap:anywhere}
+ .top-actions{flex-shrink:0}
+ .hero{gap:14px}
+ .hero .btn{white-space:normal;max-width:100%}
+ .reminder-banner{align-items:flex-start}
+ .reminder-banner>div:last-child{overflow-wrap:anywhere}
+ .reminder-actions .btn{font-size:12px}
+ .toolbar>*{max-width:100%}
+ .toolbar input{flex-basis:100%;min-width:0}
+ .actions .btn,.reminder-actions .btn{flex:1 1 auto}
+ .ai-launcher{right:12px;bottom:calc(78px + env(safe-area-inset-bottom));padding:12px 14px}
+ .ai-chat-panel{right:10px;bottom:calc(135px + env(safe-area-inset-bottom));width:calc(100vw - 20px);height:min(560px,calc(100dvh - 175px));border-radius:17px}
+ .toast{bottom:calc(82px + env(safe-area-inset-bottom));right:12px}
+ .mobile-nav{padding-bottom:calc(7px + env(safe-area-inset-bottom))}
+}
+@media(max-width:380px){
+ .topbar{flex-wrap:wrap}
+ .top-actions{width:100%;justify-content:flex-start}
+ .reminder-actions{flex-direction:column}
+ .reminder-actions .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.page.active{animation:none}}
+
 </style>
 </head>
 <body>
