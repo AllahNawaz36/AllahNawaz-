@@ -25,6 +25,14 @@ The live Cloudflare account and Worker bindings were not accessible through a de
 | Automation scheduler | Repository contains planning/dry-run workflow code. | A local Python script or GitHub workflow is not automatically an always-on hosted agent. Verify triggers, credentials, execution logs, retries and failure notifications before promising background automation. |
 | n8n, Google Flow, email, WhatsApp, ads | No live integration or successful end-to-end action was verified here. | Do not label these connected or operational without actual credentials/authorization, configured workflows, and an end-to-end test. Never request account passwords in chat. |
 
+## ChatGPT connector permission review
+
+The connected-app permission tool reported:
+
+- **GitHub:** app-specific permission is **Allow all actions**. This is a higher-risk setting because the connector may read or take actions without asking first. Recommended least-privilege option: change GitHub to ask before writes / important actions if that option is available in your settings. I have **not** changed this permission.
+- **Metricool, Canva, Figma, Notion:** each follows the global **Allow low-risk actions** default. The tool reports that low-risk actions may be approved automatically and sensitive actions may be denied. Keep human review for public posts, design changes, and any write affecting live business data.
+- These permission settings are separate from the OAuth/API scopes granted inside each external service. They do not prove that a platform grants every action the project might need.
+
 ## Source-code observations
 
 - The dashboard stores its API base URL in this browser's local storage. Saving an endpoint on one browser does not configure every device or user.
