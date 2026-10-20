@@ -104,3 +104,9 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 - Added a frontend regression test for the Google directory, official authorization documentation and honest connection labels. Awaiting CI for the latest commits; no merge or push to `main`.
 
 - **Test follow-up:** the first new Google-directory regression assertion used an overly strict section matcher and failed; the matcher has been corrected to slice the Automation Studio section by its actual boundaries. Awaiting CI on the corrected test commit before calling the change verified.
+
+## Automation platform directory (2026-10-20)
+
+- Added official entry points for n8n Community Edition, Groq, Cloudflare Workers AI, GitHub Actions, Hugging Face Spaces, Ollama, Make, Zapier and GitHub automation examples.
+- Each card distinguishes a resource link from a connected integration and notes the relevant free-tier, hosting, quota or hardware caveat. n8n Cloud is not represented as free indefinitely; self-hosting requires an always-on maintained host. GitHub Actions is not presented as always-on hosting.
+- Added regression coverage for the directory, deployment caveats and API-secret handling. Live integrations, provider permissions, always-on scheduling and deployment remain unverified until account-side setup and end-to-end checks are complete.
