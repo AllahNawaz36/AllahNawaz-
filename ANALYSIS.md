@@ -89,3 +89,10 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 
 - The account-verification reminder now uses a flexible text column on mobile, improved line height and wrapping, and touch-friendly buttons that stack on narrow screens.
 - The change is on the feature branch. CI passed for commit [880cac4](https://github.com/AllahNawaz36/AllahNawaz-/commit/880cac4c0683d2790013e1fce9bb3e5936a73c6f) in run [39373642729](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39373642729). This is code/test verification, not proof of Android rendering or live deployment.
+
+## Free-first media and voice tool directory (2026-10-20)
+
+- Added official links and cautious plan notes for Google Flow, Canva, CapCut, ElevenLabs, ChatGPT Voice, Figma and Metricool in the Automation Studio. This is a provider directory, not a claim that those services are embedded APIs in the website.
+- Figma identity check succeeded for the connected account; Metricool returned brand `ANJAN MALIK JAN` and a LinkedIn profile identifier. This confirms connector response only, not independent account ownership or publish permission. No social post was scheduled or published.
+- Google Flow access is marked eligibility-dependent because official Google pages surfaced differing rollout/plan guidance. Canva and voice generation quotas/features are described as limited/plan-dependent. Website-embedded live voice replies remain unimplemented.
+- Awaiting CI for this commit; no merge or direct push to `main`.
