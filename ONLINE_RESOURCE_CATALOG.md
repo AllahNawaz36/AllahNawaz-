@@ -71,7 +71,7 @@ The dashboard now includes a **Free AI Agent Hub** with launch links and a local
 
 | Service | Official entry point | Honest usage note |
 |---|---|---|
-| Arena Agent Mode | https://arena.ai/agent | External agent workspace; verify current access and limits |
+| Google Pomelli Agent | https://labs.google.com/pomelli | Official Google Labs tool; currently free, feature availability varies by country |\n| Arena Agent Mode | https://arena.ai/agent | External agent workspace; verify current access and limits |
 | Poe | https://poe.com/ | Freemium; free message/model access is limited |
 | Monica | https://monica.im/ | Freemium; some tools may require payment |
 | Google AI Studio | https://aistudio.google.com/ | Free quotas may be available; limits and model access vary |
@@ -80,4 +80,4 @@ The dashboard now includes a **Free AI Agent Hub** with launch links and a local
 
 The prompt builder produces reusable instructions for research, LinkedIn content and visual briefs, UI/UX reviews, lead workflows, free-first automation planning and SEO outlines. It saves only in browser-local drafts. It does not run the external agent, retrieve its response, publish content or send messages.
 
-The name **“Pamoly”** could not be reliably matched to an official AI-agent service from the supplied spelling. Do not add a guessed URL; ask for the exact link or screenshot and verify the official domain first.
+The user confirmed that “Pamoly” meant **Google Pomelli** at https://labs.google.com/pomelli. This official link is now included in the dashboard. Google’s current supported-country list includes Pakistan; language support is English, and feature availability may vary by country. See https://support.google.com/labs/answer/16945066.
