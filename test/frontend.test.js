@@ -163,3 +163,18 @@ test("Automation Studio lists official Google resources with honest connection l
   assert.match(automation, /does not pull analytics data automatically yet/, "directory must not imply Analytics is already connected");
   assert.match(automation, /never put an API key in frontend code/, "API-key safety guidance should be visible");
 });
+
+
+test("Automation Studio lists free-first orchestration platforms with deployment and quota caveats", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const start = html.indexOf('<section class="page" id="page-automation">');
+  const end = html.indexOf('<section class="page" id="page-seo">', start);
+  const automation = start >= 0 && end > start ? html.slice(start, end) : "";
+  assert.match(automation, /Automation & agent platforms/, "automation platform directory should exist");
+  for (const name of ["n8n Community Edition", "Groq API", "Cloudflare Workers AI", "GitHub Actions", "Hugging Face", "Ollama", "Make", "Zapier"]) {
+    assert.ok(automation.includes(name), "directory should include " + name);
+  }
+  assert.match(automation, /GitHub Pages alone cannot run n8n/, "static hosting limitation should be explicit");
+  assert.match(automation, /never paste passwords, access tokens or API keys into this page/i, "secret-handling guidance should be explicit");
+  assert.match(automation, /not a guaranteed always-on server/, "scheduled CI should not be presented as always-on hosting");
+});
