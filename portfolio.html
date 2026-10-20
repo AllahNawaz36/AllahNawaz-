@@ -176,7 +176,7 @@ h1,h2,h3,p{overflow-wrap:break-word}
 <header class="nav"><div class="wrap navin">
 <a class="brand" href="#home" aria-label="Allah Nawaz home"><span class="monogram">AN.</span><span>Allah Nawaz<small>Product Designer</small></span></a>
 <button class="menu" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open navigation">Menu ☰</button>
-<nav class="links" id="navLinks"><a href="#work">Selected work</a><a href="#more-work">More projects</a><a href="#motion-lab">Motion & VFX</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#process">Process</a><a href="#contact">Contact</a><a class="navcta" href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer">Let’s connect ↗</a></nav>
+<nav class="links" id="navLinks"><a href="#work">Selected work</a><a href="#more-work">More projects</a><a href="#motion-lab">Motion & VFX</a><a href="#social-content">Social videos</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#process">Process</a><a href="#contact">Contact</a><a class="navcta" href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer">Let’s connect ↗</a></nav>
 </div></header>
 <main id="main-content">
 <section class="hero" id="home"><div class="wrap">
@@ -299,6 +299,21 @@ h1,h2,h3,p{overflow-wrap:break-word}
 </div></div></section>
 <section class="section" id="process"><div class="wrap"><div class="sectionhead reveal"><div><div class="overline">05 / How I work</div><h2>Thoughtful, not complicated.</h2></div><p>A flexible process that keeps the problem clear, the collaboration open, and the final experience grounded in real needs.</p></div>
 <div class="processgrid"><article class="step reveal"><div class="stepnum">STEP 01</div><h3>Understand</h3><p>Clarify the audience, business goal, constraints, and the real problem to solve.</p></article><article class="step reveal"><div class="stepnum">STEP 02</div><h3>Explore</h3><p>Map user journeys, sketch options, and build a structure before polishing visuals.</p></article><article class="step reveal"><div class="stepnum">STEP 03</div><h3>Design</h3><p>Create accessible, responsive interfaces with clear hierarchy and reusable patterns.</p></article><article class="step reveal"><div class="stepnum">STEP 04</div><h3>Refine</h3><p>Prototype, gather feedback, and collaborate on a practical developer handoff.</p></article></div>
+</div></section>
+
+<section class="section" id="social-content"><div class="wrap">
+  <div class="sectionhead reveal"><div><div class="overline">Social content / 07</div><h2>Videos & Social Content</h2></div><p>Short-form storytelling, motion, and visual ideas from social platforms.</p></div>
+  <div class="social-content-grid">
+    <article class="social-feature reveal">
+      <div class="social-feature-top"><span class="social-platform">TikTok · Shared link</span><span class="social-status">Link added</span></div>
+      <div class="social-preview" aria-label="TikTok video preview unavailable until the public video destination is confirmed">
+        <div class="social-play" aria-hidden="true">▶</div>
+        <span>Open original TikTok</span>
+      </div>
+      <div class="social-feature-copy"><h3>Featured TikTok video</h3><p>This shared TikTok link is saved as the source. Its final public video destination and creator details could not be confirmed from the short URL in this review, so no thumbnail or video description is guessed.</p><a class="btn primary" href="https://vt.tiktok.com/ZSgStrMYC/" target="_blank" rel="noopener noreferrer">Watch on TikTok ↗</a></div>
+    </article>
+    <aside class="social-note reveal"><div class="overline">Next to verify</div><h3>Build the full social showcase</h3><p>Once the public account and individual posts are confirmed, this area can feature selected videos with platform labels, clear titles, and responsive embeds where supported.</p><ul><li>Facebook videos</li><li>Instagram Reels</li><li>YouTube Shorts / videos</li><li>TikTok clips</li></ul><p class="social-small">Only publicly accessible links should be featured. Original creator credit and links will be preserved.</p></aside>
+  </div>
 </div></section>
 <section class="section" id="contact"><div class="wrap"><div class="contact reveal"><div><div class="overline">06 / Have a project in mind?</div><h2>Let’s make something meaningful.</h2><p>Looking for a UI/UX or Product Designer? I’d be happy to connect, learn about your challenge, and explore how thoughtful design can help.</p><div class="tags" style="margin-top:16px"><span class="tag">Islamabad, Pakistan · Remote</span><span class="tag">B2B SaaS · Web & mobile</span></div></div><div class="heroactions"><a class="btn" href="mailto:allahnawazmalik175@gmail.com">Email me ↗</a><a class="btn" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer">WhatsApp me ↗</a></div><p class="contact-phone" style="margin-top:14px;color:var(--muted);font-size:13px">Direct contact: <a href="tel:+923055742436" style="color:var(--text);font-weight:700">+92 305 574 2436</a> · <a href="mailto:allahnawazmalik175@gmail.com" style="color:var(--text)">allahnawazmalik175@gmail.com</a></p></div></div></section>
 </main>
@@ -711,4 +726,23 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
   #contact .heroactions .btn{min-height:52px}
 }
 </style>
+
+<style>
+/* Social content section: responsive, accessible, and consistent with dark + lime portfolio. */
+#social-content .social-content-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:20px;align-items:stretch}
+#social-content .social-feature,#social-content .social-note{min-width:0;border:1px solid var(--line,#34382e);border-radius:24px;background:linear-gradient(145deg,rgba(213,255,114,.07),rgba(255,255,255,.015));overflow:hidden}
+#social-content .social-feature-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;color:var(--muted,#b5bba9);font-size:12px}
+#social-content .social-status{border:1px solid #788d54;border-radius:999px;padding:5px 9px;color:#d5ff72;white-space:nowrap}
+#social-content .social-preview{aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(ellipse at 50% 35%,rgba(213,255,114,.16),transparent 58%),#171a14;color:#e9eedf;font-size:13px}
+#social-content .social-play{display:grid;place-items:center;width:56px;height:56px;border:1px solid #d5ff72;border-radius:50%;color:#d5ff72;padding-left:3px}
+#social-content .social-feature-copy{padding:20px}
+#social-content .social-feature-copy h3,#social-content .social-note h3{margin:0 0 10px}
+#social-content .social-feature-copy p,#social-content .social-note p{color:var(--muted,#b5bba9);font-size:14px;line-height:1.75}
+#social-content .social-feature-copy .btn{display:inline-flex;margin-top:8px}
+#social-content .social-note{padding:24px}
+#social-content .social-note ul{padding-left:20px;color:#e9eedf;line-height:1.9}
+#social-content .social-small{font-size:12px!important;border-top:1px solid var(--line,#34382e);padding-top:14px}
+@media(max-width:760px){#social-content .social-content-grid{grid-template-columns:1fr}#social-content .social-note{padding:20px}}
+</style>
+
 </body></html>
