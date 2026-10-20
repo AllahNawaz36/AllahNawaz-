@@ -158,6 +158,16 @@ h1,h2,h3,p{overflow-wrap:break-word}
 .ai-footer{display:flex;justify-content:space-between;margin-top:10px;color:#c2d1b0;font-size:8px}.aiui .preview-caption{color:#a4b394}
 @media(max-width:600px){.visual{height:240px}.connectui{width:88%;padding:13px}.connect-title{margin:15px 0 10px}.connect-cards>div{padding:5px}.aiui{width:92%;padding:13px}.aiui h3{margin:14px 0 10px}.saasui{width:96%}}
 
+
+/* Portfolio refinement: CV-backed impact metrics, responsive and readable */
+.impact-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:25px}
+.impact-item{min-height:100px;padding:17px 16px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#1c1f19,#141612)}
+.impact-item strong{display:block;color:var(--lime);font:800 clamp(24px,3vw,34px)/1.1 Manrope,sans-serif;letter-spacing:-1.3px}
+.impact-item span{display:block;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
+.impact-item:hover{border-color:#68734a}
+@media(max-width:760px){.impact-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.impact-item{min-height:90px;padding:14px}}
+@media(max-width:360px){.impact-strip{grid-template-columns:1fr}.impact-item{min-height:auto}}
+
 </style>
 </head>
 <body>
@@ -175,6 +185,12 @@ h1,h2,h3,p{overflow-wrap:break-word}
 <p>I’m Allah Nawaz, a UI/UX Designer with 3 years of experience across B2B SaaS, web, and mobile products in construction, marketing, and real estate. I turn complex workflows into clear experiences through user research, information architecture, prototyping, and reusable Figma design systems.</p>
 <div class="heroactions"><a class="btn" href="#work">Explore my work <span>↘</span></a><a class="btn secondary" href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener">View Behance ↗</a></div>
 <div class="herofoot"><span><b>Based in</b> Islamabad, Pakistan · Remote</span><span><b>Experience</b> 3 years · B2B SaaS · Web & mobile</span><span><b>Tools</b> Figma · Framer · Spline 3D</span></div>
+<div class="impact-strip" aria-label="Selected design impact">
+<div class="impact-item"><strong>3 years</strong><span>UI/UX design experience</span></div>
+<div class="impact-item"><strong>60+</strong><span>Reusable Figma components</span></div>
+<div class="impact-item"><strong>~40%</strong><span>Faster feature-release pace contributed at Prime Estimate</span></div>
+<div class="impact-item"><strong>+22%</strong><span>Conversion improvement at Profituned Marketing</span></div>
+</div>
 </div></section>
 <section class="section" id="work"><div class="wrap">
 <div class="sectionhead reveal"><div><div class="overline">01 / Selected work</div><h2>Design with a purpose.</h2></div><div class="work-intro"><p>Seven selected projects across B2B SaaS, real-estate websites, product UI, and campaign design. Open the linked case studies on Behance to explore the original work.</p><a class="btn secondary" href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer">View all Behance projects ↗</a></div></div>
@@ -210,12 +226,12 @@ h1,h2,h3,p{overflow-wrap:break-word}
 </div>
 <div class="resource-note reveal"><strong>Responsible asset use:</strong> These are external reference and sourcing links, not work owned by Allah Nawaz. Before using a clip in a client project or showreel, check its current item-level license, attribution rules, and any restrictions involving people, logos, or trademarks. Use references to learn timing and craft—do not copy another creator’s finished work.</div>
 </div></section>
-<section class="section" id="about"><div class="wrap"><div class="sectionhead reveal"><div><div class="overline">02 / A little about me</div><h2>Curious by nature.<br>Intentional by design.</h2></div><p>I like finding the simple, useful idea inside a complicated problem — then turning it into something people can understand and use.</p></div>
+<section class="section" id="about"><div class="wrap"><div class="sectionhead reveal"><div><div class="overline">04 / A little about me</div><h2>Curious by nature.<br>Intentional by design.</h2></div><p>I like finding the simple, useful idea inside a complicated problem — then turning it into something people can understand and use.</p></div>
 <div class="aboutgrid"><article class="aboutcard reveal"><div class="bigmark">AN.</div><h3>Designing for people<br>and outcomes.</h3><p>My work spans UI/UX, product interfaces, design systems, and visual content. I value clear communication, practical decisions, and close collaboration with developers and marketing teams.</p><a class="projectlink" href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener">More about my work ↗</a></article>
 <article class="skillcard reveal"><div class="overline">My toolkit</div><h3 style="font:700 23px Manrope;letter-spacing:-.8px;margin:10px 0">Research to developer handoff.</h3><p>Core skills and tools from my design practice, based on my current CV.</p><div class="skilllist"><div class="skill"><i aria-hidden="true">01</i> User research & interviews</div><div class="skill"><i aria-hidden="true">02</i> Information architecture & user flows</div><div class="skill"><i aria-hidden="true">03</i> Wireframing & interaction design</div><div class="skill"><i aria-hidden="true">04</i> Prototyping & usability testing</div><div class="skill"><i aria-hidden="true">05</i> A/B testing & WCAG-aware design</div><div class="skill"><i aria-hidden="true">06</i> Figma Variables, Auto Layout & design tokens</div><div class="skill"><i aria-hidden="true">07</i> Components, variants & documentation</div><div class="skill"><i aria-hidden="true">08</i> Framer & Spline 3D</div><div class="skill"><i aria-hidden="true">09</i> CapCut & AI-assisted concepts</div><div class="skill"><i aria-hidden="true">10</i> Developer handoff & collaboration</div></div></article></div>
 </div></section>
 <section class="section" id="experience"><div class="wrap">
-<div class="sectionhead reveal"><div><div class="overline">04 / Experience & education</div><h2>Product design built around real workflows.</h2></div><p>Professional experience, selected contributions, and education based on my CV—while keeping project case studies in the selected-work section.</p></div>
+<div class="sectionhead reveal"><div><div class="overline">05 / Experience & education</div><h2>Product design built around real workflows.</h2></div><p>Professional experience, selected contributions, and education based on my CV—while keeping project case studies in the selected-work section.</p></div>
 <div class="aboutgrid experience-grid">
 <article class="aboutcard reveal"><div class="overline">JUN 2025 — PRESENT · ISLAMABAD, PAKISTAN</div><h3 style="margin-top:12px">UI/UX Designer</h3><p><strong style="color:var(--text)">Prime Estimate</strong></p><p>Lead UI/UX design for a construction estimation SaaS product, simplifying complex data-entry workflows for professional estimators and collaborating closely with engineers as new features ship.</p><div class="overline" style="margin-top:18px">Key contributions</div><ul class="experience-list"><li>Built a Figma design system from scratch with 60+ reusable components and design tokens.</li><li>Contributed to an approximately 40% faster feature-release pace through component reuse and improved design-development workflows.</li><li>Documented component states and developer handoff specs, reducing QA revision cycles by 30%.</li><li>Participate in user interviews and usability sessions, applying findings to product decisions.</li></ul><div class="tags" style="margin-top:18px"><span class="tag">Construction SaaS</span><span class="tag">Design systems</span><span class="tag">User research</span><span class="tag">Developer handoff</span></div></article>
 <article class="aboutcard reveal"><div class="overline">MAY 2024 — MAY 2025 · ISLAMABAD, PAKISTAN</div><h3 style="margin-top:12px">UI/UX Designer</h3><p><strong style="color:var(--text)">Profituned Marketing</strong></p><p>Worked on a high-traffic marketing platform, using behavioral insights and testing to improve the clarity and performance of key conversion journeys.</p><div class="overline" style="margin-top:18px">Key contributions</div><ul class="experience-list"><li>Analyzed heatmaps and session recordings to identify user drop-off points.</li><li>Redesigned conversion-funnel stages using behavior data and testing, raising conversions by 22%.</li><li>Introduced A/B testing before wider rollouts so changes were validated with real data.</li><li>Partnered with enterprise clients to turn requirements into implementation-ready designs.</li></ul><div class="tags" style="margin-top:18px"><span class="tag">Conversion UX</span><span class="tag">Heatmaps</span><span class="tag">A/B testing</span></div></article>
