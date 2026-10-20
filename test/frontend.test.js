@@ -148,3 +148,16 @@ test("icon fallbacks have consistent spacing and More menu uses matching accessi
   assert.match(html, /id="mobileMorePanel" class="mobile-more-panel" role="menu" aria-labelledby="mobileMoreButton" hidden/, "More panel should expose an accessible menu label");
   assert.match(html, /\.mobile-more-panel \.icon-fallback\{flex-basis:20px;width:20px;height:20px;min-width:20px\}/, "More menu fallback icons should share consistent sizing");
 });
+
+
+test("Automation Studio lists official Google resources with honest connection labels", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const automation = html.match(/<section class="page" id="page-automation">([\\s\\S]*?)<section class="page" id="page-seo">/)?.[1] || "";
+  assert.match(automation, /Google growth toolkit/, "Google resource hub should be in Automation Studio");
+  for (const label of ["Gemini API \/ AI Studio", "PageSpeed Insights", "Search Console", "Google Trends", "Google Analytics", "Google Apps Script", "Google Drive", "YouTube Studio", "Google Business Profile"]) {
+    assert.ok(automation.includes(label), "Google resource hub should include " + label);
+  }
+  assert.match(automation, /developers\.google\.com\/webmaster-tools\/v1\/how-tos\/authorizing/, "Search Console should link to official authorization docs");
+  assert.match(automation, /does not pull analytics data automatically yet/, "directory must not imply Analytics is already connected");
+  assert.match(automation, /never put an API key in frontend code/, "API-key safety guidance should be visible");
+});
