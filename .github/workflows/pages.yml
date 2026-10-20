@@ -7,6 +7,7 @@ on:
       - 'portfolio.html'
       - 'robots.txt'
       - 'sitemap.xml'
+      - 'social-preview.svg'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -38,6 +39,10 @@ jobs:
           cp portfolio.html _site/index.html
           cp robots.txt _site/robots.txt
           cp sitemap.xml _site/sitemap.xml
+          cp social-preview.svg _site/social-preview.svg
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin
+          rsvg-convert -w 1200 -h 630 -o _site/social-preview.png social-preview.svg
           touch _site/.nojekyll
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
