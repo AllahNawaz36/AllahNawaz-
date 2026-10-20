@@ -99,7 +99,9 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     if (request.method === "GET" && path === "/api/health") {
-      const aiConfigured = Boolean(env.AI && typeof env.AI.run === "function");
+      const geminiConfigured = typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim().length > 0;
+      const workersAiConfigured = Boolean(env.AI && typeof env.AI.run === "function");
+      const aiConfigured = geminiConfigured || workersAiConfigured;
       const chatProtectionConfigured = Boolean(env.CHAT_LIMITER && typeof env.CHAT_LIMITER.limit === "function");
       const adminConfigured = String(env.ADMIN_TOKEN || "").length >= 32;
       const chatReady = aiConfigured && chatProtectionConfigured;
@@ -109,6 +111,7 @@ export default {
         service: "naz-business-assistant",
         storage: env.DB ? "d1" : "not-configured",
         ai: aiConfigured ? "configured" : "not-configured",
+        aiProvider: geminiConfigured ? "gemini" : (workersAiConfigured ? "workers-ai" : "none"),
         chatProtection: chatProtectionConfigured ? "configured" : "not-configured",
         admin: adminConfigured ? "configured" : "not-configured",
         chatReady
@@ -166,16 +169,50 @@ export default {
           "This chat can explain, advise, qualify a project brief, and draft content. It cannot publish/schedule posts, send messages/emails, change ad spend, edit private Canva/Figma files, access customer accounts, or perform other external actions unless a separately connected and authorised integration actually confirms the action.",
           "If the user asks for an action that is not connected, explain the limitation honestly and offer to prepare the draft or checklist instead. Do not request passwords, access tokens, or sensitive customer data."
         ].join(" ");
-        const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: message }
-          ],
-          max_tokens: 350
-        });
-        const answer = typeof result?.response === "string" ? result.response.trim() : "";
+        let answer = "";
+        let aiProvider = "workers-ai";
+        if (typeof env.GEMINI_API_KEY === "string" && env.GEMINI_API_KEY.trim()) {
+          aiProvider = "gemini";
+          const model = String(env.GEMINI_MODEL || "gemini-2.5-flash").trim();
+          if (!/^[a-zA-Z0-9._-]{1,100}$/.test(model)) {
+            return response({ error: "Invalid GEMINI_MODEL configuration." }, 500, cors);
+          }
+          const geminiResponse = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              "x-goog-api-key": env.GEMINI_API_KEY.trim()
+            },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: "user", parts: [{ text: message }] }],
+              generationConfig: { maxOutputTokens: 500, temperature: 0.5 }
+            })
+          });
+          const payload = await geminiResponse.json().catch(() => ({}));
+          if (!geminiResponse.ok) {
+            const status = geminiResponse.status === 429 ? 429 : (geminiResponse.status === 401 || geminiResponse.status === 403 ? 503 : 502);
+            return response({ error: status === 429 ? "Gemini free-tier limit reached. Wait and try again, or review the model quota in Google AI Studio." : (status === 503 ? "Gemini API key was rejected or lacks access. Check the secret and model access in Google AI Studio." : "Gemini service is temporarily unavailable. Try again shortly.") }, status, cors);
+          }
+          answer = (payload.candidates?.[0]?.content?.parts || []).map(part => typeof part.text === "string" ? part.text : "").join("").trim();
+          if (!answer && payload.promptFeedback?.blockReason) {
+            return response({ error: "Gemini did not answer because the request was blocked by its safety filters. Please rephrase it." }, 400, cors);
+          }
+        } else {
+          if (!env.AI || typeof env.AI.run !== "function") {
+            return response({ error: "No AI provider is configured. Add GEMINI_API_KEY as a Worker secret, or configure the Workers AI binding named AI." }, 503, cors);
+          }
+          const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: message }
+            ],
+            max_tokens: 350
+          });
+          answer = typeof result?.response === "string" ? result.response.trim() : "";
+        }
         if (!answer) return response({ error: "AI returned an empty response. Please try again." }, 502, cors);
-        return response({ answer, mode: "ai", platform }, 200, cors);
+        return response({ answer, mode: "ai", provider: aiProvider, platform }, 200, cors);
       } catch (error) {
         return response({ error: error.status ? error.message : "AI service temporarily unavailable." }, error.status || 502, cors);
       }
