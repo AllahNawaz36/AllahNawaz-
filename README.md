@@ -1,6 +1,6 @@
 # Naz Business Assistant Pro
 
-[**Open free dashboard (GitHub Pages)**](https://allahnawaz36.github.io/AllahNawaz-/) · [**Open portfolio**](https://allahnawaz36.github.io/AllahNawaz-/portfolio.html) · [**Deployment status**](https://github.com/AllahNawaz36/AllahNawaz-/actions) · [**Platform benchmark & release gates**](PLATFORM_BENCHMARK.md) · [**Online resource catalog**](ONLINE_RESOURCE_CATALOG.md) · [**Connector audit**](CONNECTOR_AUDIT.md)
+[**Open free dashboard (GitHub Pages)**](https://allahnawaz36.github.io/AllahNawaz-/) · [**Open Research Studio**](https://allahnawaz36.github.io/AllahNawaz-/research.html) · [**Open portfolio**](https://allahnawaz36.github.io/AllahNawaz-/portfolio.html) · [**Deployment status**](https://github.com/AllahNawaz36/AllahNawaz-/actions) · [**Platform benchmark & release gates**](PLATFORM_BENCHMARK.md) · [**Online resource catalog**](ONLINE_RESOURCE_CATALOG.md) · [**Connector audit**](CONNECTOR_AUDIT.md)
 
 A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflare Workers + D1 API. This repository is **not** a fully connected AI/social automation service yet.
 
