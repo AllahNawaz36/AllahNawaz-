@@ -224,7 +224,7 @@ h1,h2,h3,p{overflow-wrap:break-word}
 <section class="section" id="process"><div class="wrap"><div class="sectionhead reveal"><div><div class="overline">05 / How I work</div><h2>Thoughtful, not complicated.</h2></div><p>A flexible process that keeps the problem clear, the collaboration open, and the final experience grounded in real needs.</p></div>
 <div class="processgrid"><article class="step reveal"><div class="stepnum">STEP 01</div><h3>Understand</h3><p>Clarify the audience, business goal, constraints, and the real problem to solve.</p></article><article class="step reveal"><div class="stepnum">STEP 02</div><h3>Explore</h3><p>Map user journeys, sketch options, and build a structure before polishing visuals.</p></article><article class="step reveal"><div class="stepnum">STEP 03</div><h3>Design</h3><p>Create accessible, responsive interfaces with clear hierarchy and reusable patterns.</p></article><article class="step reveal"><div class="stepnum">STEP 04</div><h3>Refine</h3><p>Prototype, gather feedback, and collaborate on a practical developer handoff.</p></article></div>
 </div></section>
-<section class="section" id="contact"><div class="wrap"><div class="contact reveal"><div><div class="overline">06 / Have a project in mind?</div><h2>Let’s make something meaningful.</h2><p>Looking for a UI/UX or Product Designer? I’d be happy to connect, learn about your challenge, and explore how thoughtful design can help.</p><div class="tags" style="margin-top:16px"><span class="tag">Islamabad, Pakistan · Remote</span><span class="tag">B2B SaaS · Web & mobile</span></div></div><div class="heroactions"><a class="btn" href="mailto:allahnawazmalik175@gmail.com">Email me ↗</a><a class="btn" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer">WhatsApp me ↗</a><a class="btn secondary" href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn ↗</a></div><p class="contact-phone" style="margin-top:14px;color:var(--muted);font-size:13px">Direct contact: <a href="tel:+923055742436" style="color:var(--text);font-weight:700">+92 305 574 2436</a> · <a href="mailto:allahnawazmalik175@gmail.com" style="color:var(--text)">allahnawazmalik175@gmail.com</a></p></div></div></section>
+<section class="section" id="contact"><div class="wrap"><div class="contact reveal"><div><div class="overline">06 / Have a project in mind?</div><h2>Let’s make something meaningful.</h2><p>Looking for a UI/UX or Product Designer? I’d be happy to connect, learn about your challenge, and explore how thoughtful design can help.</p><div class="tags" style="margin-top:16px"><span class="tag">Islamabad, Pakistan · Remote</span><span class="tag">B2B SaaS · Web & mobile</span></div></div><div class="heroactions"><a class="btn" href="mailto:allahnawazmalik175@gmail.com">Email me ↗</a><a class="btn" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer">WhatsApp me ↗</a></div><p class="contact-phone" style="margin-top:14px;color:var(--muted);font-size:13px">Direct contact: <a href="tel:+923055742436" style="color:var(--text);font-weight:700">+92 305 574 2436</a> · <a href="mailto:allahnawazmalik175@gmail.com" style="color:var(--text)">allahnawazmalik175@gmail.com</a></p></div></div></section>
 </main>
 <footer class="footer"><div class="wrap footerin"><span>© <span id="year"></span> Allah Nawaz · Designed with intention.</span><div class="footerlinks"><a href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener">Behance ↗</a><a href="#home">Back to top ↑</a></div></div></footer>
 <script>
@@ -618,4 +618,21 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 @media(forced-colors:active){.chat-panel :is(button,a,select,textarea){forced-color-adjust:auto}}
 </style>
 
+
+<style>
+/* Contact CTA cleanup: keep only the two primary, reliable contact actions. */
+#contact .heroactions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:12px;min-width:0}
+#contact .heroactions .btn{display:flex;align-items:center;justify-content:center;min-width:0;min-height:56px;padding:14px 16px;text-align:center;line-height:1.35;overflow-wrap:anywhere}
+@media(max-width:760px){
+  #contact .contact{display:flex;flex-direction:column;align-items:stretch;gap:0}
+  #contact .contact>div:first-child{width:100%}
+  #contact .contact>.heroactions{width:100%;max-width:none;margin-top:24px;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #contact .heroactions .btn{width:auto;flex:none;white-space:normal;font-size:14px;padding:14px 10px}
+  #contact .contact-phone{width:100%;margin-top:16px!important;line-height:1.8}
+}
+@media(max-width:420px){
+  #contact .contact>.heroactions{grid-template-columns:1fr}
+  #contact .heroactions .btn{min-height:52px}
+}
+</style>
 </body></html>
