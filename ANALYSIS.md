@@ -102,3 +102,5 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 - Added official Google links to Automation Studio for Gemini API / AI Studio, PageSpeed Insights, Search Console, Trends, Analytics, Apps Script, Drive, YouTube Studio and Business Profile. These are resource links, not claimed API integrations.
 - Search Console private data requires OAuth authorization; Gemini API quotas depend on model/project tier; the directory warns users not to place API keys in frontend code. PageSpeed can be tried through the official web interface without claiming that the dashboard itself runs an API scan.
 - Added a frontend regression test for the Google directory, official authorization documentation and honest connection labels. Awaiting CI for the latest commits; no merge or push to `main`.
+
+- **Test follow-up:** the first new Google-directory regression assertion used an overly strict section matcher and failed; the matcher has been corrected to slice the Automation Studio section by its actual boundaries. Awaiting CI on the corrected test commit before calling the change verified.
