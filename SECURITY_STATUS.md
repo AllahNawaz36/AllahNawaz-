@@ -84,3 +84,5 @@
 - Added official Google growth/automation resources inside Automation Studio: Gemini API / AI Studio, PageSpeed Insights, Search Console, Google Trends, Analytics, Apps Script, Drive, YouTube Studio and Business Profile.
 - This is a linked resource hub only; private account data still requires authorization and these services are not represented as already connected. Documentation warns against putting API keys in public frontend code.
 - Regression test added for tool listings and honest status copy. CI is pending for the latest commit; live deployment remains unverified.
+
+- **Test follow-up:** initial Google-directory test failed because its section matcher returned an empty section; corrected the matcher and await the next CI run. Do not treat the Google resource directory as verified until CI passes.
