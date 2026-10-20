@@ -130,3 +130,22 @@ test("mobile usability pass preserves touch targets, safe-area spacing and reada
   assert.match(html, /\.ai-chat-panel\{right:10px;bottom:calc\(135px \+ env\(safe-area-inset-bottom\)\)/, "chat panel should fit above mobile navigation");
   assert.match(html, /@media\(prefers-reduced-motion:reduce\)\{\.page\.active\{animation:none\}\}/, "page animation should respect reduced-motion preference");
 });
+
+test("GenAI architecture prompt teaches grounding, structured outputs and safe tool permissions", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /<option value="architecture">Design a reliable GenAI system<\/option>/);
+  assert.match(html, /architecture:"Act as a senior AI systems engineer/);
+  for (const concept of ["Structured Output", "hybrid retrieval", "strict JSON output schema", "least-privilege permissions", "human approval", "prompt-injection defenses", "acceptance checks"]) {
+    assert.ok(html.includes(concept), "architecture prompt should cover " + concept);
+  }
+  assert.match(html, /external services are not connected to this dashboard/i);
+});
+
+test("Research Studio is linked from the dashboard and discloses manual source capture", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const research = fs.readFileSync(path.join(__dirname, "..", "research.html"), "utf8");
+  assert.match(html, /href="\.\/research\.html"[^>]*>.*Research Studio/s);
+  assert.match(research, /does not pretend to fetch live search results automatically/i);
+  assert.match(research, /Saved on this device|local storage/i);
+  assert.match(research, /Export research report/);
+});
