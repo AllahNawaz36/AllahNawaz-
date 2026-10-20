@@ -91,3 +91,9 @@
 
 - Added official links for n8n, Groq, Cloudflare Workers AI, GitHub Actions, Hugging Face, Ollama, Make and Zapier, with free-tier/hosting caveats and explicit secret-handling warnings.
 - These cards do not create provider connections or prove deployment. No API keys, passwords or account tokens were added to frontend code. End-to-end checks and latest CI must pass before treating the branch as verified.
+
+## Automation workflow safety notes (2026-10-20)
+
+- Added Activepieces, Make and Pipedream official resource links; no claim is made that these platforms are connected or that every plan is free/unlimited.
+- Added workflow launch guidance covering explicit approval before social scheduling, authorized access, secret handling, bounded retries, duplicate prevention, audit logs and recovery. Checklist UI does not execute workflows.
+- Added frontend regression test. Wait for CI on the current head before declaring this update verified.
