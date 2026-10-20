@@ -9,6 +9,20 @@ This adds an optional API for the existing GitHub Pages dashboard. You must auth
 - Private `ADMIN_TOKEN` secret; no token is placed in browser source.
 - The current GitHub Pages dashboard stays live if backend setup is incomplete.
 
+
+
+## Recovery when `naz-business-assistant-api` is missing (Android)
+
+Do not create a duplicate Worker just because this exact name is absent. A previous Cloudflare deployment record in this repository linked to a service named `allahnawaz`; that record is not proof that the service is currently deployed or healthy.
+
+1. Open the existing service link while signed into the correct Cloudflare account: https://dash.cloudflare.com/?to=/0b8f9d27d904a7e4d35d016f7d32e1aa/workers/services/view/allahnawaz/production
+2. If Cloudflare opens a service named `allahnawaz`, check its **Deployments** or **Builds** page and open the newest build. A failed build means the code was not successfully deployed by that build; open the error details before retrying.
+3. If the link says Not Found or access denied, go to https://dash.cloudflare.com/ and check the account selector. The deployment link may belong to a different account or the service may have been removed.
+4. Do not rename the service or change `wrangler.toml` based only on a guessed name. The repository config currently names the Worker `naz-business-assistant-api`, while the older deployment record used `allahnawaz`. The configured name and actual Cloudflare service must be reconciled before deploying.
+5. After a successful deployment, open the service's assigned `workers.dev` URL and add `/api/health`. Continue only if the response is JSON with `ok: true`. Save the exact base URL in the dashboard's **Connections & Settings** and run **Check backend**.
+
+**What can be verified from GitHub:** repository files and GitHub Actions checks. **What cannot be verified from repository access alone:** whether the Cloudflare account currently contains this service, its secret values/bindings, the assigned URL, or live health. Do not add real customer records or claim AI chat is live until those checks pass.
+
 ## Deploy from the Cloudflare dashboard (Android-friendly)
 1. Sign in at https://dash.cloudflare.com/.
 2. Open Workers & Pages and create/connect a Worker using this repository.
