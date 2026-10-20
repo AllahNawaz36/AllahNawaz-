@@ -86,3 +86,8 @@
 - Regression test added for tool listings and honest status copy. CI is pending for the latest commit; live deployment remains unverified.
 
 - **Test follow-up:** initial Google-directory test failed because its section matcher returned an empty section; corrected the matcher and await the next CI run. Do not treat the Google resource directory as verified until CI passes.
+
+## Automation platform directory (2026-10-20)
+
+- Added official links for n8n, Groq, Cloudflare Workers AI, GitHub Actions, Hugging Face, Ollama, Make and Zapier, with free-tier/hosting caveats and explicit secret-handling warnings.
+- These cards do not create provider connections or prove deployment. No API keys, passwords or account tokens were added to frontend code. End-to-end checks and latest CI must pass before treating the branch as verified.
