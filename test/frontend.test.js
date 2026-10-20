@@ -152,7 +152,9 @@ test("icon fallbacks have consistent spacing and More menu uses matching accessi
 
 test("Automation Studio lists official Google resources with honest connection labels", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-  const automation = html.match(/<section class="page" id="page-automation">([\\s\\S]*?)<section class="page" id="page-seo">/)?.[1] || "";
+  const automationStart = html.indexOf('<section class="page" id="page-automation">');
+  const automationEnd = html.indexOf('<section class="page" id="page-seo">', automationStart);
+  const automation = automationStart >= 0 && automationEnd > automationStart ? html.slice(automationStart, automationEnd) : "";
   assert.match(automation, /Google growth toolkit/, "Google resource hub should be in Automation Studio");
   for (const label of ["Gemini API \/ AI Studio", "PageSpeed Insights", "Search Console", "Google Trends", "Google Analytics", "Google Apps Script", "Google Drive", "YouTube Studio", "Google Business Profile"]) {
     assert.ok(automation.includes(label), "Google resource hub should include " + label);
