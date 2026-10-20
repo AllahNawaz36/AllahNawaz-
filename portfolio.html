@@ -470,6 +470,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     <div class="social-research-art" aria-hidden="true"><span class="research-orbit orbit-one"></span><span class="research-orbit orbit-two"></span><span class="research-monogram">AMJ</span><span class="research-spark">✳</span></div>
     <div class="social-research-copy"><div class="overline">Featured creator video · Original source</div><h3>Anjan Malik Jan · Social video collection</h3><p>Explore the supplied TikTok clip and related public creator channels below. The TikTok share link is kept as the source link; an actual inline player needs the canonical public video URL so the correct video ID can be verified. This showcase links to the original creator content rather than copying or rehosting the video file.</p><div class="research-links"><a href="https://www.tiktok.com/@anjanmalikjan" target="_blank" rel="noopener noreferrer">TikTok @anjanmalikjan ↗</a><a href="https://www.instagram.com/anjan_malik_jan/" target="_blank" rel="noopener noreferrer">Instagram @anjan_malik_jan ↗</a><a href="https://www.youtube.com/channel/UC_7lxNAIFY8zzlhlK1I75OQ" target="_blank" rel="noopener noreferrer">YouTube channel ↗</a><a href="https://www.instagram.com/reel/DeTmcRjQKbr/" target="_blank" rel="noopener noreferrer">Instagram Reel ↗</a></div></div>
   </div>
+  <section class="social-tiktok-profile reveal" aria-labelledby="tiktok-profile-title">
+    <div class="social-tiktok-profile-copy">
+      <div class="overline">Official platform embed</div>
+      <h3 id="tiktok-profile-title">Recent TikTok videos</h3>
+      <p>This live creator embed loads video cards and thumbnails directly from TikTok when the profile is public and embedding is available. If it does not load in your browser, use the profile link below.</p>
+      <a class="projectlink" href="https://www.tiktok.com/@anjanmalikjan" target="_blank" rel="noopener noreferrer">Open @anjanmalikjan on TikTok ↗</a>
+    </div>
+    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@anjanmalikjan" data-unique-id="anjanmalikjan" data-embed-type="creator" style="max-width:720px;min-width:288px">
+      <section><a target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@anjanmalikjan?refer=creator_embed">@anjanmalikjan</a></section>
+    </blockquote>
+  </section>
   <div class="social-content-grid"><article class="social-feature reveal">
       <div class="social-feature-top"><span class="social-platform">Facebook · Reel</span><span class="social-status">Source link</span></div>
       <a class="social-preview social-preview-facebook" href="https://www.facebook.com/share/r/19upZcb5nY/" target="_blank" rel="noopener noreferrer" aria-label="Open the supplied Facebook Reel"><span class="preview-brand fb-brand" aria-hidden="true">f</span><span class="preview-play" aria-hidden="true">▶</span><span class="preview-caption">FACEBOOK REEL <small>Tap to open original video ↗</small></span></a>
@@ -915,6 +926,14 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 </style>
 
 <style>
+/* Official TikTok creator embed: authentic platform cards with a responsive fallback link. */
+#social-content .social-tiktok-profile{display:grid;grid-template-columns:minmax(0,.72fr) minmax(288px,1.28fr);gap:24px;align-items:center;margin:22px 0;padding:clamp(18px,3vw,28px);border:1px solid var(--line,#34382e);border-radius:24px;background:linear-gradient(145deg,rgba(213,255,114,.06),rgba(255,255,255,.015));overflow:hidden}
+#social-content .social-tiktok-profile-copy{min-width:0}
+#social-content .social-tiktok-profile-copy h3{margin:8px 0 10px;font:700 24px/1.2 Manrope,sans-serif;letter-spacing:-.7px}
+#social-content .social-tiktok-profile-copy p{color:var(--muted,#b5bba9);font-size:14px;line-height:1.75}
+#social-content .social-tiktok-profile blockquote.tiktok-embed{width:100%;max-width:720px!important;min-width:288px!important;margin:0 auto!important}
+#social-content .social-tiktok-profile iframe{max-width:100%}
+@media(max-width:760px){#social-content .social-tiktok-profile{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px}#social-content .social-tiktok-profile blockquote.tiktok-embed{min-width:0!important}}
 /* Social content section: responsive, accessible, and consistent with dark + lime portfolio. */
 #social-content .social-content-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:20px;align-items:stretch}
 #social-content .social-feature,#social-content .social-note{min-width:0;border:1px solid var(--line,#34382e);border-radius:24px;background:linear-gradient(145deg,rgba(213,255,114,.07),rgba(255,255,255,.015));overflow:hidden}
@@ -932,4 +951,5 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 @media(max-width:760px){#social-content .social-content-grid{grid-template-columns:1fr}#social-content .social-note{padding:20px}}
 </style>
 
+<script async src="https://www.tiktok.com/embed.js"></script>
 </body></html>
