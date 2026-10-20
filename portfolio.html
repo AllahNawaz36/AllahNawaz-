@@ -169,6 +169,27 @@ h1,h2,h3,p{overflow-wrap:break-word}
 @media(max-width:360px){.impact-strip{grid-template-columns:1fr}.impact-item{min-height:auto}}
 
 </style>
+<style>
+/* App-style quick access tiles; links are not represented as authenticated integrations. */
+#social-content .app-hub{margin:0 0 28px;padding:22px;border:1px solid var(--line,#34382e);border-radius:24px;background:linear-gradient(135deg,rgba(213,255,114,.06),rgba(255,255,255,.015))}
+#social-content .app-hub-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:17px}
+#social-content .app-hub-heading h3{margin:5px 0 0;font-size:clamp(20px,2.5vw,26px);letter-spacing:-.7px}
+#social-content .app-hub-note{font-size:11px;color:var(--muted,#b5bba9)}
+#social-content .app-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#social-content .app-tile{display:flex;align-items:center;gap:12px;min-width:0;padding:15px 13px;border:1px solid var(--line,#34382e);border-radius:17px;background:rgba(20,22,18,.78);color:inherit;text-decoration:none;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+#social-content .app-tile:hover{transform:translateY(-3px);border-color:#84965b;background:rgba(213,255,114,.06)}
+#social-content .app-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#fff}
+#social-content .app-icon svg{display:block;width:34px;height:34px}
+#social-content .app-tiktok .app-icon{background:#111}
+#social-content .app-meta{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+#social-content .app-meta strong{font-size:13px}
+#social-content .app-meta small{font-size:10px;line-height:1.4;color:var(--muted,#b5bba9)}
+#social-content .app-open{font-size:10px;color:#d5ff72;white-space:nowrap}
+#social-content .app-hub-disclaimer{margin:15px 0 0;color:var(--muted,#b5bba9);font-size:11px;line-height:1.65}
+@media(max-width:850px){#social-content .app-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){#social-content .app-hub{padding:16px}#social-content .app-hub-heading{align-items:flex-start;flex-direction:column;gap:7px}#social-content .app-hub-grid{grid-template-columns:1fr}#social-content .app-tile{padding:13px}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -303,6 +324,16 @@ h1,h2,h3,p{overflow-wrap:break-word}
 
 <section class="section" id="social-content"><div class="wrap">
   <div class="sectionhead reveal"><div><div class="overline">Social content / 07</div><h2>Videos & Social Content</h2></div><p>Short-form storytelling, motion, and visual ideas from social platforms.</p></div>
+  <div class="app-hub reveal" aria-label="Creative apps and social platforms">
+    <div class="app-hub-heading"><div><div class="overline">Creative workspace</div><h3>Apps & social channels</h3></div><span class="app-hub-note">Quick access · External platforms</span></div>
+    <div class="app-hub-grid">
+      <a class="app-tile app-figma" href="https://www.figma.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path fill="#F24E1E" d="M20 3H12a8 8 0 0 0 0 16h8z"/><path fill="#FF7262" d="M20 19H12a8 8 0 0 0 0 16h8z"/><path fill="#A259FF" d="M20 3h8a8 8 0 0 1 0 16h-8z"/><path fill="#1ABCFE" d="M20 19h8a8 8 0 0 1 0 16h-8z"/><circle cx="28" cy="11" r="8" fill="#0ACF83"/></svg></span><span class="app-meta"><strong>Figma</strong><small>UI design & prototypes</small></span><span class="app-open">Open ↗</span></a>
+      <a class="app-tile app-facebook" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#1877F2"/><path fill="#fff" d="M22.6 34V21.8h4.1l.6-4.8h-4.7v-3.1c0-1.4.4-2.4 2.4-2.4h2.5V7.2c-.4-.1-2-.2-3.8-.2-3.8 0-6.4 2.3-6.4 6.6V17h-4.3v4.8h4.3V34z"/></svg></span><span class="app-meta"><strong>Facebook</strong><small>Pages, posts & Reels</small></span><span class="app-open">Open ↗</span></a>
+      <a class="app-tile app-instagram" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><defs><linearGradient id="igGradient" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#FFB347"/><stop offset=".48" stop-color="#F02D7D"/><stop offset="1" stop-color="#8546E8"/></linearGradient></defs><rect x="3" y="3" width="34" height="34" rx="10" fill="url(#igGradient)"/><rect x="10" y="10" width="20" height="20" rx="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="20" cy="20" r="5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="27" cy="13" r="1.8" fill="#fff"/></svg></span><span class="app-meta"><strong>Instagram</strong><small>Visuals & Reels</small></span><span class="app-open">Open ↗</span></a>
+      <a class="app-tile app-tiktok" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"><span class="app-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><rect width="40" height="40" rx="12" fill="#111"/><path d="M23 6v18.2a6.3 6.3 0 1 1-5.4-6.2" fill="none" stroke="#25F4EE" stroke-width="5" stroke-linecap="round"/><path d="M25 5c.7 4.4 3.2 7.1 7 7.7" fill="none" stroke="#25F4EE" stroke-width="5" stroke-linecap="round"/><path d="M25 6v18.2a6.3 6.3 0 1 1-5.4-6.2" fill="none" stroke="#FE2C55" stroke-width="5" stroke-linecap="round"/><path d="M27 5c.7 4.4 3.2 7.1 7 7.7" fill="none" stroke="#FE2C55" stroke-width="5" stroke-linecap="round"/><path d="M24 5v19a6.3 6.3 0 1 1-5.4-6.2" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><path d="M26 5c.7 4.4 3.2 7.1 7 7.7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg></span><span class="app-meta"><strong>TikTok</strong><small>Short videos & trends</small></span><span class="app-open">Open ↗</span></a>
+    </div>
+    <p class="app-hub-disclaimer"><span aria-hidden="true">ⓘ</span> These are branded quick links, not authenticated live integrations. Posting, scheduling, and account data require each platform’s official authorization/API.</p>
+  </div>
   <div class="social-content-grid"><article class="social-feature reveal">
       <div class="social-feature-top"><span class="social-platform">Facebook · Reel</span><span class="social-status">Link added</span></div>
       <div class="social-preview" aria-label="Facebook Reel preview unavailable until public media metadata is accessible">
