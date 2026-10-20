@@ -178,3 +178,14 @@ test("Automation Studio lists free-first orchestration platforms with deployment
   assert.match(automation, /never paste passwords, access tokens or API keys into this page/i, "secret-handling guidance should be explicit");
   assert.match(automation, /not a guaranteed always-on server/, "scheduled CI should not be presented as always-on hosting");
 });
+
+
+test("Automation Studio documents official free automation alternatives and approval-first safety", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.ok(html.includes("Free automation alternatives"), "automation alternatives should be listed");
+  for (const url of ["https://www.activepieces.com/", "https://www.make.com/", "https://pipedream.com/"]) assert.ok(html.includes(url), "official platform link should exist: " + url);
+  assert.ok(html.includes("Safe workflow launch checklist"), "approval-first launch checklist should exist");
+  assert.ok(html.includes("Require your approval before scheduling"), "social scheduling should have an explicit approval gate");
+  assert.ok(html.includes("never frontend/API keys in Git"), "workflow guidance should warn against exposing secrets");
+  assert.ok(html.includes("A green checkbox here is a personal checklist only"), "checklist must not imply a workflow was executed");
+});
