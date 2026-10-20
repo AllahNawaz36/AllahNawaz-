@@ -30,3 +30,18 @@ This adds an optional API for the existing GitHub Pages dashboard. You must auth
 - Workers AI chat works only after both `AI` and `CHAT_LIMITER` bindings are configured and the Worker URL is saved in dashboard settings. Without these, the API intentionally returns an unavailable error rather than pretending the chat is protected or live. The portfolio may use clearly labelled demo replies.
 - This chat can prepare plans and drafts; it does not itself send email, publish/schedule LinkedIn or Facebook posts, change ads, or edit Canva/Figma files. Those actions require separate integrations and permissions.
 - Do not store sensitive customer data until you have a privacy notice, retention/deletion process, and backup plan.
+
+
+## Optional Google Gemini free-tier provider
+
+Gemini can be used instead of Workers AI for dashboard chat. Google offers a free tier for selected Gemini API models, but quotas and model access vary by account and can change. Check [official Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) before relying on it. Requests made on the free tier may be used to improve Google's products; do not send confidential client data unless you have reviewed the applicable terms.
+
+1. Open [Google AI Studio](https://aistudio.google.com/) and create an API key for a project that has Gemini API access.
+2. In Cloudflare, open **Workers & Pages → naz-business-assistant-api → Settings → Variables and Secrets**.
+3. Add a secret named `GEMINI_API_KEY` and paste the key there. Never put this key in `index.html`, GitHub, a screenshot, or the browser.
+4. Optionally add a plain-text variable `GEMINI_MODEL` set to a model available to your account. Default is `gemini-2.5-flash`; if that model is unavailable, choose one listed in your AI Studio/API access.
+5. Save and redeploy the Worker. Keep `CHAT_LIMITER` configured; the public chat fails closed without rate limiting.
+6. Open the dashboard, save the deployed Worker URL in **Connections & Settings**, and press **Check backend**. Health should show `chatReady: true` and `aiProvider: "gemini"`.
+7. Send a harmless test message. If you receive a quota/429 message, wait for the quota reset or review current limits in AI Studio. This dashboard does not automatically switch to paid billing.
+
+If `GEMINI_API_KEY` is absent, the Worker falls back to its existing Workers AI binding. The app does not include a key, and Gemini will not work until you add the secret yourself.
