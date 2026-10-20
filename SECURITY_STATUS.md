@@ -1,6 +1,6 @@
 # Security Status — Naz Business Assistant Pro
 
-Last reviewed: 2026-10-19
+Last reviewed: 2026-10-20
 
 ## Current verdict
 
@@ -10,14 +10,14 @@ Last reviewed: 2026-10-19
 
 ### Checks performed
 - GitHub repository metadata confirms this repository is currently **public**. Source and committed configuration are therefore publicly readable. The owner should switch it to private if public source sharing is not intended; this audit did not change repository visibility.
-- Latest inspected GitHub Actions run `39383492235` completed successfully. It passed the configured JavaScript checks/tests, inline-JS and duplicate-ID checks, Python compilation/tests, and CLI smoke test. CI success does not prove runtime deployment security.
+- The latest repository CI run `39410187290` completed successfully on commit `5df0fea695efe0e30be8ebe9513745e22a92b411`. It passed the configured JavaScript checks/tests, inline-JS and duplicate-ID checks across all three HTML pages, Python compilation/tests, and CLI smoke test. The GitHub Pages deployment for the latest frontend changes also completed successfully in run `39410158388`. CI success does not prove runtime deployment security.
 - Reviewed `.gitignore`, `.env.example`, `wrangler.toml`, `worker.mjs`, and this security status document. The inspected files show environment-file exclusions, server-side token handling, CORS allowlisting, protected API authorization checks, request-size limits, and a configured chat rate-limit binding. This was a targeted review, **not** a complete repository-wide or Git-history secret scan.
 - Metricool brand settings and LinkedIn analytics read access responded for the selected brand; the scheduled-post query for 2026-10-20 through 2026-10-27 returned an empty list. These results do not verify LinkedIn publishing authorization.
 - Figma identity/workspace lookup and Notion workspace lookup responded. Canva brand-kit lookup returned no brand kits. These are connection/read tests only, not complete permission audits.
 
 ### Still unverified
 - The deployed Cloudflare Worker URL has not been supplied or found in the dashboard source (the endpoint is configured by the operator in browser settings). Therefore no live `/api/health` check was performed, and deployed secrets, rate limiting, AI binding, and D1 availability remain unverified.
-- No full secret scan of every tracked file and historical commit was completed. Treat any credential that may have been committed as potentially exposed until checked; rotate it if found.
+- A targeted pattern scan of 11 current source/config files found no matches for common GitHub, OpenAI-style, Google API, Slack token, or private-key patterns. This is **not** a full secret scan of every tracked file or historical commit. Treat any credential that may have been committed as potentially exposed until checked; rotate it if found.
 - Do not store real customer data or enable unattended external actions until runtime, access controls, backups/retention, and provider permissions have been tested.
 
 ## Checks observed in the repository
@@ -28,7 +28,7 @@ Last reviewed: 2026-10-19
 - The Worker limits request bodies, validates lead fields, restricts browser CORS to the configured GitHub Pages origin, and does not expose lead endpoints without the admin token.
 - `.env`, data files, Python caches, and generated reports are ignored by Git.
 - Python workflow defaults to dry-run; current workflow code does not send email or publish social posts.
-- Latest repository CI run passed syntax checks, JavaScript tests, Python compilation, Python tests, and dry-run smoke test.
+- Latest repository CI run `39410187290` passed syntax checks, JavaScript tests, inline JavaScript/DOM checks for all three HTML pages, Python compilation, Python tests, and the dry-run smoke test.
 
 ## Open risks / required before real customer use
 
