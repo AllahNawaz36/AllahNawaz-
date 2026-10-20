@@ -174,6 +174,51 @@ test("worker chat returns the AI response when a Workers AI binding is configure
   assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
 });
 
+test("worker health identifies Gemini as the configured AI provider", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/health"), {
+    GEMINI_API_KEY: "test-secret-key",
+    CHAT_LIMITER: { async limit() { return { success: true }; } }
+  });
+  const data = await response.json();
+  assert.equal(data.chatReady, true);
+  assert.equal(data.aiProvider, "gemini");
+});
+
+test("worker uses Gemini when a secret is configured and never returns the key", async () => {
+  const worker = await getWorker();
+  const originalFetch = global.fetch;
+  let requestUrl = "";
+  let requestHeaders;
+  global.fetch = async (url, options) => {
+    requestUrl = String(url);
+    requestHeaders = options.headers;
+    return new Response(JSON.stringify({
+      candidates: [{ content: { parts: [{ text: "Gemini response for the dashboard." }] } }]
+    }), { status: 200, headers: { "content-type": "application/json" } });
+  };
+  try {
+    const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+      method: "POST",
+      headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "Help me plan content.", platform: "branding" })
+    }), {
+      ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+      GEMINI_API_KEY: "test-gemini-secret",
+      CHAT_LIMITER: { async limit() { return { success: true }; } }
+    });
+    const data = await response.json();
+    assert.equal(response.status, 200);
+    assert.match(requestUrl, /models\/gemini-2\.5-flash:generateContent$/);
+    assert.equal(requestHeaders["x-goog-api-key"], "test-gemini-secret");
+    assert.equal(data.provider, "gemini");
+    assert.equal(data.answer, "Gemini response for the dashboard.");
+    assert.doesNotMatch(JSON.stringify(data), /test-gemini-secret/);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("worker supports customer-support reply drafting without inventing policy context", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
