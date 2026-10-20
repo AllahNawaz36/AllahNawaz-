@@ -535,4 +535,61 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 })();
 </script>
 
+
+<style>
+/* Chatbot UX pass: clearer hierarchy, comfortable touch targets, and mobile-safe layout. */
+.chat-panel{width:min(390px,calc(100vw - 28px));height:min(590px,calc(100dvh - 112px));border-color:#697455}
+.chat-head{padding:15px 16px;gap:12px}
+.chat-head strong{font-size:14px;letter-spacing:-.2px}
+.chat-head small{font-size:11px;line-height:1.45}
+.chat-avatar{width:42px;height:42px;flex:0 0 42px}
+.chat-close{width:44px;height:44px;flex:0 0 44px;font-size:22px}
+.chat-toolrow{flex-wrap:wrap;gap:8px;padding:10px 14px 6px;font-size:11px}
+.chat-toolrow select{min-height:40px;font-size:12px;padding:8px 10px}
+.chat-status{font-size:10px}
+.chat-section-nav{padding:8px 14px 10px;border-bottom:1px solid #30332c}
+.chat-section-title{display:flex;align-items:center;gap:7px;margin:0 0 8px;color:#d5ff72;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.chat-section-title svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+.chat-section-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.chat-section-grid a{display:flex;min-width:0;min-height:42px;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 3px;border:1px solid #414838;border-radius:10px;background:#1a1d17;color:#dfe7d1;font-size:9px;line-height:1.25;text-align:center}
+.chat-section-grid a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7}
+.chat-section-grid a:hover,.chat-section-grid a:focus-visible{border-color:#d5ff72;color:#d5ff72;background:#252d1d}
+.chat-messages{padding:14px;gap:10px;overscroll-behavior:contain;scrollbar-color:#697455 #141611}
+.chat-msg{font-size:13px;line-height:1.6;padding:11px 13px;border-radius:15px 15px 15px 5px}
+.chat-msg.user{border-color:#617b3e;background:#29351f;color:#f4f4ee}
+.chat-quick{gap:7px;padding:0 12px 10px}
+.chat-quick button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 11px;font-size:11px;line-height:1.3}
+.chat-quick button svg{width:14px;height:14px;flex:0 0 14px;fill:none;stroke:currentColor;stroke-width:1.7}
+.chat-compose{gap:8px;padding:10px 12px}
+.chat-compose textarea{min-height:44px;max-height:110px;font:13px/1.5 "DM Sans",sans-serif;padding:11px 12px}
+.chat-send{width:44px;height:44px;flex:0 0 44px;border-radius:13px}
+.chat-foot{padding:0 13px 11px;font-size:10px;line-height:1.5;color:#aab29d}
+.chat-panel :is(button,a,select,textarea):focus-visible{outline:3px solid #d5ff72;outline-offset:2px}
+.contact-launcher{min-height:48px}
+@media(max-width:420px){
+ .chat-panel{left:8px;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));width:auto;height:min(610px,calc(100dvh - 94px - env(safe-area-inset-bottom)));max-height:calc(100dvh - 94px - env(safe-area-inset-bottom));border-radius:20px}
+ .chat-toolrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 8px}
+ .chat-toolrow label{align-self:center}
+ .chat-toolrow select{width:100%}
+ .chat-status{grid-column:1/-1;font-size:10px}
+ .chat-section-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+ .chat-section-grid a{font-size:9px;min-height:40px}
+ .chat-messages{min-height:90px;padding:12px}
+ .chat-quick{padding-left:10px;padding-right:10px}
+ .chat-foot{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.chat-panel.open{animation:none}}
+</style>
+<script>
+/* Keep keyboard focus on the launcher when a section link closes the chatbot. */
+(function(){
+ const panel=document.getElementById('liveChatPanel');
+ const toggle=document.getElementById('liveChatToggle');
+ if(!panel||!toggle)return;
+ panel.querySelectorAll('a[href^="#"]').forEach(function(link){
+  link.addEventListener('click',function(){window.setTimeout(function(){toggle.focus();},0);});
+ });
+})();
+</script>
+
 </body></html>
