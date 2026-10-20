@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f7f4ef">
+<meta name="theme-color" content="#090a10">
 <meta name="description" content="Source-backed research workspace for Naz Business Assistant Pro.">
 <title>Research Studio — Naz Business Assistant Pro</title>
 <style>
@@ -179,7 +179,7 @@ let records=[];
 function safeText(value){return String(value??"");}
 function escapeHtml(value){return safeText(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");window.setTimeout(()=>el.classList.remove("show"),2600);}
-function today(){return new Date().toISOString().slice(0,10);}
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 $("checked").value=today();
 try{const saved=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(saved))records=saved.filter(x=>x&&typeof x==="object"&&typeof x.title==="string"&&typeof x.url==="string");}catch{records=[];}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(records));$("storageState").textContent="Saved on this device";}catch{$("storageState").textContent="Storage unavailable";toast("Could not save to browser storage. Export a backup.");}}
@@ -199,7 +199,7 @@ $("copyBrief").addEventListener("click",async()=>{const brief=buildBrief();if(!b
 $("exportReport").addEventListener("click",()=>{if(!records.length){toast("Add at least one source before exporting.");return;}const body=buildBrief()||"# Research report\n\n"+records.map(r=>"- "+r.title+" — "+r.url+"\n  "+r.summary).join("\n");download("naz-research-report-"+today()+".md",body,"text/markdown;charset=utf-8");});
 $("backupData").addEventListener("click",()=>download("naz-research-backup-"+today()+".json",JSON.stringify({app:"Naz Business Assistant Pro Research Studio",version:1,exportedAt:new Date().toISOString(),sources:records},null,2),"application/json;charset=utf-8"));
 $("clearAll").addEventListener("click",()=>{if(!records.length){toast("Workspace is already empty.");return;}if(!window.confirm("Delete all research notes stored in this browser? Download a backup first if you need them."))return;records=[];persist();render();$("brief").textContent="Save two or more sources, then select “Build comparison brief”.";toast("Research workspace cleared.");});
-function download(name,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+function download(name,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1000);}
 render();
 })();
 </script>
