@@ -96,3 +96,9 @@ The latest fully completed GitHub Actions run [39255566872](https://github.com/A
 - Figma identity check succeeded for the connected account; Metricool returned brand `ANJAN MALIK JAN` and a LinkedIn profile identifier. This confirms connector response only, not independent account ownership or publish permission. No social post was scheduled or published.
 - Google Flow access is marked eligibility-dependent because official Google pages surfaced differing rollout/plan guidance. Canva and voice generation quotas/features are described as limited/plan-dependent. Website-embedded live voice replies remain unimplemented.
 - Awaiting CI for this commit; no merge or direct push to `main`.
+
+## Google resource hub (2026-10-20)
+
+- Added official Google links to Automation Studio for Gemini API / AI Studio, PageSpeed Insights, Search Console, Trends, Analytics, Apps Script, Drive, YouTube Studio and Business Profile. These are resource links, not claimed API integrations.
+- Search Console private data requires OAuth authorization; Gemini API quotas depend on model/project tier; the directory warns users not to place API keys in frontend code. PageSpeed can be tried through the official web interface without claiming that the dashboard itself runs an API scan.
+- Added a frontend regression test for the Google directory, official authorization documentation and honest connection labels. Awaiting CI for the latest commits; no merge or push to `main`.
