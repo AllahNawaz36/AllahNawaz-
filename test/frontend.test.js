@@ -103,6 +103,13 @@ test("icon fallbacks have consistent spacing and More menu uses matching accessi
 });
 
 
+test("mobile reminder spans the full dashboard grid and keeps actions usable", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /\.reminder-banner\{grid-column:1\/\-1;display:flex/, "reminder should span the full grid instead of a single narrow column");
+  assert.match(html, /\.reminder-banner>div:last-child\{flex:1 1 0;min-width:0\}/, "reminder text should use available width");
+  assert.match(html, /\.reminder-actions \.btn\{flex:1 1 0;min-width:0;white-space:normal/, "mobile reminder actions should resize without overflowing");
+});
+
 test("Free AI Agent Hub keeps confirmed Pomelli link and working code/video prompt templates", () => {
   const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
   assert.match(html, /href="https:\/\/labs\.google\.com\/pomelli"/, "Google Pomelli should link to its official Labs page");
