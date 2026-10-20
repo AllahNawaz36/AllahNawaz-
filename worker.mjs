@@ -99,12 +99,19 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     if (request.method === "GET" && path === "/api/health") {
+      const aiConfigured = Boolean(env.AI && typeof env.AI.run === "function");
+      const chatProtectionConfigured = Boolean(env.CHAT_LIMITER && typeof env.CHAT_LIMITER.limit === "function");
+      const adminConfigured = String(env.ADMIN_TOKEN || "").length >= 32;
+      const chatReady = aiConfigured && chatProtectionConfigured;
       return response({
         ok: true,
+        status: chatReady ? "ready" : "degraded",
         service: "naz-business-assistant",
         storage: env.DB ? "d1" : "not-configured",
-        ai: env.AI && typeof env.AI.run === "function" ? "configured" : "not-configured",
-        chatProtection: env.CHAT_LIMITER && typeof env.CHAT_LIMITER.limit === "function" ? "configured" : "not-configured"
+        ai: aiConfigured ? "configured" : "not-configured",
+        chatProtection: chatProtectionConfigured ? "configured" : "not-configured",
+        admin: adminConfigured ? "configured" : "not-configured",
+        chatReady
       }, 200, cors);
     }
 
