@@ -225,7 +225,94 @@ h1,h2,h3,p{overflow-wrap:break-word}
 #social-content .social-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:760px){#social-content .social-content-grid{grid-template-columns:1fr}}
 </style>
-\n</head>
+\n
+<style>
+/* Premium usability refinement: clearer hierarchy, calmer motion, stronger touch targets. */
+:root{scroll-behavior:smooth;scroll-padding-top:88px;--surface-premium:#171914;--surface-raised:#1c1f18;--stroke-premium:rgba(226,238,204,.13)}
+body{font-size:16px;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:#d5ff72;color:#151610}
+a,button,input,textarea,select{-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #d5ff72;outline-offset:4px}
+.nav{background:rgba(16,17,15,.88);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.navin{min-height:76px}
+.links a:not(.navcta){transition:color .2s ease}
+.links a:not(.navcta):hover{color:#d5ff72}
+.navcta,.btn{min-height:46px;transition:transform .22s var(--ease-premium),box-shadow .22s ease,background .22s ease}
+.navcta:hover,.btn:hover{box-shadow:0 9px 26px rgba(213,255,114,.13)}
+.hero{padding-top:clamp(70px,9vw,112px);padding-bottom:clamp(58px,8vw,92px)}
+.hero h1{max-width:980px;line-height:1.02;text-wrap:balance}
+.hero> .wrap>p,.hero .wrap>p{max-width:700px;color:#c6cabb;font-size:clamp(16px,1.45vw,18px);line-height:1.8}
+.heroactions{gap:12px;flex-wrap:wrap}
+.herofoot{row-gap:12px}
+.section{scroll-margin-top:86px}
+.sectionhead{gap:26px;margin-bottom:28px}
+.sectionhead h2{letter-spacing:-.055em;text-wrap:balance}
+.sectionhead p{max-width:470px;line-height:1.8}
+.workgrid,.aboutgrid,.processgrid,.skilllist,.social-content-grid{gap:18px}
+.workcard,.project-card,.step,.skill-card,.contact,.app-hub,.social-research-banner,.social-feature,.social-note{border-color:var(--stroke-premium)}
+.workcard,.project-card,.step,.social-feature{transition:transform .28s var(--ease-premium),border-color .25s ease,box-shadow .25s ease}
+.workcard:hover,.project-card:hover,.social-feature:hover{transform:translateY(-4px);border-color:rgba(213,255,114,.42);box-shadow:0 18px 44px rgba(0,0,0,.2)}
+.step{border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
+#social-content .app-hub{padding:clamp(18px,3vw,28px);background:radial-gradient(ellipse at 0 0,rgba(213,255,114,.075),transparent 45%),linear-gradient(145deg,#171914,#12130f);box-shadow:0 20px 55px rgba(0,0,0,.13)}
+#social-content .app-hub-grid{gap:14px}
+#social-content .app-tile{min-height:78px;padding:15px;border-color:rgba(226,238,204,.12);background:rgba(255,255,255,.025)}
+#social-content .app-tile:hover{transform:translateY(-4px);border-color:rgba(213,255,114,.55);background:rgba(213,255,114,.075);box-shadow:0 12px 26px rgba(0,0,0,.18)}
+#social-content .app-icon{border:1px solid rgba(0,0,0,.07);box-shadow:0 5px 14px rgba(0,0,0,.12)}
+#social-content .app-meta strong{font-size:14px;letter-spacing:-.2px}
+#social-content .app-meta small{font-size:11px;line-height:1.5}
+#social-content .app-open{font-size:11px;font-weight:800}
+#social-content .social-research-banner{gap:clamp(18px,3vw,30px);padding:clamp(18px,3vw,28px);background:radial-gradient(ellipse at 0 0,rgba(213,255,114,.08),transparent 48%),linear-gradient(145deg,#171914,#12130f);box-shadow:0 20px 55px rgba(0,0,0,.13)}
+#social-content .social-research-art{min-height:190px}
+#social-content .research-links a{min-height:40px;align-items:center;transition:background .2s ease,border-color .2s ease,color .2s ease}
+#social-content .research-links a:hover{background:rgba(213,255,114,.07)}
+#social-content .social-content-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+#social-content .social-feature{overflow:hidden;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
+#social-content .social-feature-copy{padding:20px}
+#social-content .social-feature-copy p{line-height:1.75}
+#social-content .social-note{border-radius:18px}
+#contact a,#contact button{overflow-wrap:anywhere}
+@media(max-width:850px){
+  .wrap{width:min(100% - 32px,1160px)}
+  #social-content .social-research-banner{grid-template-columns:150px minmax(0,1fr)}
+}
+@media(max-width:760px){
+  .wrap{width:min(100% - 28px,1160px)}
+  .navin{height:68px;min-height:68px}
+  .links{top:68px;box-shadow:0 18px 45px rgba(0,0,0,.32)}
+  .links a{min-height:44px;display:flex;align-items:center}
+  .hero{padding-top:66px}
+  .hero h1{letter-spacing:-.065em;line-height:1.04}
+  .heroactions{display:grid;grid-template-columns:1fr}
+  .heroactions .btn{width:100%;min-height:48px}
+  .section{padding:58px 0}
+  .sectionhead p{font-size:15px}
+  #social-content .social-research-banner{grid-template-columns:1fr}
+  #social-content .social-research-art{min-height:135px}
+  #social-content .social-content-grid{grid-template-columns:1fr}
+  #social-content .app-hub-note{font-size:12px}
+}
+@media(max-width:430px){
+  body{font-size:15.5px}
+  .wrap{width:calc(100% - 26px)}
+  .brand{gap:8px}
+  .brand small{letter-spacing:1px}
+  .hero h1{font-size:clamp(42px,12.5vw,58px)}
+  .herofoot{display:grid;grid-template-columns:1fr;gap:10px}
+  .section h2{font-size:clamp(30px,9vw,36px)}
+  #social-content .app-hub{padding:15px;border-radius:20px}
+  #social-content .app-tile{min-height:72px;padding:12px}
+  #social-content .app-icon{flex-basis:40px;width:40px;height:40px}
+  #social-content .app-open{font-size:10px}
+  #social-content .social-feature-copy{padding:16px}
+  #social-content .research-links a{font-size:12px;padding:9px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+  :root{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+
+</head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div id="scrollProgress" aria-hidden="true"></div>
