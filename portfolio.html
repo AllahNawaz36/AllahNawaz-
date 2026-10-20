@@ -547,70 +547,45 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
     messages.appendChild(el);
     messages.scrollTop = messages.scrollHeight;
   }
-  // Local knowledge and guided workflows. This works without exposing API keys.
-  const assistantKnowledge = {
-    identity: 'Naz Business Assistant Pro helps with Allah Nawaz’s portfolio, UI/UX and product design, content planning, marketing, SEO, lead qualification, and task workflows.',
-    portfolio: 'The portfolio includes selected design work, experience, services, process, and contact options. Use the project cards and their Behance links to view original work.',
-    services: 'Services include UI/UX and product design, responsive web/mobile interfaces, SaaS dashboards, design systems, prototyping, and visual/social content.',
-    workflow: 'I can prepare drafts, plans, briefs, checklists, and prompts. Publishing posts, sending messages, accessing private accounts, or changing external platforms is not performed by this static website chatbot.'
+  // Portfolio-only guided replies. No business automation features.
+  const portfolioKnowledge = {
+    portfolio: 'Explore the selected projects and case studies on this page. Project cards link to original work where available.',
+    services: 'I offer UI/UX and product design, responsive web and mobile interfaces, SaaS dashboards, wireframes, prototypes, design systems, and visual design.',
+    process: 'My design process starts with understanding the business goal and users, then moves through research, user flows, wireframes, visual design, prototyping, and handoff.',
+    brief: 'A useful project brief includes the product or business, target users, main problem, goals, required screens or deliverables, references, deadline, and budget range if known.'
   };
   function replyTo(question) {
     const q = question.toLowerCase().trim();
-    const urdu = /\b(kya|kaise|mujhe|mera|meri|mein|main|hai|hain|karo|batao|chahiye|kr|hy|acha|salam|assalam|ap|aap|ka|ki|ko|se|or|aur|nhi|nahin|bna|banao|likho|likh|chahye)\b/.test(q);
+    const urdu = /\\b(kya|kaise|mujhe|mera|meri|mein|main|hai|hain|karo|batao|chahiye|kr|hy|acha|salam|assalam|ap|aap|ka|ki|ko|se|or|aur|nhi|nahin|bna|banao|likho|likh|chahye)\\b/.test(q);
     const say = (en, ur) => urdu ? ur : en;
-    const selectedTopic = topic ? topic.value : 'general';
     const contains = pattern => pattern.test(q);
 
-    if (!q) return say('Please type a question or choose a quick prompt.', 'Apna sawal likhein ya quick prompt select karein.');
-    if (contains(/\b(hi|hello|hey|salam|assalam|assalamu alaikum|good morning|good evening)\b/)) {
-      return say('Hello! I’m Naz Business Assistant Pro. I can help with portfolio questions, UI/UX briefs, marketing content, SEO, lead qualification, and planning. What would you like to work on?', 'Assalam-o-alaikum! Main Naz Business Assistant Pro hoon. Portfolio, UI/UX brief, marketing content, SEO, leads aur planning mein help kar sakta hoon. Aaj kis kaam par focus karein?');
+    if (!q) return say('Please ask a question about my portfolio or design services.', 'Portfolio ya design services ke baare mein apna sawal likhein.');
+    if (contains(/\\b(hi|hello|hey|salam|assalam|assalamu alaikum|good morning|good evening)\\b/)) {
+      return say('Hi! I’m Allah Nawaz’s portfolio assistant. I can help you explore projects, understand design services and process, or prepare a project brief. What would you like to know?', 'Assalam-o-alaikum! Main Allah Nawaz ke portfolio ka assistant hoon. Main projects, design services, process aur project brief ke baare mein help kar sakta hoon. Aap kya jaanna chahte hain?');
     }
-    if (contains(/(password|api.?key|secret|credit card|private client data|sensitive information)/)) {
-      return say('For safety, never share passwords, API keys, payment details, or confidential client information in this public chat. API keys must stay on a secure server, never in portfolio.html.', 'Safety ke liye password, API key, payment details ya confidential client data yahan share na karein. API key secure server par honi chahiye, portfolio.html mein nahi.');
+    if (contains(/(portfolio|project|case study|behance|experience|work samples|show me your work)/)) {
+      return say(portfolioKnowledge.portfolio + ' Scroll to the Work section and open a project card to see more details.', 'Portfolio mein selected projects aur case studies dekhein. Work section tak scroll karein aur details ke liye project card open karein.');
     }
-    if (contains(/(what can you do|capabilities|features|help me|help menu|madad|kya kar sakte)/)) {
-      return say('I can: (1) answer portfolio/service questions, (2) draft social posts and captions, (3) outline SEO plans, (4) create project briefs, (5) prepare lead-intake questions, (6) build task checklists, and (7) write cinematic video prompts. This static version prepares drafts; it does not publish or message people automatically.', 'Main portfolio aur services ke jawab, social posts/captions, SEO plans, project briefs, lead questions, task checklists aur cinematic video prompts bana sakta hoon. Yeh version drafts banata hai; khud se posts publish ya logon ko message nahi bhejta.');
+    if (contains(/(service|services|hire|what do you do|offer|ui.?ux|product design|website|mobile app|saas|design system|prototype|wireframe)/)) {
+      return say(portfolioKnowledge.services, 'Meri services mein UI/UX aur product design, responsive web/mobile interfaces, SaaS dashboards, wireframes, prototypes, design systems aur visual design shamil hain.');
+    }
+    if (contains(/(process|how do you work|approach|workflow|method)/)) {
+      return say(portfolioKnowledge.process, 'Mera design process business goal aur users ko samajhne se shuru hota hai, phir research, user flows, wireframes, visual design, prototype aur developer handoff hota hai.');
+    }
+    if (contains(/(brief|start a project|new project|project enquiry|project idea|requirements)/)) {
+      return say(portfolioKnowledge.brief + ' To discuss a project, use the WhatsApp or email links in the Contact section.', 'Project brief mein product/business, target users, main problem, goals, required screens/deliverables, references, deadline aur agar maloom ho to budget range shamil karein. Project discuss karne ke liye Contact section mein WhatsApp ya email use karein.');
     }
     if (contains(/(price|cost|budget|rate|quote|charges|qeemat|kitne paise)/)) {
-      return say('Project pricing depends on scope, deliverables, complexity, and timeline. To prepare a quote brief, share: project type, main goal, required screens/assets, deadline, and budget range. No fixed price is promised here.', 'Pricing scope, deliverables, complexity aur timeline par depend karti hai. Quote brief ke liye project type, goal, screens/assets, deadline aur budget range batayein. Yahan koi fixed price promise nahi ki ja rahi.');
+      return say('Pricing depends on the project scope, deliverables, complexity, and timeline. Share a short brief and I can help outline the information needed for a quote. For a direct enquiry, use WhatsApp or email in the Contact section.', 'Price project ke scope, deliverables, complexity aur timeline par depend karti hai. Quote ke liye chhota brief share karein. Direct enquiry ke liye Contact section mein WhatsApp ya email use karein.');
     }
-    if (contains(/(hire|service|services|offer|skill|what do you do|website|saas|app|ui.?ux|product design|design system|prototype)/) || ['hire','website','saas'].includes(selectedTopic)) {
-      return say(assistantKnowledge.services + ' For a project brief, tell me the product, target users, main problem, deliverables, and deadline.', assistantKnowledge.services + ' Project brief ke liye product, target users, main problem, deliverables aur deadline batayein.');
+    if (contains(/(contact|whatsapp|email|reach|connect|talk to you)/)) {
+      return say('You can contact Allah Nawaz through the WhatsApp button, email link, or LinkedIn link in the portfolio.', 'Aap portfolio ke WhatsApp button, email link ya LinkedIn link se Allah Nawaz se rabta kar sakte hain.');
     }
-    if (contains(/(portfolio|project|case study|behance|experience|work samples)/)) {
-      return say(assistantKnowledge.portfolio, 'Portfolio mein selected work, experience, services, process aur contact options hain. Original work dekhne ke liye project cards aur Behance links use karein.');
+    if (contains(/(figma|canva|design prompt|design brief|poster|banner|creative|brand identity|visual design)/)) {
+      return say('For a useful design brief, include the audience, business goal, key message, required dimensions, brand colours and typography, visual references, constraints, and call to action. The Figma and Canva links open those platforms separately.', 'Achay design brief mein audience, business goal, key message, dimensions, brand colours/typography, visual references, constraints aur CTA shamil karein. Figma aur Canva links alag platform par khulte hain.');
     }
-    if (contains(/(caption|social media post|linkedin post|facebook post|instagram post|post likh|content calendar|content plan|hashtags|marketing content)/)) {
-      return say('CONTENT DRAFT WORKFLOW\n1. Goal: awareness, engagement, leads, or sales.\n2. Audience: who should care?\n3. Hook: one clear opening line.\n4. Value: 2–3 useful points.\n5. CTA: one specific next step.\n6. Add 3–5 relevant hashtags, then review facts and brand voice before publishing.\n\nTell me the platform, topic, audience, and goal and I can tailor the draft.', 'CONTENT DRAFT WORKFLOW\n1. Goal: awareness, engagement, leads ya sales.\n2. Audience: post kis ke liye hai?\n3. Hook: shuru ki ek clear line.\n4. Value: 2–3 useful points.\n5. CTA: ek clear next step.\n6. 3–5 relevant hashtags add karein aur publish se pehle facts check karein.\n\nPlatform, topic, audience aur goal bata dein; main draft tailor kar dunga.');
-    }
-    if (contains(/(seo|search engine|keyword|google business|local ranking|website traffic)/)) {
-      return say('SEO starter checklist: define search intent, collect relevant keywords, write a unique title and meta description, structure headings clearly, improve mobile speed/accessibility, add useful original content, link related pages, and track results in available analytics. Rankings are never guaranteed.', 'SEO checklist: search intent samjhein, relevant keywords choose karein, unique title aur meta description likhein, headings clear rakhein, mobile speed/accessibility improve karein, original content aur internal links add karein, aur analytics mein results track karein. Ranking ki guarantee nahi hoti.');
-    }
-    if (contains(/(lead|leads|client enquiry|prospect|customer inquiry|lead form|lead qualify)/)) {
-      return say('LEAD INTAKE\nAsk for: name or business, contact method they choose to share, project goal, audience, deliverables, budget range (optional), deadline, and reference links. Collect only what is needed and ask consent before adding someone to marketing lists. This chat does not store or send leads to a CRM.', 'LEAD INTAKE\nPoochhein: naam/business, unka pasandeeda contact method, project goal, audience, deliverables, optional budget range, deadline aur reference links. Sirf zaroori data lein aur marketing list se pehle consent lein. Yeh chatbot leads ko CRM mein save ya send nahi karta.');
-    }
-    if (contains(/(task|todo|to-do|project plan|workflow|schedule|routine|priorit|deadline|manage my work)/)) {
-      return say('TASK PLAN\n• Define the outcome.\n• Break it into tasks that take 30–90 minutes.\n• Mark each task as Now / Next / Later.\n• Add an owner and deadline.\n• Identify blockers and the next action.\n• Review progress daily.\n\nTell me your goal and deadline and I can turn it into a specific checklist.', 'TASK PLAN\n• Result define karein.\n• Kaam ko 30–90 minute ke tasks mein divide karein.\n• Now / Next / Later priority dein.\n• Owner aur deadline likhein.\n• Blockers aur next action identify karein.\n• Roz progress review karein.\n\nGoal aur deadline batayein, main checklist bana dunga.');
-    }
-    if (contains(/(video|flow ai|google flow|cinematic|vfx|motion|animation|story prompt)/)) {
-      return say('VIDEO PROMPT TEMPLATE\nSubject + action + location + camera movement + lighting + mood + visual style + duration + aspect ratio. For consistency, keep the character description, wardrobe, lighting palette, and setting unchanged across shots; vary only the action/camera when needed. Tell me the story, duration, and format to build a prompt.', 'VIDEO PROMPT TEMPLATE\nSubject + action + location + camera movement + lighting + mood + visual style + duration + aspect ratio. Consistency ke liye character description, kapray, lighting palette aur location har shot mein same rakhein; zaroorat par sirf action/camera badlein. Story, duration aur format batayein.');
-    }
-    if (contains(/(figma|canva|design prompt|design brief|poster|banner|creative|brand identity|visual design)/) || selectedTopic === 'branding') {
-      return say('A strong design brief states the audience, business goal, key message, required assets and dimensions, brand colours/type, references, constraints, and call to action. Tell me the platform and objective and I can draft the brief.', 'Achay design brief mein audience, business goal, key message, assets aur dimensions, brand colours/type, references, constraints aur CTA hota hai. Platform aur objective bata dein.');
-    }
-    if (contains(/(contact|whatsapp|email|reach|connect|start a project)/)) {
-      return say('You can reach Allah Nawaz using the WhatsApp button, the email link in the Contact section, or LinkedIn. Share a short project brief and preferred timeline.', 'Aap WhatsApp button, Contact section ke email link, ya LinkedIn se Allah Nawaz se rabta kar sakte hain. Chhota project brief aur timeline share karein.');
-    }
-    if (contains(/(automation|publish|publishing|schedule posts|connect facebook|connect linkedin|send message|integrations|connector)/)) {
-      return say('Automation status: this GitHub Pages chatbot currently runs guided replies in the browser. It cannot securely connect accounts, schedule/publish posts, send messages, or run background jobs by itself. Those features need approved platform integrations and a secure backend. I can prepare a safe setup checklist, but I will not claim an action was completed unless it is actually connected and tested.', 'Automation status: yeh GitHub Pages chatbot browser mein guided replies chalata hai. Yeh akela accounts connect, posts schedule/publish, messages send ya background jobs run nahi kar sakta. Is ke liye approved integrations aur secure backend chahiye. Main setup checklist de sakta hoon, lekin bina connection aur test ke feature working claim nahi karunga.');
-    }
-    if (contains(/(privacy|data|remember|history|store|save my chat)/)) {
-      return say('This guided version does not send your message to an AI provider or save chat history to a server. Avoid entering confidential information. Browser storage and hosting behaviour can change, so do not treat this as a secure records system.', 'Yeh guided version aapka message AI provider ko nahi bhejta aur server par chat history save nahi karta. Confidential information na likhein. Isay secure records system na samjhein.');
-    }
-    if (contains(/(motion|vfx|animation)/)) {
-      return say('The portfolio includes an experimental Motion & VFX study. It represents visual exploration, not a claim of completed client VFX work.', 'Portfolio mein experimental Motion & VFX study hai. Yeh visual exploration hai, completed client VFX work ka claim nahi.');
-    }
-    return say('I can help with portfolio and service questions, UI/UX briefs, marketing drafts, SEO checklists, lead-intake questions, task plans, and video prompts. Tell me your goal and the platform. Note: this is the local guided version, not a connected generative-AI backend.', 'Main portfolio/services, UI/UX briefs, marketing drafts, SEO checklists, lead questions, task plans aur video prompts mein help kar sakta hoon. Goal aur platform bata dein. Note: yeh local guided version hai, connected generative-AI backend nahi.');
+    return say('I can answer questions about portfolio projects, design services, my process, and how to start a project. Try asking “What services do you offer?” or “How can I start a project?”', 'Main portfolio projects, design services, design process aur project shuru karne ke tareeqe ke baare mein jawab de sakta hoon. “Aap kya services dete hain?” ya “Project kaise shuru karun?” pooch kar dekhein.');
   }
   toggle.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
   close.addEventListener('click', () => setOpen(false));
