@@ -71,13 +71,13 @@ The dashboard now includes a **Free AI Agent Hub** with launch links and a local
 
 | Service | Official entry point | Honest usage note |
 |---|---|---|
-| Google Pomelli Agent | https://labs.google.com/pomelli | Official Google Labs tool; currently free, feature availability varies by country |\n| Arena Agent Mode | https://arena.ai/agent | External agent workspace; verify current access and limits |
+| Google Pomelli Agent | https://labs.google.com/pomelli | Official Google Labs tool; currently free, feature availability varies by country |\n| Google Flow | https://labs.google/fx/tools/flow | Official video tool; current page lists free daily credits, with plan and feature limits |\n| GitHub Copilot Free | https://github.com/features/copilot | Limited free code completions and supported coding assistance |\n| Replit AI App Builder | https://replit.com/ | Free Starter tier with limited daily agent credits and publishing limits |\n| Arena Agent Mode | https://arena.ai/agent | External agent workspace; verify current access and limits |
 | Poe | https://poe.com/ | Freemium; free message/model access is limited |
 | Monica | https://monica.im/ | Freemium; some tools may require payment |
 | Google AI Studio | https://aistudio.google.com/ | Free quotas may be available; limits and model access vary |
 | HuggingChat | https://huggingface.co/chat/ | External chat with available models; model availability can change |
 | Duck.ai | https://duck.ai/ | External chat; don't use it as a private customer-record system |
 
-The prompt builder produces reusable instructions for research, LinkedIn content and visual briefs, UI/UX reviews, lead workflows, free-first automation planning and SEO outlines. It saves only in browser-local drafts. It does not run the external agent, retrieve its response, publish content or send messages.
+The prompt builder produces reusable instructions for research, LinkedIn content and visual briefs, UI/UX reviews, lead workflows, free-first automation planning, SEO outlines, code generation/debugging and Google Flow cinematic video prompts. It saves only in browser-local drafts. It does not run the external agent, retrieve its response, publish content or send messages.
 
 The user confirmed that “Pamoly” meant **Google Pomelli** at https://labs.google.com/pomelli. This official link is now included in the dashboard. Google’s current supported-country list includes Pakistan; language support is English, and feature availability may vary by country. See https://support.google.com/labs/answer/16945066.
