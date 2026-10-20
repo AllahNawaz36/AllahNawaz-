@@ -1,4 +1,7 @@
 name: Project checks
+
+permissions:
+  contents: read
 on:
   push:
     branches: [main, fix/full-setup]
