@@ -149,3 +149,14 @@ test("Research Studio is linked from the dashboard and discloses manual source c
   assert.match(research, /Saved on this device|local storage/i);
   assert.match(research, /Export research report/);
 });
+
+
+test("AI chat offers validated structured responses and renders the returned fields", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /id="aiChatStructured" type="checkbox"/);
+  assert.match(html, /responseFormat:"structured"/);
+  assert.match(html, /data\.responseFormat==="structured"&&data\.structured/);
+  for (const key of ["Assumptions", "Next steps", "Limitations", "structured response validated"]) {
+    assert.ok(html.includes(key), "chat should display structured field/status: " + key);
+  }
+});
