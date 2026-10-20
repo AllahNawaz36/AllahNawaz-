@@ -7,6 +7,8 @@ A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflar
 ## What works
 
 - Browser dashboard for leads, tasks, content drafts, campaign planning, manual SEO checks, FAQs and KPI calculations.
+- Optional validated structured AI responses in the dashboard (summary, assumptions, next steps, limitations) when the configured Worker supports the request.
+- Research Studio for manually captured sources, comparisons, filtering and local Markdown/JSON exports; it does not automatically import live search results.
 - Communication Hub with a two-step WhatsApp approval flow: review the recipient and message, approve opening the WhatsApp draft, then press Send inside WhatsApp. Drafts stay in this browser; this is not background/API sending.
 - Automation Studio: video-edit briefs (aspect ratios, trim/cut, captions, music and thumbnail checklist), a local publishing approval queue, browser-local reports, and downloadable proposal/invoice/meeting-note/CSV templates.
 - Automation Studio outputs are saved in this browser; they do not edit media, send messages, upload files or publish/schedule posts.
@@ -50,17 +52,20 @@ For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and
 
 ## Current verification status (2026-10-20)
 
-**Latest verification:** the GitHub Pages deployment completed successfully in [run #84](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39410158388), and the latest repository checks passed in [run #314](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39410187290). The automated HTML/JavaScript checks now include `index.html`, `portfolio.html`, and `research.html`. These checks verify the repository and static deployment pipeline; they do **not** prove the Cloudflare backend is live.
+**Latest repository check: PASS** — [run 39411437219](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39411437219), commit `62feecdec12ac1d098b8c9d49b2c28f862490b8b`. The job completed successfully: Node syntax checks, JavaScript tests, inline JavaScript/duplicate-ID checks, Python dependency install, Python compilation/tests, and chatbot CLI smoke test.
 
-The backend remains **not verified** until the live checks below pass. GitHub access alone cannot verify your Cloudflare account, current Worker deployment, bindings, secrets, or live API.
+**Latest code state:** structured AI response validation is covered by tests, including extra JSON keys and response size/count limits. GitHub Pages deployment workflow passed for the prior frontend commit; the current documentation/test-only commit does not change the deployed HTML. CI is evidence of repository checks, not proof of live Worker health.
 
-- The intended Worker name in `wrangler.toml` is `naz-business-assistant-api`.
-- The D1 binding is intentionally commented out until a real database ID is available. Lead storage will therefore report `not-configured` until you create D1, bind it as `DB`, apply `schema.sql`, and deploy.
-- Public chat is intentionally unavailable unless both an AI provider (`AI` binding or `GEMINI_API_KEY` secret) and the `CHAT_LIMITER` binding work.
-- `GET /api/health` can return HTTP 200 and `ok: true` while the service status is `degraded`. Check `status: "ready"`, `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` before treating chat as ready.
-- GitHub Pages is only the frontend. The actual deployed Worker URL must be entered in **Connections & Settings → API endpoint**.
+**Release verdict: NOT FULLY FINALIZED — Cloudflare account-side checks remain a hard blocker.** The live Worker URL is not present in the dashboard source and was not available through the connected GitHub repository. No live `/api/health` or real AI chat test has been performed.
 
-If Cloudflare shows **Not Found**, start from https://dash.cloudflare.com/, confirm the correct account, and open Workers & Pages from the dashboard. Do not rely on an account-specific deep link or create a second Worker until the account and existing deployment have been checked. See [Cloudflare recovery and deployment guide](CLOUDFLARE_SETUP.md).
+- Intended Worker: `naz-business-assistant-api` in `wrangler.toml`.
+- D1 binding is intentionally omitted until a real database ID is configured; persistent leads are not ready until D1 and `schema.sql` are configured and tested.
+- Chat requires a working AI provider (`AI` binding or `GEMINI_API_KEY` secret) **and** `CHAT_LIMITER`.
+- For chat, require `status: "ready"`, `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` from `GET /api/health`.
+- For persistent lead storage, additionally require `storage: "d1"` and `admin: "configured"`, then complete authenticated create/list/update/delete and unauthenticated-401 tests.
+- The actual Worker HTTPS URL must be entered in **Connections & Settings → API endpoint**. Never put secrets into the frontend or this repository.
+
+If Cloudflare shows **Not Found**, start from https://dash.cloudflare.com/, confirm the correct account, and open Workers & Pages. Do not create a duplicate Worker until the account and existing deployment have been checked. Follow [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
 
 ## Deployment: important distinction
 
