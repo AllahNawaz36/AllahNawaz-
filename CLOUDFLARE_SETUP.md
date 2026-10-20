@@ -37,6 +37,19 @@ Do not create a duplicate Worker just because this exact name is absent. Reposit
 10. Confirm `<worker-url>/api/health` returns `ok: true`. Check `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` before treating AI chat as ready. `status: "degraded"` means the API responds but chat setup is incomplete. The `storage` field will say `not-configured` until D1 is configured; `admin` should say `configured` after adding `ADMIN_TOKEN`.
 11. For Lead CRM, use Admin login and enter the same `ADMIN_TOKEN` secret. Test with a sample lead only after the database and schema are configured.
 
+## Release verification gate (do not skip)
+
+Run these checks in order; a successful health response alone is not proof that the whole backend works.
+
+1. Confirm the Worker shown in Cloudflare is the intended service and its latest deployment/build succeeded. If the dashboard returns Not Found, return to the dashboard home, confirm the selected account, and locate the Worker from the list before changing configuration.
+2. Open `<actual-workers-dev-url>/api/health`. HTTP 200 with `ok: true` means the Worker answered the health request; it does **not** prove chat or storage is ready. Require `status: "ready"`, `chatReady: true`, `ai: "configured"`, and `chatProtection: "configured"` for chat.
+3. If persistent leads are required, also require `storage: "d1"` and `admin: "configured"`. `storage: "not-configured"` is expected until a real D1 database and binding are configured.
+4. Test chat with a harmless prompt. A real non-empty AI answer must come from the Worker; a demo response from the frontend is not proof of backend AI.
+5. With a private admin token, test a synthetic lead create/list/update/delete cycle, then confirm an unauthenticated request returns 401. Delete the test lead afterward.
+6. Check the latest Worker logs for runtime errors and verify that no token or API key appears in repository files, client-side source, or logs.
+
+Do not call the release production-ready until all required checks pass in the owner's account. The source code and setup guide being present in GitHub do not establish that a Cloudflare deployment is live.
+
 ## Security / troubleshooting
 - Never commit `ADMIN_TOKEN` or paste it into public files/screenshots.
 - A Cloudflare Workers Builds failure can also occur if the Worker name in the dashboard does not match the `name` in `wrangler.toml`; check View Build History for the exact error.
