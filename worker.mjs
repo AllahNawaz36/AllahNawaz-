@@ -223,7 +223,9 @@ export default {
           try { structured = JSON.parse(answer); } catch { return response({ error: "AI returned invalid structured data. Please retry with a simpler request." }, 502, cors); }
           const validString = value => typeof value === "string" && value.trim().length > 0 && value.length <= 2000;
           const validList = value => Array.isArray(value) && value.length <= 5 && value.every(item => typeof item === "string" && item.length <= 500);
-          if (!structured || typeof structured !== "object" || Array.isArray(structured) || !validString(structured.summary) || !validList(structured.assumptions) || !validList(structured.nextSteps) || !validList(structured.limitations)) {
+          const expectedKeys = ["assumptions", "limitations", "nextSteps", "summary"];
+          const actualKeys = structured && typeof structured === "object" && !Array.isArray(structured) ? Object.keys(structured).sort() : [];
+          if (!structured || typeof structured !== "object" || Array.isArray(structured) || actualKeys.length !== expectedKeys.length || actualKeys.some((key, index) => key !== expectedKeys[index]) || !validString(structured.summary) || !validList(structured.assumptions) || !validList(structured.nextSteps) || !validList(structured.limitations)) {
             return response({ error: "AI output did not match the required schema. Please retry." }, 502, cors);
           }
           return response({ answer: structured.summary.trim(), structured: { summary: structured.summary.trim(), assumptions: structured.assumptions, nextSteps: structured.nextSteps, limitations: structured.limitations }, mode: "ai", provider: aiProvider, platform, responseFormat: "structured" }, 200, cors);
