@@ -171,7 +171,7 @@ test("worker chat returns the AI response when a Workers AI binding is configure
   });
   assert.equal(response.status, 200);
   assert.equal(modelName, "@cf/meta/llama-3.1-8b-instruct");
-  assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", platform: "saas" });
+  assert.deepEqual(await response.json(), { answer: "UI/UX and product design services.", mode: "ai", provider: "workers-ai", platform: "saas" });
 });
 
 test("worker health identifies Gemini as the configured AI provider", async () => {
