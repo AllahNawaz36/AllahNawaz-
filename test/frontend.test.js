@@ -1,3 +1,12 @@
+test("mobile usability pass preserves touch targets, safe-area spacing and readable overlays", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /--tap-target:44px/, "interactive controls should have a clear touch target");
+  assert.match(html, /main\{padding-bottom:calc\(92px \+ env\(safe-area-inset-bottom\)\)\}/, "mobile content should not be hidden behind the fixed navigation");
+  assert.match(html, /\.ai-launcher\{right:12px;bottom:calc\(78px \+ env\(safe-area-inset-bottom\)\)/, "floating assistant should sit above mobile navigation");
+  assert.match(html, /\.ai-chat-panel\{right:10px;bottom:calc\(135px \+ env\(safe-area-inset-bottom\)\)/, "chat panel should fit above mobile navigation");
+  assert.match(html, /@media\(prefers-reduced-motion:reduce\)\{\.page\.active\{animation:none\}\}/, "page animation should respect reduced-motion preference");
+});
+
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
