@@ -135,7 +135,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   <div class="stats" aria-live="polite">
     <div class="stat"><strong id="sourceCount">0</strong><span>Saved sources</span></div>
     <div class="stat"><strong id="topicCount">0</strong><span>Topics covered</span></div>
-    <div class="stat"><strong id="reviewCount">0</strong><span>Verified / reviewed</span></div>
+    <div class="stat"><strong id="reviewCount">0</strong><span>High-confidence sources</span></div>
   </div>
 </section>
 <div class="grid">
@@ -192,7 +192,7 @@ function escapeHtml(value){return safeText(value).replace(/[&<>"']/g,c=>({"&":"&
 function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");window.setTimeout(()=>el.classList.remove("show"),2600);}
 function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 $("checked").value=today();
-try{const saved=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(saved))records=saved.filter(x=>x&&typeof x==="object"&&typeof x.title==="string"&&typeof x.url==="string");}catch{records=[];}
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(saved))records=saved.filter(x=>x&&typeof x==="object"&&typeof x.title==="string"&&typeof x.url==="string"&&validHttpUrl(x.url)).map((x,i)=>({id:typeof x.id==="string"&&x.id?x.id:"legacy-"+i,title:x.title.slice(0,300),url:x.url,kind:typeof x.kind==="string"?x.kind:"Website",confidence:["Low","Medium","High"].includes(x.confidence)?x.confidence:"Medium",summary:typeof x.summary==="string"?x.summary.slice(0,5000):"",topic:typeof x.topic==="string"?x.topic.slice(0,200):"",checked:typeof x.checked==="string"?x.checked:"",decision:typeof x.decision==="string"?x.decision.slice(0,2000):"",createdAt:typeof x.createdAt==="string"?x.createdAt:""}));}catch{records=[];}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(records));$("storageState").textContent="Saved on this device";}catch{$("storageState").textContent="Storage unavailable";toast("Could not save to browser storage. Export a backup.");}}
 function validHttpUrl(raw){try{const u=new URL(raw);return u.protocol==="https:"||u.protocol==="http:";}catch{return false;}}
 function updateSearchLinks(){const q=$("query").value.trim();const enc=encodeURIComponent(q||"business automation tools comparison");$("googleSearch").href="https://www.google.com/search?q="+enc;$("youtubeSearch").href="https://www.youtube.com/results?search_query="+enc;$("bingSearch").href="https://www.bing.com/search?q="+enc;$("scholarSearch").href="https://scholar.google.com/scholar?q="+enc;}
