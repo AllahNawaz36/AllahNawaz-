@@ -78,3 +78,9 @@
 - Added a dashboard directory linking to official Google Flow, Canva, CapCut, ElevenLabs, ChatGPT Voice, Figma and Metricool pages, with warnings about free-tier quotas, eligibility, commercial-use limits, and unimplemented embedded voice streaming.
 - The connected Figma identity check and Metricool brand lookup returned data, but this is not independent proof of social-account ownership. No scheduling/publishing action was performed.
 - CI for this new directory commit is pending; deployment and live Android rendering remain unverified. Changes remain on the feature branch.
+
+## Google resource hub (2026-10-20)
+
+- Added official Google growth/automation resources inside Automation Studio: Gemini API / AI Studio, PageSpeed Insights, Search Console, Google Trends, Analytics, Apps Script, Drive, YouTube Studio and Business Profile.
+- This is a linked resource hub only; private account data still requires authorization and these services are not represented as already connected. Documentation warns against putting API keys in public frontend code.
+- Regression test added for tool listings and honest status copy. CI is pending for the latest commit; live deployment remains unverified.
