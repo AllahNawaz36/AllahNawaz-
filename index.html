@@ -687,6 +687,7 @@ input[type="checkbox"],input[type="radio"]{width:18px;height:18px;accent-color:v
   <div class="ai-chat-topic"><label for="aiChatTopic">What do you need help with?</label><select id="aiChatTopic">
     <option value="general">General business / design</option><option value="uiux">UI/UX & Product Design</option><option value="website">Website & Landing Pages</option><option value="saas">SaaS Dashboard</option><option value="ecommerce">E-commerce</option><option value="branding">Branding & Creatives</option><option value="seo">SEO & Marketing</option><option value="automation">Business Automation</option><option value="figma-canva">Figma & Canva</option><option value="social-platforms">LinkedIn & Social Content</option><option value="hire">Project Enquiry</option>
   </select></div>
+  <div class="ai-chat-topic" style="padding:0 14px 10px"><label style="display:flex;align-items:center;gap:8px;font-size:12px"><input id="aiChatStructured" type="checkbox" style="width:auto;min-height:0"> Structured answer (validated JSON)</label><small style="display:block;color:var(--muted)">Returns summary, assumptions, next steps and limitations when supported by your backend.</small></div>
   <div id="aiChatLog" class="ai-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="ai-chat-message assistant">Assalam-o-alaikum! Share a design question, project brief or content idea to get started.</div></div>
   <form id="aiChatForm" class="ai-chat-compose"><textarea id="aiChatInput" maxlength="1000" rows="2" aria-label="Your message" placeholder="Type in English or Roman Urdu…" required></textarea><button id="aiChatSend" class="ai-chat-send" type="submit" aria-label="Send message"><i data-lucide="send" data-fallback="➤" class="icon"></i></button></form>
   <div class="ai-chat-note">Drafting and advice only. This assistant does not publish posts, send messages or change accounts.</div>
@@ -926,7 +927,7 @@ checkBackend().then(()=>{updateSeo();updateOverview();renderDrafts();renderTasks
 
 /* AI assistant widget: only displays responses returned by the configured server */
 (()=>{
- const panel=document.getElementById("aiChatPanel"),launcher=document.getElementById("aiChatLauncher"),close=document.getElementById("aiChatClose"),form=document.getElementById("aiChatForm"),input=document.getElementById("aiChatInput"),send=document.getElementById("aiChatSend"),log=document.getElementById("aiChatLog"),status=document.getElementById("aiChatStatus"),topic=document.getElementById("aiChatTopic");
+ const panel=document.getElementById("aiChatPanel"),launcher=document.getElementById("aiChatLauncher"),close=document.getElementById("aiChatClose"),form=document.getElementById("aiChatForm"),input=document.getElementById("aiChatInput"),send=document.getElementById("aiChatSend"),log=document.getElementById("aiChatLog"),status=document.getElementById("aiChatStatus"),topic=document.getElementById("aiChatTopic"),structuredToggle=document.getElementById("aiChatStructured");
  if(!panel||!launcher||!form||!input||!send||!log||!status||!topic)return;
  const setOpen=open=>{panel.hidden=!open;launcher.setAttribute("aria-expanded",String(open));if(open)input.focus()};
  launcher.addEventListener("click",()=>setOpen(panel.hidden));close.addEventListener("click",()=>{setOpen(false);launcher.focus()});
@@ -949,10 +950,10 @@ checkBackend().then(()=>{updateSeo();updateOverview();renderDrafts();renderTasks
   if(typeof apiBase!=="function"||!apiBase()){addMessage("AI is not connected yet. Open Connections & Settings → API endpoint and enter your deployed Cloudflare Worker HTTPS URL. GitHub Pages alone cannot run the AI backend.","assistant");return}
   addMessage(message,"user");input.value="";input.disabled=true;send.disabled=true;const pending=addMessage("Thinking…","assistant");status.textContent="Waiting for backend response…";
   try{
-   const base=apiBase().replace(/\/+$/,"");const res=await fetch(base+"/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,platform:topic.value})});
+   const base=apiBase().replace(/\/+$/,"");const res=await fetch(base+"/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,platform:topic.value,...(structuredToggle&&structuredToggle.checked?{responseFormat:"structured"}:{})})});
    const data=await res.json().catch(()=>({error:"Server returned an invalid response."}));
    if(!res.ok)throw new Error(data.error||("Request failed ("+res.status+")."));
-   pending.textContent=typeof data.answer==="string"&&data.answer.trim()?data.answer:"The server returned no answer. Please try again.";status.textContent="Connected · AI response received";
+   if(data.responseFormat==="structured"&&data.structured){const d=data.structured;pending.textContent="Summary\n"+d.summary+"\n\nAssumptions\n"+(d.assumptions||[]).map(x=>"• "+x).join("\n")+"\n\nNext steps\n"+(d.nextSteps||[]).map((x,i)=>(i+1)+". "+x).join("\n")+"\n\nLimitations\n"+(d.limitations||[]).map(x=>"• "+x).join("\n");}else{pending.textContent=typeof data.answer==="string"&&data.answer.trim()?data.answer:"The server returned no answer. Please try again.";}status.textContent=data.responseFormat==="structured"?"Connected · structured response validated":"Connected · AI response received";
   }catch(err){pending.textContent="I couldn't get an AI response: "+(err.message||"Network error")+". Check the API URL, Cloudflare Worker health, AI binding, rate-limit binding and allowed origin in Settings.";status.textContent="AI request failed · check backend setup"}
   finally{input.disabled=false;send.disabled=false;input.focus();log.scrollTop=log.scrollHeight}
  });
