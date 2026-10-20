@@ -638,6 +638,19 @@ input[type="checkbox"],input[type="radio"]{width:18px;height:18px;accent-color:v
 
 <section class="page" id="page-settings">
     <p class="intro">Configure and understand integrations. Secrets belong on the server, never in public HTML or a browser bundle.</p>
+    <div class="card" role="status" aria-label="Backend setup help" style="margin-bottom:16px">
+      <h3>Backend setup — simple guide</h3>
+      <p><strong>Dashboard is open, but the AI backend is not confirmed connected yet.</strong> The GitHub Pages website and Cloudflare Worker are two separate things. Do not paste passwords or API keys here.</p>
+      <ol>
+        <li>Open <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener noreferrer">Cloudflare Dashboard</a> and sign in.</li>
+        <li>Open <strong>Workers & Pages</strong>. Search for <code>naz-business-assistant-api</code>. If it is missing, check whether an older service named <code>allahnawaz</code> exists.</li>
+        <li>If neither service exists, stop here. The backend has not been located; do not enter a guessed URL or create a duplicate.</li>
+        <li>After the correct service is deployed, open its assigned <code>workers.dev</code> URL plus <code>/api/health</code>. Continue only when the JSON response includes <code>"ok": true</code>.</li>
+        <li>Paste only that real base URL into the API endpoint field below (without <code>/api/health</code>), save it, then tap <strong>Check backend</strong>.</li>
+      </ol>
+      <p class="mini">The repository checks pass, but they do not deploy Cloudflare or prove live AI, database, or social publishing. Until the health check passes, use drafts and demo/local features only.</p>
+      <p><a href="https://github.com/AllahNawaz36/AllahNawaz-/blob/main/CLOUDFLARE_SETUP.md" target="_blank" rel="noopener noreferrer">Open full setup and recovery guide</a></p>
+    </div>
     <div class="grid">
       <div class="card span-6"><h3>Connection status</h3><p id="connectionStatus">Checking backend…</p><div class="actions"><button class="btn" id="checkBackend">Check backend</button><button class="btn" id="adminLogin">Admin login</button><button class="btn danger" id="adminLogout">Clear admin session</button></div><p class="mini">Admin token is kept in sessionStorage for this browser tab. Use HTTPS before remote deployment.</p></div>
       <div class="card span-6"><h3>API endpoint</h3><p class="mini">Optional: connect this GitHub Pages dashboard to your deployed Cloudflare Worker. Leave blank for same-origin/local mode.</p><label for="apiEndpoint">Backend base URL</label><input id="apiEndpoint" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url"><div class="actions"><button class="btn primary" id="saveApiEndpoint">Save endpoint</button><button class="btn" id="clearApiEndpoint">Use local / same-origin</button></div><p class="mini">The URL is saved in this browser only. Never paste your ADMIN_TOKEN into this field or a public file.</p></div>
