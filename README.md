@@ -12,6 +12,7 @@ A browser dashboard, Python workflow runner, Node.js API, and optional Cloudflar
 - Automation Studio outputs are saved in this browser; they do not edit media, send messages, upload files or publish/schedule posts.
 - Optional Node.js API for shared lead CRUD, protected by a private `ADMIN_TOKEN` (local/self-hosted).
 - Optional Cloudflare Worker API with D1 persistent lead storage, origin restrictions, and private token protection. See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
+- Optional Google Gemini API provider for AI chat using a Cloudflare Worker secret; free-tier quota/model access varies. Setup and privacy notes are in [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md).
 - Python workflow runner with a brand-aware content prompt, planning stages and an explicit approval gate.
 - Safe-by-default Python dry run (`DRY_RUN=1`).
 
