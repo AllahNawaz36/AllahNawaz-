@@ -101,3 +101,16 @@ test("icon fallbacks have consistent spacing and More menu uses matching accessi
   assert.match(html, /id="mobileMorePanel" class="mobile-more-panel" role="menu" aria-labelledby="mobileMoreButton" hidden/, "More panel should expose an accessible menu label");
   assert.match(html, /\.mobile-more-panel \.icon-fallback\{flex-basis:20px;width:20px;height:20px;min-width:20px\}/, "More menu fallback icons should share consistent sizing");
 });
+
+
+test("Free AI Agent Hub keeps confirmed Pomelli link and working code/video prompt templates", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  assert.match(html, /href="https:\/\/labs\.google\.com\/pomelli"/, "Google Pomelli should link to its official Labs page");
+  assert.doesNotMatch(html, /Pamoly.*could not be identified|Send its exact URL or a screenshot/i, "obsolete uncertainty note must not remain after the user confirmed Pomelli");
+  assert.match(html, /<option value="code">Generate or debug code<\/option>/, "code-generation task should be selectable");
+  assert.match(html, /<option value="video">Google Flow cinematic video prompt<\/option>/, "Flow prompt task should be selectable");
+  assert.match(html, /code:"Act as a senior software engineer/, "code task should have a prompt template");
+  assert.match(html, /video:"Act as a cinematic AI video director writing prompts for Google Flow/, "video task should have a prompt template");
+  assert.match(html, /Google Flow/);
+  assert.match(html, /external services are not connected to this dashboard/i, "external tools must not be presented as connected integrations");
+});
