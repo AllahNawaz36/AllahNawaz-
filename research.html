@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f4ef">
+<meta name="description" content="Source-backed research workspace for Naz Business Assistant Pro.">
+<title>Research Studio — Naz Business Assistant Pro</title>
+<style>
+:root{color-scheme:light;--bg:#f7f4ef;--panel:#fffdf9;--ink:#22221f;--muted:#706e67;--line:#e7e1d8;--accent:#a94f2c;--soft:#f4e7df;--green:#216b4b;--shadow:0 12px 40px #3428190b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--accent);overflow-wrap:anywhere}button,input,textarea,select{font:inherit}button{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:10px 14px;color:var(--ink);cursor:pointer;font-weight:650}button.primary{background:var(--accent);color:white;border-color:var(--accent)}button.danger{color:#9d3027}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #d79b7d;outline-offset:2px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;background:#fff;padding:11px 12px;color:var(--ink)}textarea{min-height:94px;resize:vertical}label{display:block;font-size:12px;font-weight:750;color:var(--muted);margin-bottom:6px}.wrap{max-width:1120px;margin:auto;padding:22px 18px 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}.brand{display:flex;gap:12px;align-items:center}.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--accent);color:#fff;font-weight:850;font-size:21px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:800;color:var(--accent)}h1{font-size:clamp(28px,5vw,43px);line-height:1.08;letter-spacing:-.04em;margin:8px 0 12px}h2{font-size:18px;margin:0 0 14px;letter-spacing:-.02em}p{margin:0 0 12px}.muted{color:var(--muted)}.hero{padding:30px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#fffdf9,#f4e8de);box-shadow:var(--shadow)}.hero p{max-width:720px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);min-width:0}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}.search-links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}.search-links a{display:inline-block;padding:8px 10px;border:1px solid var(--line);border-radius:10px;text-decoration:none;font-size:13px;background:#fff}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.stat{padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.stat strong{display:block;font-size:23px;letter-spacing:-.03em}.stat span{font-size:12px;color:var(--muted)}.sources{display:grid;gap:10px}.source{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.source-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.source h3{font-size:15px;margin:0 0 4px;overflow-wrap:anywhere}.pill{display:inline-block;font-size:11px;font-weight:750;padding:4px 8px;border-radius:99px;background:var(--soft);color:#813c22}.source p{font-size:13px;margin:8px 0}.source-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.source-actions button{font-size:12px;padding:7px 10px}.empty{padding:24px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--muted)}.foot{margin-top:18px;font-size:12px;color:var(--muted)}.notice{border-left:3px solid var(--accent);padding:10px 12px;background:#fff7f1;border-radius:0 10px 10px 0;font-size:13px;margin-top:12px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#22221f;color:white;padding:10px 14px;border-radius:12px;max-width:calc(100% - 30px);display:none;z-index:4}.toast.show{display:block}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.small{font-size:12px}@media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding:22px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.top{align-items:flex-start}.top .actions{margin:0}.wrap{padding:15px 12px 35px}.panel{padding:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><div class="mark" aria-hidden="true">N</div><div><strong>Naz Business Assistant Pro</strong><div class="muted small">Research Studio · Source ledger</div></div></div>
+  <a href="./" aria-label="Return to main dashboard">← Main dashboard</a>
+</header>
+<section class="hero">
+  <div class="eyebrow">Evidence before decisions</div>
+  <h1>Research. Compare. Decide.</h1>
+  <p class="muted">Collect sources from Google, YouTube, official docs and other websites. Keep summaries, confidence and checked dates together, then export a readable research brief. This studio does not pretend to fetch live search results automatically; use the search shortcuts and add sources you actually reviewed.</p>
+  <div class="actions">
+    <button class="primary" id="exportReport">Export research report</button>
+    <button id="backupData">Download JSON backup</button>
+    <button id="clearAll" class="danger">Clear this workspace</button>
+  </div>
+  <div class="stats" aria-live="polite">
+    <div class="stat"><strong id="sourceCount">0</strong><span>Saved sources</span></div>
+    <div class="stat"><strong id="topicCount">0</strong><span>Topics covered</span></div>
+    <div class="stat"><strong id="reviewCount">0</strong><span>Verified / reviewed</span></div>
+  </div>
+</section>
+<div class="grid">
+<section class="panel">
+  <h2>01 · Start online research</h2>
+  <div class="field"><label for="query">Research question or comparison</label><input id="query" placeholder="e.g. free tools for scheduling LinkedIn posts"></div>
+  <div class="search-links" aria-label="Open search providers">
+    <a id="googleSearch" target="_blank" rel="noopener noreferrer" href="https://www.google.com/">Google Search ↗</a>
+    <a id="youtubeSearch" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/">YouTube ↗</a>
+    <a id="bingSearch" target="_blank" rel="noopener noreferrer" href="https://www.bing.com/">Bing ↗</a>
+    <a id="scholarSearch" target="_blank" rel="noopener noreferrer" href="https://scholar.google.com/">Google Scholar ↗</a>
+  </div>
+  <p class="foot">Search shortcuts open external websites in a new tab. Results are not imported or verified automatically.</p>
+  <div class="notice">For changing prices, quotas and API permissions, prioritize official provider documentation and record the date you checked it. For important claims, compare at least two independent sources.</div>
+  <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+  <h2>02 · Add a source you reviewed</h2>
+  <form id="sourceForm">
+    <div class="fields">
+      <div class="field full"><label for="title">Source title *</label><input id="title" required maxlength="180" placeholder="Official API documentation or video title"></div>
+      <div class="field full"><label for="url">Source URL *</label><input id="url" required type="url" maxlength="2048" placeholder="https://..."></div>
+      <div class="field"><label for="kind">Source type</label><select id="kind"><option>Official documentation</option><option>Research / paper</option><option>YouTube video</option><option>News / article</option><option>Product / pricing</option><option>Community discussion</option><option>Other</option></select></div>
+      <div class="field"><label for="confidence">Confidence</label><select id="confidence"><option value="High">High — primary source / cross-checked</option><option value="Medium" selected>Medium — plausible, needs cross-check</option><option value="Low">Low — unverified or opinion</option></select></div>
+      <div class="field full"><label for="summary">Key finding / summary *</label><textarea id="summary" required maxlength="4000" placeholder="Write what the source actually says; separate facts from your interpretation."></textarea></div>
+      <div class="field"><label for="topic">Topic / category</label><input id="topic" maxlength="80" placeholder="AI, marketing, automation"></div>
+      <div class="field"><label for="checked">Date checked</label><input id="checked" type="date"></div>
+      <div class="field full"><label for="decision">Decision / comparison note (optional)</label><textarea id="decision" maxlength="1500" placeholder="What does this mean for the project? What limitation or next test remains?"></textarea></div>
+    </div>
+    <div class="actions"><button class="primary" type="submit">Save source</button><button type="reset" id="resetForm">Reset form</button></div>
+  </form>
+</section>
+<section class="panel">
+  <div class="section-head"><h2>03 · Source library</h2><span class="pill" id="storageState">Saved on this device</span></div>
+  <label for="filter">Filter sources</label><input id="filter" placeholder="Search titles, notes or topics">
+  <div class="actions"><button id="compareBtn">Build comparison brief</button><button id="copyBrief">Copy brief</button></div>
+  <div id="sources" class="sources" style="margin-top:14px" aria-live="polite"><div class="empty">No sources saved yet. Search online, review a page, then add it here.</div></div>
+  <div class="foot">Your source notes are stored in this browser's local storage. They do not sync between devices or to a server. Avoid adding secrets or sensitive customer information.</div>
+</section>
+</div>
+<section class="panel" style="margin-top:16px">
+  <div class="section-head"><h2>04 · Comparison brief</h2><span class="muted small">Based only on saved notes</span></div>
+  <div id="brief" class="muted">Save two or more sources, then select “Build comparison brief”.</div>
+</section>
+<p class="foot">Naz Business Assistant Pro · Research Studio · Manual source capture is active; live search APIs, automatic transcript extraction and AI-generated research are not connected in this page.</p>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+"use strict";
+const KEY="nazResearchStudio.v1";
+const $=id=>document.getElementById(id);
+let records=[];
+function safeText(value){return String(value??"");}
+function escapeHtml(value){return safeText(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");window.setTimeout(()=>el.classList.remove("show"),2600);}
+function today(){return new Date().toISOString().slice(0,10);}
+$("checked").value=today();
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(saved))records=saved.filter(x=>x&&typeof x==="object"&&typeof x.title==="string"&&typeof x.url==="string");}catch{records=[];}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(records));$("storageState").textContent="Saved on this device";}catch{$("storageState").textContent="Storage unavailable";toast("Could not save to browser storage. Export a backup.");}}
+function validHttpUrl(raw){try{const u=new URL(raw);return u.protocol==="https:"||u.protocol==="http:";}catch{return false;}}
+function updateSearchLinks(){const q=$("query").value.trim();const enc=encodeURIComponent(q||"business automation tools comparison");$("googleSearch").href="https://www.google.com/search?q="+enc;$("youtubeSearch").href="https://www.youtube.com/results?search_query="+enc;$("bingSearch").href="https://www.bing.com/search?q="+enc;$("scholarSearch").href="https://scholar.google.com/scholar?q="+enc;}
+$("query").addEventListener("input",updateSearchLinks);updateSearchLinks();
+function render(){const filter=$("filter").value.trim().toLowerCase();const visible=records.filter(r=>[r.title,r.url,r.summary,r.topic,r.decision,r.kind].join(" ").toLowerCase().includes(filter));$("sourceCount").textContent=records.length;$("topicCount").textContent=new Set(records.map(r=>r.topic.trim().toLowerCase()).filter(Boolean)).size;$("reviewCount").textContent=records.filter(r=>r.confidence==="High").length;
+if(!visible.length){$("sources").innerHTML='<div class="empty">'+(records.length?'No sources match this filter.':'No sources saved yet. Search online, review a page, then add it here.')+'</div>';return;}
+$("sources").innerHTML=visible.map(r=>'<article class="source"><div class="source-head"><div><h3>'+escapeHtml(r.title)+'</h3><a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(r.url)+'</a></div><span class="pill">'+escapeHtml(r.confidence)+'</span></div><p>'+escapeHtml(r.summary)+'</p><div class="muted small">'+escapeHtml(r.kind)+' · '+escapeHtml(r.topic||"Uncategorized")+' · Checked '+escapeHtml(r.checked||"date not set")+'</div>'+(r.decision?'<p><strong>Project note:</strong> '+escapeHtml(r.decision)+'</p>':'')+'<div class="source-actions"><button type="button" data-open="'+escapeHtml(r.id)+'">Open source ↗</button><button type="button" data-delete="'+escapeHtml(r.id)+'" class="danger">Delete</button></div></article>').join("");
+}
+$("sources").addEventListener("click",e=>{const del=e.target.closest("[data-delete]");if(del){records=records.filter(r=>r.id!==del.dataset.delete);persist();render();toast("Source deleted.");return;}const open=e.target.closest("[data-open]");if(open){const r=records.find(x=>x.id===open.dataset.open);if(r&&validHttpUrl(r.url))window.open(r.url,"_blank","noopener,noreferrer");}});
+$("filter").addEventListener("input",render);
+$("sourceForm").addEventListener("submit",e=>{e.preventDefault();const title=$("title").value.trim(),url=$("url").value.trim(),summary=$("summary").value.trim();if(!title||!summary||!validHttpUrl(url)){toast("Enter a title, summary and valid HTTP(S) URL.");return;}if(records.some(r=>r.url===url)){toast("This exact URL is already saved.");return;}records.unshift({id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)),title,url,kind:$("kind").value,confidence:$("confidence").value,summary,topic:$("topic").value.trim(),checked:$("checked").value||today(),decision:$("decision").value.trim(),createdAt:new Date().toISOString()});persist();render();$("sourceForm").reset();$("checked").value=today();toast("Source saved on this device.");});
+function buildBrief(){if(records.length<2){$("brief").textContent="Add at least two reviewed sources to build a useful comparison.";return "";}const groups={};records.forEach(r=>{const k=r.topic.trim()||"Uncategorized";(groups[k]||(groups[k]=[])).push(r);});let out="# Research comparison brief\n\nGenerated: "+today()+"\nSources: "+records.length+"\n\n";for(const [topic,items] of Object.entries(groups)){out+="## "+topic+"\n\n";for(const r of items){out+="### "+r.title+"\n- Source: "+r.url+"\n- Type: "+r.kind+"\n- Checked: "+(r.checked||"not recorded")+"\n- Confidence: "+r.confidence+"\n- Finding: "+r.summary+"\n";if(r.decision)out+="- Project note: "+r.decision+"\n";out+="\n";}}out+="## Evidence cautions\n- This brief summarizes notes entered by the user; it does not independently verify claims.\n- Cross-check conflicting claims and recheck changing prices, quotas, permissions and plan limits against official sources.\n- Separate source facts from recommendations before making a business decision.\n";$("brief").innerHTML='<pre style="white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;color:inherit">'+escapeHtml(out)+'</pre>';return out;}
+$("compareBtn").addEventListener("click",()=>{buildBrief();toast("Brief built from saved source notes.");});
+$("copyBrief").addEventListener("click",async()=>{const brief=buildBrief();if(!brief)return;try{await navigator.clipboard.writeText(brief);toast("Comparison brief copied.");}catch{toast("Copy is unavailable in this browser; use Export research report.");}});
+$("exportReport").addEventListener("click",()=>{if(!records.length){toast("Add at least one source before exporting.");return;}const body=buildBrief()||"# Research report\n\n"+records.map(r=>"- "+r.title+" — "+r.url+"\n  "+r.summary).join("\n");download("naz-research-report-"+today()+".md",body,"text/markdown;charset=utf-8");});
+$("backupData").addEventListener("click",()=>download("naz-research-backup-"+today()+".json",JSON.stringify({app:"Naz Business Assistant Pro Research Studio",version:1,exportedAt:new Date().toISOString(),sources:records},null,2),"application/json;charset=utf-8"));
+$("clearAll").addEventListener("click",()=>{if(!records.length){toast("Workspace is already empty.");return;}if(!window.confirm("Delete all research notes stored in this browser? Download a backup first if you need them."))return;records=[];persist();render();$("brief").textContent="Save two or more sources, then select “Build comparison brief”.";toast("Research workspace cleared.");});
+function download(name,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+render();
+})();
+</script>
+</body>
+</html>
