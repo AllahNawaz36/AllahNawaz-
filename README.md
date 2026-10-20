@@ -50,7 +50,9 @@ For AI content generation, configure `ANTHROPIC_API_KEY` in your environment and
 
 ## Current verification status (2026-10-20)
 
-The repository source and configuration have been inspected, but GitHub access alone cannot verify your Cloudflare account, current Worker deployment, bindings, secrets, or live API. Treat the backend as **not verified** until the live checks below pass.
+**Latest verification:** the GitHub Pages deployment completed successfully in [run #84](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39410158388), and the latest repository checks passed in [run #314](https://github.com/AllahNawaz36/AllahNawaz-/actions/runs/39410187290). The automated HTML/JavaScript checks now include `index.html`, `portfolio.html`, and `research.html`. These checks verify the repository and static deployment pipeline; they do **not** prove the Cloudflare backend is live.
+
+The backend remains **not verified** until the live checks below pass. GitHub access alone cannot verify your Cloudflare account, current Worker deployment, bindings, secrets, or live API.
 
 - The intended Worker name in `wrangler.toml` is `naz-business-assistant-api`.
 - The D1 binding is intentionally commented out until a real database ID is available. Lead storage will therefore report `not-configured` until you create D1, bind it as `DB`, apply `schema.sql`, and deploy.
