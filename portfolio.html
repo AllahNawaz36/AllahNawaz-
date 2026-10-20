@@ -308,4 +308,134 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 @media(max-width:600px){.visual.behance-embed{height:310px}.visual.behance-embed iframe{min-height:310px}}
 </style>
 
+
+<style>
+/* Premium visitor chat + WhatsApp contact */
+.contact-launchers{position:fixed;right:22px;bottom:22px;z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.contact-launcher{display:flex;align-items:center;gap:10px;border:1px solid #ffffff20;border-radius:999px;padding:10px 15px 10px 10px;background:#1b1e18;color:#f4f4ee;box-shadow:0 10px 34px #0006;font-size:12px;font-weight:800;cursor:pointer;transition:transform .2s,border-color .2s}
+.contact-launcher:hover{transform:translateY(-3px);border-color:#d5ff72}
+.launcher-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:var(--lime);color:#161811;font-size:17px}
+.whatsapp-launcher .launcher-icon{background:#25d366;color:#062d15}
+.chat-panel{position:fixed;right:22px;bottom:88px;z-index:1001;width:min(370px,calc(100vw - 28px));height:min(540px,calc(100dvh - 130px));display:none;flex-direction:column;overflow:hidden;border:1px solid #4a5140;border-radius:23px;background:#141611;color:var(--text);box-shadow:0 26px 90px #000a}
+.chat-panel.open{display:flex;animation:chatEnter .24s var(--ease-premium) both}
+@keyframes chatEnter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px;border-bottom:1px solid var(--line);background:linear-gradient(120deg,#242a1e,#171a15)}
+.chat-brand{display:flex;align-items:center;gap:10px}.chat-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:var(--lime);color:#171912;font-weight:900}.chat-head strong{display:block;font-size:13px}.chat-head small{display:block;color:#a8b09d;font-size:10px}
+.chat-close{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#ffffff08;color:var(--text);cursor:pointer;font-size:18px}
+
+.chat-toolrow{display:flex;align-items:center;gap:8px;padding:10px 14px 4px;font-size:10px;color:#a8b09d}
+.chat-toolrow label{font-weight:800;white-space:nowrap}
+.chat-toolrow select{flex:1;min-width:0;background:#1a1d17;color:#e7e9e1;border:1px solid #414638;border-radius:9px;padding:7px;font-size:10px}
+.chat-status{font-size:9px;white-space:nowrap}.chat-status.ready{color:#b9f77a}.chat-status.offline{color:#e5b16a}
+.chat-tool-links{display:flex;gap:8px;padding:8px 14px 2px}
+.chat-tool-links a{display:inline-flex;text-decoration:none;border:1px solid #424838;border-radius:9px;padding:7px 10px;font-size:10px;font-weight:800;color:#d5ff72}
+.chat-tool-links a:hover{background:#252d1d}
+@media(max-width:360px){.chat-toolrow{gap:5px;padding-left:10px;padding-right:10px}.chat-status{font-size:8px}.chat-toolrow select{padding:6px;font-size:9px}}
+
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:90%;padding:11px 13px;border:1px solid var(--line);border-radius:14px 14px 14px 4px;background:#20231d;color:#e7e9e1;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-msg.user{align-self:flex-end;border-color:#4c5d32;background:#29351f;border-radius:14px 14px 4px 14px}
+.chat-quick{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}
+.chat-quick button{border:1px solid #424838;background:#1a1d17;color:#dfe7d1;border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}
+.chat-quick button:hover{border-color:var(--lime);color:var(--lime)}
+.chat-compose{display:flex;align-items:flex-end;gap:8px;padding:12px;border-top:1px solid var(--line);background:#191b16}
+.chat-compose textarea{flex:1;resize:none;min-height:42px;max-height:95px;border:1px solid #414638;border-radius:14px;background:#10120e;color:var(--text);padding:11px 12px;font:12px/1.5 inherit;outline:none}
+.chat-compose textarea:focus{border-color:var(--lime)}
+.chat-send{width:42px;height:42px;flex:0 0 42px;border:0;border-radius:13px;background:var(--lime);color:#161811;font-weight:900;cursor:pointer}
+.chat-foot{padding:0 14px 12px;color:#828779;font-size:9px;line-height:1.5}
+@media(max-width:520px){.contact-launchers{right:12px;bottom:12px;gap:8px}.contact-launcher{padding:8px 12px 8px 8px}.launcher-icon{width:34px;height:34px}.chat-panel{right:8px;bottom:78px;width:calc(100vw - 16px);height:min(560px,calc(100dvh - 100px))}}
+@media(prefers-reduced-motion:reduce){.chat-panel.open{animation:none}.contact-launcher{transition:none}}
+</style>
+<div class="contact-launchers" aria-label="Contact options">
+<button class="contact-launcher" id="liveChatToggle" type="button" aria-controls="liveChatPanel" aria-expanded="false"><span class="launcher-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.9 6.1L20 11l-6.1 1.9L12 19l-1.9-6.1L4 11l6.1-1.9z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7z"/></svg></span><span>Ask my design assistant</span></button>
+<a class="contact-launcher whatsapp-launcher" href="https://wa.me/?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to discuss a design project"><span class="launcher-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.8 7.8 0 0 1-11.6 6.8L4 19l.8-4.1A7.8 7.8 0 1 1 20 11.5Z"/><path d="M9 8.5c.4 2.4 2 4 4.5 4.8l1.1-1.1 2 1c-.2 1.3-1 2-2.3 2-3.5-.5-6.6-3.6-7.1-7.1 0-1.3.7-2.1 2-2.3l1 2z"/></svg></span><span>WhatsApp me</span></a>
+</div>
+<section class="chat-panel" id="liveChatPanel" role="dialog" aria-label="Allah Nawaz portfolio design assistant" aria-modal="false" aria-hidden="true">
+<header class="chat-head"><div class="chat-brand"><div class="chat-avatar">AN.</div><div><strong>Allah’s Design Assistant</strong><small>Portfolio guide · Instant replies</small></div></div><button class="chat-close" id="liveChatClose" type="button" aria-label="Close chat">×</button></header>
+<div class="chat-toolrow"><label for="liveChatTopic">Topic</label><select id="liveChatTopic" aria-label="Chat topic"><option value="general">General</option><option value="uiux">UI/UX & product design</option><option value="website">Website design</option><option value="saas">SaaS / dashboard</option><option value="branding">Branding & social creatives</option><option value="figma-canva">Figma & Canva</option><option value="hire">Hire / project brief</option></select><span id="liveChatStatus" class="chat-status ready">Guided replies ready</span></div>
+<div class="chat-tool-links"><a href="https://www.figma.com/design/vt3zmYnIUFYfTq9fQlvsng" target="_blank" rel="noopener noreferrer"><span class="chat-inline-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3h-3a3 3 0 0 0 0 6h3zM12 9H9a3 3 0 0 0 0 6h3zM12 15H9a3 3 0 1 0 3 3zM12 3h3a3 3 0 0 1 0 6h-3zM12 9h3a3 3 0 1 1-3 3z"/></svg></span>Open Figma <span aria-hidden="true">↗</span></a><a href="https://www.canva.com/" target="_blank" rel="noopener noreferrer"><span class="chat-inline-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M16 8.5c-1.1-1-2.8-1.1-4.2-.2-1.7 1-2.6 3.4-1.7 5.1.8 1.5 2.8 1.8 4.5.3"/></svg></span>Open Canva <span aria-hidden="true">↗</span></a></div>
+<nav class="chat-section-nav" aria-label="Explore every portfolio section"><p class="chat-section-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/></svg>Explore every section</p><div class="chat-section-grid"><a href="#home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a><a href="#work"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2"/></svg><span>Selected work</span></a><a href="#motion-lab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 10 6-10 6z"/><circle cx="12" cy="12" r="9"/></svg><span>Motion & VFX</span></a><a href="#creative-resources"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 1 4 16.5zM4 16.5A2.5 2.5 0 0 1 6.5 14H20M8 7h8M8 10h6"/></svg><span>Resources</span></a><a href="#about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>About me</span></a><a href="#experience"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V4h8v3M3 12h18"/></svg><span>Experience</span></a><a href="#process"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="18" r="2"/><path d="M8 6h4a4 4 0 0 1 4 4v0M8 18h4a4 4 0 0 0 4-4"/></svg><span>Process</span></a><a href="#contact"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><span>Contact</span></a></div></nav>
+<div class="chat-messages" id="liveChatMessages" aria-live="polite"><div class="chat-msg">Hi! 👋 I can help with UI/UX, product design, project briefs, and prompts for Figma or Canva. Use the section shortcuts above to explore the whole portfolio, or ask a question below.</div></div>
+<div class="chat-quick" id="liveChatQuick"><button type="button" data-question="Help me create a premium UI/UX design brief for a new app."><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M8 11h8M8 15h5"/></svg>UI/UX brief</button><button type="button" data-question="Write a premium Canva prompt for a LinkedIn design post."><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 3 3 3-4 5 6"/></svg>Canva post prompt</button><button type="button" data-question="How can I start a project with Allah?"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"/></svg>Start a project</button></div>
+<form class="chat-compose" id="liveChatForm"><textarea id="liveChatInput" rows="1" maxlength="1000" placeholder="Ask about any portfolio section…" aria-label="Your message"></textarea><button class="chat-send" type="submit" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-4 14-3-6zM12 13l7-8"/></svg></button></form>
+<div class="chat-foot">Built-in guided replies work without an external AI service. For project enquiries, use WhatsApp or email. Figma and Canva open separately; this chat does not edit private design files.</div>
+</section>
+<script>
+(() => {
+  const panel = document.getElementById('liveChatPanel');
+  const toggle = document.getElementById('liveChatToggle');
+  const close = document.getElementById('liveChatClose');
+  const messages = document.getElementById('liveChatMessages');
+  const form = document.getElementById('liveChatForm');
+  const input = document.getElementById('liveChatInput');
+  const topic = document.getElementById('liveChatTopic');
+
+  if (!panel || !toggle || !close || !messages || !form || !input) return;
+
+  function setOpen(open) {
+    panel.classList.toggle('open', open);
+    panel.setAttribute('aria-hidden', String(!open));
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) input.focus();
+    else toggle.focus();
+  }
+  function addMessage(text, who = 'bot') {
+    const el = document.createElement('div');
+    el.className = 'chat-msg' + (who === 'user' ? ' user' : '');
+    el.textContent = text;
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  }
+  function replyTo(question) {
+    const q = question.toLowerCase();
+    const urdu = /\b(kya|kaise|mujhe|mera|meri|mein|main|hai|hain|karo|batao|chahiye|kr|hy|acha|salam|assalam|ap|aap|ka|ki|ko|se|or|aur|nhi|nahin|bna|banao)\b/.test(q);
+    const say = (en, ur) => urdu ? ur : en;
+    const selectedTopic = topic ? topic.value : 'general';
+    if (/\b(hi|hello|hey|salam|assalam|assalamu alaikum)\b/.test(q)) {
+      return say('Hello! I can help you explore this portfolio, understand the design services, or prepare a project brief. What would you like to know?', 'Assalam-o-alaikum! Main portfolio explore karne, design services samajhne, ya project brief banane mein madad kar sakta hoon. Aap kya janna chahte hain?');
+    }
+    if (/(privacy|password|api key|secret|sensitive)/.test(q)) {
+      return say('Please do not share passwords, private client details, or sensitive information in this public chat.', 'Is public chat mein password, private client details, ya sensitive information share na karein.');
+    }
+    if (/(price|cost|budget|rate|quote|charges)/.test(q)) {
+      return say('Project pricing depends on scope, deliverables, complexity, and timeline. Share your requirements through WhatsApp or email to discuss a suitable quote.', 'Project ki pricing scope, deliverables, complexity aur timeline par depend karti hai. Quote discuss karne ke liye apni requirements WhatsApp ya email par bhej dein.');
+    }
+    if (/(hire|service|services|offer|help|skill|what do you do|website|saas|app)/.test(q) || selectedTopic === 'hire' || selectedTopic === 'website' || selectedTopic === 'saas') {
+      return say('Allah Nawaz focuses on UI/UX and product design, responsive websites, SaaS dashboards, design systems, and visual content. To discuss a project, share the goal, audience, deliverables, and deadline.', 'Allah Nawaz UI/UX aur product design, responsive websites, SaaS dashboards, design systems aur visual content par focus karte hain. Project discuss karne ke liye goal, audience, deliverables aur deadline share karein.');
+    }
+    if (/(figma|canva|design prompt|design brief|poster|banner|creative|social|linkedin)/.test(q) || selectedTopic === 'figma-canva' || selectedTopic === 'branding') {
+      return say('A strong design brief includes the target audience, one clear message, brand colours and typography, platform dimensions, visual direction, and a clear call to action. Tell me the topic and platform and I can help outline a brief.', 'Achay design brief mein target audience, aik clear message, brand colours aur typography, platform dimensions, visual direction aur clear CTA hota hai. Topic aur platform bata dein, main brief tayyar karne mein help kar sakta hoon.');
+    }
+    if (/(project|portfolio|work|case study|behance)/.test(q)) {
+      return say('Explore the Selected Work section for project previews and use the Behance links on the project cards to see original work. The Experience section outlines professional roles, skills, and design process.', 'Selected Work section mein projects dekhein aur original work ke liye project cards par Behance links kholein. Experience section mein professional roles, skills aur design process diya gaya hai.');
+    }
+    if (/(contact|whatsapp|email|reach|connect|start)/.test(q)) {
+      return say('You can reach Allah Nawaz using the WhatsApp button, the email link in the Contact section, or LinkedIn. Share a short project brief and preferred timeline.', 'Aap WhatsApp button, Contact section ke email link, ya LinkedIn se Allah Nawaz se rabta kar sakte hain. Chhota sa project brief aur timeline share kar dein.');
+    }
+    if (/(motion|vfx|animation|video)/.test(q)) {
+      return say('The portfolio includes a motion and VFX exploration section plus creative-resource links. These are explorations and resources, not claims of completed client VFX work.', 'Portfolio mein motion aur VFX exploration section aur creative resources ke links hain. Yeh explorations aur resources hain, completed client VFX work ka claim nahi.');
+    }
+    return say('I can help with UI/UX services, selected projects, design briefs, pricing enquiries, and contact options. Try one of the quick prompts or send a little more detail.', 'Main UI/UX services, projects, design brief, pricing enquiries aur contact options mein help kar sakta hoon. Quick prompt try karein ya thori aur detail bhej dein.');
+  }
+  toggle.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+  close.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && panel.classList.contains('open')) setOpen(false); });
+  document.getElementById('liveChatQuick')?.addEventListener('click', event => {
+    const button = event.target.closest('button[data-question]');
+    if (!button) return;
+    addMessage(button.dataset.question, 'user');
+    addMessage(replyTo(button.dataset.question));
+  });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const question = input.value.trim();
+    if (!question) return;
+    addMessage(question, 'user');
+    input.value = '';
+    addMessage(replyTo(question));
+    input.focus();
+  });
+})();
+</script>
+
 </body></html>
