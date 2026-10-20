@@ -6,6 +6,20 @@ Last reviewed: 2026-10-19
 
 **Development/demo ready; not yet approved for production customer data or unattended outbound actions.** Passing CI proves the repository's checks pass; it does not prove a deployed Cloudflare service is secure or live.
 
+## External connection and repository review — 2026-10-20
+
+### Checks performed
+- GitHub repository metadata confirms this repository is currently **public**. Source and committed configuration are therefore publicly readable. The owner should switch it to private if public source sharing is not intended; this audit did not change repository visibility.
+- Latest inspected GitHub Actions run `39383492235` completed successfully. It passed the configured JavaScript checks/tests, inline-JS and duplicate-ID checks, Python compilation/tests, and CLI smoke test. CI success does not prove runtime deployment security.
+- Reviewed `.gitignore`, `.env.example`, `wrangler.toml`, `worker.mjs`, and this security status document. The inspected files show environment-file exclusions, server-side token handling, CORS allowlisting, protected API authorization checks, request-size limits, and a configured chat rate-limit binding. This was a targeted review, **not** a complete repository-wide or Git-history secret scan.
+- Metricool brand settings and LinkedIn analytics read access responded for the selected brand; the scheduled-post query for 2026-10-20 through 2026-10-27 returned an empty list. These results do not verify LinkedIn publishing authorization.
+- Figma identity/workspace lookup and Notion workspace lookup responded. Canva brand-kit lookup returned no brand kits. These are connection/read tests only, not complete permission audits.
+
+### Still unverified
+- The deployed Cloudflare Worker URL has not been supplied or found in the dashboard source (the endpoint is configured by the operator in browser settings). Therefore no live `/api/health` check was performed, and deployed secrets, rate limiting, AI binding, and D1 availability remain unverified.
+- No full secret scan of every tracked file and historical commit was completed. Treat any credential that may have been committed as potentially exposed until checked; rotate it if found.
+- Do not store real customer data or enable unattended external actions until runtime, access controls, backups/retention, and provider permissions have been tested.
+
 ## Checks observed in the repository
 
 - `ADMIN_TOKEN` is not configured in public frontend source; the dashboard asks the operator to enter it and keeps it in tab-scoped session storage.
