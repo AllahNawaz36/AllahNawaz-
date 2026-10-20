@@ -452,4 +452,50 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 }
 </style>
 
+
+<style>
+/* Mobile UX refinement: improve contact readability, hierarchy, and floating-action clearance. */
+.contact{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;
+  column-gap:clamp(20px,4vw,42px);
+  row-gap:14px;
+}
+.contact>div:first-child{grid-column:1;grid-row:1;min-width:0}
+.contact>.heroactions{grid-column:2;grid-row:1;align-self:end;justify-content:flex-end;max-width:320px}
+.contact-phone{grid-column:1/-1;margin:8px 0 0!important;color:#303626!important;overflow-wrap:anywhere}
+.contact-phone a{color:#171912!important;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.contact .tags{gap:8px}
+.contact .tag{border-color:#68734a;color:#39432b;background:#d5ff721c}
+.contact .heroactions .btn{min-height:48px;padding:13px 18px}
+.contact .btn.secondary{border-color:#343a2a;color:#171912}
+.contact .btn.secondary:hover{background:#c4f45d;border-color:#171912;color:#171912}
+.contact-launchers{right: max(14px, env(safe-area-inset-right));bottom: max(14px, env(safe-area-inset-bottom));gap:8px}
+.contact-launchers a,.contact-launchers button{max-width:min(310px,calc(100vw - 28px))}
+.chat-panel{right:max(14px,env(safe-area-inset-right));bottom:calc(88px + env(safe-area-inset-bottom));max-height:calc(100dvh - 118px - env(safe-area-inset-bottom))}
+.footer{padding-bottom:34px}
+@media(max-width:760px){
+  .contact{grid-template-columns:minmax(0,1fr);row-gap:8px;padding:clamp(25px,6vw,34px)}
+  .contact>div:first-child,.contact>.heroactions,.contact-phone{grid-column:1;grid-row:auto}
+  .contact>.heroactions{width:100%;max-width:none;justify-content:flex-start;gap:10px;margin-top:10px}
+  .contact>.heroactions .btn{flex:1 1 145px;min-width:0;white-space:normal;text-align:center;line-height:1.35;padding:13px 14px}
+  .contact-phone{margin-top:8px!important;font-size:13px!important;line-height:1.8}
+  .contact .tags{margin-top:14px!important}
+  .contact-launchers{bottom:max(12px,env(safe-area-inset-bottom));right:max(12px,env(safe-area-inset-right));gap:7px}
+  .contact-launchers a,.contact-launchers button{min-height:48px}
+  .footer{padding-bottom:142px}
+  .footerin{gap:12px}
+  .footerlinks{flex-wrap:wrap;gap:12px}
+}
+@media(max-width:420px){
+  .contact>.heroactions .btn{flex:1 1 100%}
+  .contact-phone a{display:inline-block}
+  .contact-launchers a,.contact-launchers button{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .contact .btn,.contact-launchers a,.contact-launchers button{transition:none}
+}
+</style>
+
 </body></html>
