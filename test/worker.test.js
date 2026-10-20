@@ -8,11 +8,31 @@ test("worker health endpoint responds without database credentials", async () =>
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), {
     ok: true,
+    status: "degraded",
     service: "naz-business-assistant",
     storage: "not-configured",
     ai: "not-configured",
-    chatProtection: "not-configured"
+    chatProtection: "not-configured",
+    admin: "not-configured",
+    chatReady: false
   });
+});
+
+test("worker health reports chat readiness separately from API liveness", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(new Request("https://example.workers.dev/api/health"), {
+    AI: { async run() { return { response: "test" }; } },
+    CHAT_LIMITER: { async limit() { return { success: true }; } },
+    ADMIN_TOKEN: "this-is-a-long-test-token-that-is-over-32-chars"
+  });
+  const data = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(data.ok, true);
+  assert.equal(data.status, "ready");
+  assert.equal(data.chatReady, true);
+  assert.equal(data.ai, "configured");
+  assert.equal(data.chatProtection, "configured");
+  assert.equal(data.admin, "configured");
 });
 
 test("worker permits the configured dashboard origin and rejects other origins", async () => {
