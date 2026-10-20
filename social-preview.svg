@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Allah Nawaz — UI/UX &amp; Product Designer</title>
+<desc id="desc">A premium dark green and lime portfolio social preview highlighting product design, SaaS, web and mobile design.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10120f"/><stop offset=".58" stop-color="#1a2115"/><stop offset="1" stop-color="#0c0e0b"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#d5ff72" stop-opacity=".22"/><stop offset="1" stop-color="#d5ff72" stop-opacity="0"/></radialGradient>
+  <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efffc4"/><stop offset="1" stop-color="#b9eb59"/></linearGradient>
+  <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0V44" fill="none" stroke="#f4f4ee" stroke-opacity=".055" stroke-width="1"/></pattern>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000" flood-opacity=".35"/></filter>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/><rect width="1200" height="630" fill="url(#grid)"/>
+<circle cx="1035" cy="175" r="360" fill="url(#glow)"/>
+<circle cx="1020" cy="300" r="205" fill="none" stroke="#d5ff72" stroke-opacity=".18" stroke-width="1.5"/>
+<circle cx="1020" cy="300" r="155" fill="none" stroke="#d5ff72" stroke-opacity=".24" stroke-width="1.5" stroke-dasharray="5 10"/>
+<g filter="url(#shadow)" transform="translate(870 145) rotate(-8 120 150)">
+  <rect width="230" height="300" rx="25" fill="#f3f5ec"/>
+  <rect x="17" y="17" width="196" height="266" rx="16" fill="#e6ebdd"/>
+  <rect x="34" y="37" width="50" height="7" rx="3.5" fill="#8da36d"/>
+  <rect x="34" y="58" width="145" height="13" rx="6.5" fill="#22281d"/>
+  <rect x="34" y="78" width="118" height="8" rx="4" fill="#929b84"/>
+  <rect x="34" y="112" width="162" height="92" rx="12" fill="#d5ff72"/>
+  <path d="M50 182L83 150L108 166L145 130L180 154" fill="none" stroke="#35472a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="34" y="220" width="74" height="42" rx="8" fill="#fff"/>
+  <rect x="120" y="220" width="76" height="42" rx="8" fill="#fff"/>
+  <rect x="45" y="232" width="35" height="5" rx="2.5" fill="#a7b198"/>
+  <rect x="45" y="243" width="49" height="9" rx="4.5" fill="#26351e"/>
+  <rect x="131" y="232" width="35" height="5" rx="2.5" fill="#a7b198"/>
+  <rect x="131" y="243" width="49" height="9" rx="4.5" fill="#26351e"/>
+</g>
+<rect x="72" y="70" width="54" height="54" rx="16" fill="url(#lime)"/>
+<text x="99" y="106" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="800" fill="#151710">AN</text>
+<text x="150" y="91" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#d5ff72">PORTFOLIO · 2026</text>
+<text x="72" y="235" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="800" letter-spacing="-2.6" fill="#f4f4ee">ALLAH NAWAZ</text>
+<text x="75" y="287" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700" letter-spacing=".7" fill="#d5ff72">UI/UX &amp; PRODUCT DESIGNER</text>
+<text x="75" y="337" font-family="Arial,Helvetica,sans-serif" font-size="19" fill="#c0c7b5">Designing thoughtful digital experiences.</text>
+<g transform="translate(75 390)">
+  <rect width="130" height="38" rx="19" fill="#d5ff72"/><text x="65" y="24" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#151710">SaaS &amp; PRODUCT</text>
+  <rect x="143" width="113" height="38" rx="19" fill="#20251b" stroke="#4d5a3b"/><text x="199" y="24" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#f4f4ee">WEB &amp; MOBILE</text>
+  <rect x="269" width="111" height="38" rx="19" fill="#20251b" stroke="#4d5a3b"/><text x="324" y="24" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#f4f4ee">VISUAL DESIGN</text>
+</g>
+<path d="M75 520H1125" stroke="#f4f4ee" stroke-opacity=".16"/>
+<text x="75" y="560" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#aab29d">Selected work · Clear process · Evidence-led case studies</text>
+<text x="1125" y="560" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" fill="#d5ff72">ISLAMABAD · REMOTE</text>
+</svg>
