@@ -177,7 +177,8 @@ export default {
           if (!/^[a-zA-Z0-9._-]{1,100}$/.test(model)) {
             return response({ error: "Invalid GEMINI_MODEL configuration." }, 500, cors);
           }
-          const geminiResponse = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent", {
+          const geminiFetch = typeof env.GEMINI_FETCH === "function" ? env.GEMINI_FETCH : fetch;
+          const geminiResponse = await geminiFetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(model) + ":generateContent", {
             method: "POST",
             headers: {
               "content-type": "application/json",
