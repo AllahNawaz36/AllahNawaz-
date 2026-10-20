@@ -306,3 +306,35 @@ test("worker rejects malformed structured AI output instead of returning it as t
   assert.equal(response.status, 502);
   assert.match((await response.json()).error, /did not match the required schema/i);
 });
+
+
+test("worker rejects extra structured keys and over-limit structured fields", async () => {
+  const worker = await getWorker();
+  const valid = {
+    summary: "A practical draft.",
+    assumptions: [],
+    nextSteps: [],
+    limitations: []
+  };
+  const invalidCases = [
+    { ...valid, debug: "unexpected" },
+    { ...valid, summary: "x".repeat(2001) },
+    { ...valid, nextSteps: ["1", "2", "3", "4", "5", "6"] },
+    { ...valid, assumptions: ["x".repeat(501)] }
+  ];
+  for (const structured of invalidCases) {
+    const response = await worker.fetch(new Request("https://example.workers.dev/api/chat", {
+      method: "POST",
+      headers: { Origin: "https://allahnawaz36.github.io", "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "Validate this response.", responseFormat: "structured" })
+    }), {
+      ALLOWED_ORIGIN: "https://allahnawaz36.github.io",
+      GEMINI_API_KEY: "test-gemini-secret",
+      CHAT_LIMITER: { async limit() { return { success: true }; } },
+      GEMINI_FETCH: async () => new Response(JSON.stringify({
+        candidates: [{ content: { parts: [{ text: JSON.stringify(structured) }] } }]
+      }), { status: 200, headers: { "content-type": "application/json" } })
+    });
+    assert.equal(response.status, 502, "invalid structured output should be rejected");
+  }
+});
