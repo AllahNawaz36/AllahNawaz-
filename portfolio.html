@@ -402,6 +402,32 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(prefers-reduced-motion:reduce){#contact .contact-action{transition:none;transform:none}}
 </style>
 
+
+<style>
+/* Final refinement: a useful project-start prompt and clearer footer grouping. */
+#contact .contact-brief{margin-top:17px;padding:15px 0 14px;border-top:1px solid #ffffff16;border-bottom:1px solid #ffffff16}
+#contact .contact-brief-title{display:block;color:#9ca493;font-size:9px;font-weight:800;letter-spacing:1.35px;line-height:1.5}
+#contact .contact-brief-items{display:grid;gap:8px;margin-top:12px}
+#contact .contact-brief-items>span{display:flex;align-items:center;gap:10px;color:#e2e7da;font-size:11px;line-height:1.5}
+#contact .contact-brief-items b{display:grid;place-items:center;width:22px;height:22px;flex:none;border:1px solid #d5ff7240;border-radius:7px;color:var(--lime);font-size:9px;letter-spacing:.3px}
+#contact .contact-brief p{margin:10px 0 0;color:#a9b09f;font-size:10px;line-height:1.6}
+.footer-redesign .footer-group{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0}
+.footer-redesign .footer-group-label{color:#858d7b;font-size:9px;font-weight:800;letter-spacing:1.6px}
+.footer-redesign .footer-nav{gap:5px 18px}
+.footer-redesign .footer-nav a{min-height:34px}
+.footer-redesign .footer-connect{justify-self:end;align-items:flex-end}
+.footer-redesign .footer-connect .footerlinks{justify-content:flex-end}
+@media(max-width:800px){
+ .footer-redesign .footer-connect{justify-self:start;align-items:flex-start}
+ .footer-redesign .footer-connect .footerlinks{justify-content:flex-start}
+}
+@media(max-width:430px){
+ #contact .contact-brief{padding:13px 0}
+ #contact .contact-brief-items{gap:7px}
+ .footer-redesign .footer-nav{gap:3px 13px}
+}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -612,6 +638,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
         <div class="contact-panel-heading"><span>START A CONVERSATION</span><span class="contact-availability"><i aria-hidden="true"></i> Open to remote projects</span></div>
         <a class="contact-action contact-action-primary" href="mailto:allahnawazmalik175@gmail.com?subject=Freelance%20design%20project%20enquiry&amp;body=Hi%20Allah%2C%0A%0AI%27d%20like%20to%20discuss%20a%20design%20project.%0A%0ABusiness%20or%20product%3A%0ATarget%20users%3A%0AMain%20challenge%3A%0ADeliverables%3A%0ATimeline%3A%0ABudget%20range%20(optional)%3A%0A%0AThanks."><i data-lucide="mail" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span><strong>Email about a project</strong><small>Best for briefs and project details</small></span><b aria-hidden="true">↗</b></a>
         <a class="contact-action" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20l1.2-5.2A8.4 8.4 0 1 1 21 11.5Z"/></svg></i><span><strong>Message on WhatsApp</strong><small>For a quick conversation</small></span><b aria-hidden="true">↗</b></a>
+        <div class="contact-brief">
+          <span class="contact-brief-title">A GOOD FIRST MESSAGE INCLUDES</span>
+          <div class="contact-brief-items"><span><b>01</b> What you’re building</span><span><b>02</b> The main challenge</span><span><b>03</b> Your timeline</span></div>
+          <p>No polished brief needed — a few sentences are enough to start.</p>
+        </div>
         <div class="contact-details">
           <a href="mailto:allahnawazmalik175@gmail.com"><i data-lucide="at-sign" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M16 12v1a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></i><span><small>EMAIL</small><strong>allahnawazmalik175@gmail.com</strong></span></a>
           <a href="tel:+923055742436"><i data-lucide="phone" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-8-8l2-2-1-4Z"/></svg></i><span><small>PHONE</small><strong>+92 305 574 2436</strong></span></a>
@@ -626,8 +657,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     <div class="footer-main">
       <a class="footer-brand" href="#home" aria-label="Allah Nawaz — back to home"><span class="footer-monogram">AN</span><span><strong>Allah Nawaz</strong><small>UI/UX &amp; Product Designer</small></span></a>
       <p class="footer-note">Thoughtful digital experiences.<br>Designed with intention.</p>
-      <nav class="footer-nav" aria-label="Footer navigation"><a href="#work">Selected work</a><a href="#about">About</a><a href="#process">Process</a><a href="#contact">Contact</a></nav>
-      <div class="footerlinks" aria-label="Professional profiles"><a href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v10M5 5h.01M10 19v-6a4 4 0 0 1 8 0v6M10 9v10"/></svg>LinkedIn</a><a href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7a3 3 0 0 1 0 6H3zM3 12h8a3.5 3.5 0 0 1 0 7H3zM15 7h6M14 14h7a3.5 3.5 0 0 0-7 0Zm0 0a3.5 3.5 0 0 0 7 3"/></svg>Behance</a></div>
+      <div class="footer-group"><span class="footer-group-label">EXPLORE</span><nav class="footer-nav" aria-label="Footer navigation"><a href="#work">Selected work</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#process">Process</a><a href="#contact">Contact</a></nav></div>
+      <div class="footer-group footer-connect"><span class="footer-group-label">FIND ME ONLINE</span><div class="footerlinks" aria-label="Professional profiles"><a href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v10M5 5h.01M10 19v-6a4 4 0 0 1 8 0v6M10 9v10"/></svg>LinkedIn</a><a href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7a3 3 0 0 1 0 6H3zM3 12h8a3.5 3.5 0 0 1 0 7H3zM15 7h6M14 14h7a3.5 3.5 0 0 0-7 0Zm0 0a3.5 3.5 0 0 0 7 3"/></svg>Behance</a></div></div>
     </div>
     <div class="footer-bottom"><span>© <span id="year"></span> Allah Nawaz. All rights reserved.</span><span class="footer-location">Based in Islamabad, Pakistan <i aria-hidden="true">·</i> Available remotely</span><a class="footer-top" href="#home"><i data-lucide="arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i>Back to top</a></div>
   </div>
