@@ -318,6 +318,90 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .more-work-visual.behance-live-embed .embed-fallback{position:absolute;left:10px;right:10px;bottom:10px;width:max-content;max-width:calc(100% - 20px);padding:7px 10px;border-radius:8px;background:rgba(15,17,14,.88);color:#fff;font-size:12px;text-decoration:none}
 @media(max-width:600px){.more-work-visual.behance-live-embed{height:220px}}
 </style>
+
+<style>
+/* Contact + footer redesign: strong hierarchy, accessible contrast, mobile-first actions. */
+#contact.contact-section{padding-top:76px;padding-bottom:64px}
+#contact .contact-redesign{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(330px,.85fr);align-items:center;gap:clamp(28px,5vw,68px);padding:clamp(26px,5.4vw,64px);background:radial-gradient(ellipse at 8% 0%,#d5ff7210,transparent 48%),#171a15;color:var(--text);border:1px solid #d5ff7228;border-radius:28px;overflow:hidden}
+#contact .contact-redesign:after{content:"";display:none}
+#contact .contact-copy{min-width:0;position:relative;z-index:1}
+#contact .contact-copy .overline{display:flex;align-items:center;gap:9px;color:var(--lime)}
+#contact .contact-live-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px #d5ff721c;flex:none}
+#contact .contact-copy h2{max-width:570px;margin:18px 0 18px;font-size:clamp(37px,5.2vw,65px);line-height:1.02;letter-spacing:-.065em;color:#f5f6ef}
+#contact .contact-copy h2 span{color:var(--lime)}
+#contact .contact-copy>p{max-width:490px;margin:0;color:#c0c5b7;font-size:15px;line-height:1.8}
+#contact .contact-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+#contact .contact-tags span{padding:7px 11px;border:1px solid #ffffff20;border-radius:999px;background:#ffffff06;color:#dce2d2;font-size:11px;line-height:1.4}
+#contact .contact-panel{min-width:0;padding:clamp(17px,2.5vw,26px);border:1px solid #ffffff16;border-radius:20px;background:#10120f;box-shadow:0 20px 60px #0002}
+#contact .contact-panel-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
+#contact .contact-panel-heading>span:first-child{color:#92998a;font-size:10px;font-weight:800;letter-spacing:1.5px}
+#contact .contact-availability{display:inline-flex;align-items:center;gap:7px;color:#d5dccb;font-size:10px}
+#contact .contact-availability i{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px #d5ff721b}
+#contact .contact-action{display:flex;align-items:center;gap:12px;width:100%;min-width:0;min-height:66px;margin-top:10px;padding:13px 14px;border:1px solid #ffffff20;border-radius:13px;background:#191c17;color:#f5f6ef;text-align:left;transition:transform .18s,border-color .18s,background .18s}
+#contact .contact-action:hover{transform:translateY(-2px);border-color:#d5ff7270;background:#20251a}
+#contact .contact-action>i{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:11px;background:#d5ff7216;color:var(--lime)}
+#contact .contact-action>i svg,#contact .contact-details> a>i svg{width:19px;height:19px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#contact .contact-action>span{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+#contact .contact-action strong{font-size:13px;line-height:1.35;font-weight:800}
+#contact .contact-action small{color:#a9b09f;font-size:11px;line-height:1.4}
+#contact .contact-action>b{color:var(--lime);font-size:17px;font-weight:500}
+#contact .contact-action-primary{background:var(--lime);color:#171912;border-color:var(--lime)}
+#contact .contact-action-primary:hover{background:#c5f16b;border-color:#c5f16b}
+#contact .contact-action-primary>i{background:#17191212;color:#171912}
+#contact .contact-action-primary small,#contact .contact-action-primary>b{color:#354022}
+#contact .contact-details{display:grid;gap:0;margin-top:17px;padding-top:6px;border-top:1px solid #ffffff16}
+#contact .contact-details>a{display:flex;align-items:center;gap:11px;min-width:0;padding:12px 2px;color:#f3f5ed}
+#contact .contact-details>a>i{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:9px;background:#ffffff0a;color:#c8d0bc}
+#contact .contact-details>a>span{display:flex;flex-direction:column;gap:2px;min-width:0}
+#contact .contact-details small{color:#92998a;font-size:9px;font-weight:800;letter-spacing:1.3px}
+#contact .contact-details strong{color:#f3f5ed;font-size:12px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
+#contact .contact-details>a:hover strong{color:var(--lime)}
+.footer-redesign{padding:0 0 24px;color:#aeb4a5;font-size:12px}
+.footer-redesign .footer-main{display:grid;grid-template-columns:1.1fr .9fr;gap:24px 36px;padding:30px 0 28px;border-top:1px solid var(--line)}
+.footer-redesign .footer-brand{display:inline-flex;align-items:center;gap:12px;width:max-content;max-width:100%;color:#f5f6ef}
+.footer-redesign .footer-monogram{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--lime);color:#171912;font-size:13px;font-weight:900;letter-spacing:-.5px}
+.footer-redesign .footer-brand>span:last-child{display:flex;flex-direction:column;gap:3px}
+.footer-redesign .footer-brand strong{font-size:14px;line-height:1.3}
+.footer-redesign .footer-brand small{color:#9fa697;font-size:11px}
+.footer-redesign .footer-note{margin:0;justify-self:end;align-self:center;color:#9fa697;font-size:12px;line-height:1.7;text-align:right}
+.footer-redesign .footer-nav{display:flex;align-items:center;flex-wrap:wrap;gap:10px 20px}
+.footer-redesign .footer-nav a,.footer-redesign .footerlinks a,.footer-redesign .footer-top{display:inline-flex;align-items:center;gap:7px;min-height:40px;color:#c4cabb;transition:color .18s}
+.footer-redesign .footer-nav a:hover,.footer-redesign .footerlinks a:hover,.footer-redesign .footer-top:hover{color:var(--lime)}
+.footer-redesign .footerlinks{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px 18px}
+.footer-redesign .footerlinks svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.footer-redesign .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;padding-top:17px;border-top:1px solid var(--line);color:#8f9787;font-size:11px}
+.footer-redesign .footer-location i{padding:0 4px;color:var(--lime);font-style:normal}
+.footer-redesign .footer-top{min-height:32px;color:#c4cabb}
+.footer-redesign .footer-top svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:800px){
+ #contact.contact-section{padding-top:52px;padding-bottom:42px}
+ #contact .contact-redesign{grid-template-columns:minmax(0,1fr);gap:26px;padding:clamp(22px,5.5vw,36px);border-radius:23px}
+ #contact .contact-copy h2{font-size:clamp(37px,8.8vw,56px)}
+ #contact .contact-panel{width:100%}
+ .footer-redesign .footer-main{grid-template-columns:1fr;gap:17px;padding:25px 0}
+ .footer-redesign .footer-note{justify-self:start;text-align:left}
+ .footer-redesign .footerlinks{justify-content:flex-start}
+ .footer-redesign .footer-nav{gap:4px 17px}
+ .footer-redesign .footer-bottom{justify-content:flex-start}
+ .footer-redesign .footer-top{margin-left:auto}
+}
+@media(max-width:430px){
+ #contact .contact-redesign{padding:22px 17px}
+ #contact .contact-copy h2{font-size:clamp(35px,10vw,44px)}
+ #contact .contact-copy>p{font-size:14px}
+ #contact .contact-panel{padding:14px}
+ #contact .contact-panel-heading{align-items:flex-start;flex-direction:column;gap:8px}
+ #contact .contact-action{padding:12px 10px;gap:9px}
+ #contact .contact-action strong{font-size:12px}
+ #contact .contact-action small{font-size:10px}
+ #contact .contact-details strong{font-size:11px}
+ .footer-redesign{padding-bottom:132px}
+ .footer-redesign .footer-bottom{align-items:flex-start;flex-direction:column;gap:7px}
+ .footer-redesign .footer-top{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){#contact .contact-action{transition:none;transform:none}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -513,9 +597,41 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <div class="processgrid"><article class="step reveal"><div class="step-icon" aria-hidden="true"><i data-lucide="target" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></i></div><div class="stepnum">STEP 01</div><h3>Understand</h3><p>Clarify the audience, business goal, constraints, and the real problem to solve.</p></article><article class="step reveal"><div class="step-icon" aria-hidden="true"><i data-lucide="compass" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></svg></i></div><div class="stepnum">STEP 02</div><h3>Explore</h3><p>Map user journeys, sketch options, and build a structure before polishing visuals.</p></article><article class="step reveal"><div class="step-icon" aria-hidden="true"><i data-lucide="layout-dashboard" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></i></div><div class="stepnum">STEP 03</div><h3>Design</h3><p>Create accessible, responsive interfaces with clear hierarchy and reusable patterns.</p></article><article class="step reveal"><div class="step-icon" aria-hidden="true"><i data-lucide="check-circle-2" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></i></div><div class="stepnum">STEP 04</div><h3>Refine</h3><p>Prepare the prototype, review details with stakeholders, and support a practical developer handoff. User testing is included when agreed in the project scope.</p></article></div>
 </div></section>
 
-<section class="section" id="contact"><div class="wrap"><div class="contact reveal"><div><div class="overline">06 / Have a project in mind?</div><h2>Let’s make your product easier to use.</h2><p>Open to remote freelance projects and international collaborations. Tell me what you’re building, who it’s for, and where you need design support. A short project brief is enough to start the conversation.</p><div class="tags" style="margin-top:16px"><span class="tag">Islamabad, Pakistan · Remote</span><span class="tag">SaaS & dashboards</span><span class="tag">Web & mobile UX</span><span class="tag">Flows, UI & prototypes</span></div></div><div class="heroactions"><a class="btn" href="mailto:allahnawazmalik175@gmail.com?subject=Freelance%20design%20project%20enquiry&body=Hi%20Allah%2C%0A%0AI%27d%20like%20to%20discuss%20a%20design%20project.%0A%0ABusiness%20or%20product%3A%0ATarget%20users%3A%0AMain%20challenge%3A%0ADeliverables%3A%0ATimeline%3A%0ABudget%20range%20(optional)%3A%0A%0AThanks."><i data-lucide="mail" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i>Start a project by email</a><a class="btn" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-11 6.6L4 19l.9-4.4A7.5 7.5 0 1 1 20 11.5Z"/><path d="M9 9c.5 2 2 3.5 4 4l1-1 2 1-1 2c-4 0-7-3-7-7l2-1 1 2-1 1Z"/></svg>Message on WhatsApp</a></div><p class="contact-phone" style="margin-top:14px;color:var(--muted);font-size:13px">Direct contact: <a href="tel:+923055742436" style="color:var(--text);font-weight:700"><i data-lucide="phone" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-8-8l2-2-1-4Z"/></svg></i>+92 305 574 2436</a> · <a href="mailto:allahnawazmalik175@gmail.com?subject=Freelance%20design%20project%20enquiry&body=Hi%20Allah%2C%0A%0AI%27d%20like%20to%20discuss%20a%20design%20project.%0A%0ABusiness%20or%20product%3A%0ATarget%20users%3A%0AMain%20challenge%3A%0ADeliverables%3A%0ATimeline%3A%0ABudget%20range%20(optional)%3A%0A%0AThanks." style="color:var(--text)"><i data-lucide="mail" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i>allahnawazmalik175@gmail.com</a></p></div></div></section>
+<section class="section contact-section" id="contact">
+  <div class="wrap">
+    <div class="contact contact-redesign reveal">
+      <div class="contact-copy">
+        <div class="overline"><span class="contact-live-dot" aria-hidden="true"></span> 06 / Let’s work together</div>
+        <h2>Have a good idea?<br><span>Let’s make it useful.</span></h2>
+        <p>I design clear, thoughtful digital experiences for SaaS products, dashboards, websites and mobile apps. Share a little about your project and we can take it from there.</p>
+        <div class="contact-tags" aria-label="Design services">
+          <span>SaaS & dashboards</span><span>Web & mobile UX</span><span>Flows & prototypes</span>
+        </div>
+      </div>
+      <div class="contact-panel">
+        <div class="contact-panel-heading"><span>START A CONVERSATION</span><span class="contact-availability"><i aria-hidden="true"></i> Open to remote projects</span></div>
+        <a class="contact-action contact-action-primary" href="mailto:allahnawazmalik175@gmail.com?subject=Freelance%20design%20project%20enquiry&amp;body=Hi%20Allah%2C%0A%0AI%27d%20like%20to%20discuss%20a%20design%20project.%0A%0ABusiness%20or%20product%3A%0ATarget%20users%3A%0AMain%20challenge%3A%0ADeliverables%3A%0ATimeline%3A%0ABudget%20range%20(optional)%3A%0A%0AThanks."><i data-lucide="mail" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span><strong>Email about a project</strong><small>Best for briefs and project details</small></span><b aria-hidden="true">↗</b></a>
+        <a class="contact-action" href="https://wa.me/923055742436?text=Hi%20Allah%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20design%20project." target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20l1.2-5.2A8.4 8.4 0 1 1 21 11.5Z"/></svg></i><span><strong>Message on WhatsApp</strong><small>For a quick conversation</small></span><b aria-hidden="true">↗</b></a>
+        <div class="contact-details">
+          <a href="mailto:allahnawazmalik175@gmail.com"><i data-lucide="at-sign" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M16 12v1a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></i><span><small>EMAIL</small><strong>allahnawazmalik175@gmail.com</strong></span></a>
+          <a href="tel:+923055742436"><i data-lucide="phone" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-8-8l2-2-1-4Z"/></svg></i><span><small>PHONE</small><strong>+92 305 574 2436</strong></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
-<footer class="footer"><div class="wrap footerin"><span>© <span id="year"></span> Allah Nawaz · Designed with intention.</span><div class="footerlinks"><a href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v10M5 5h.01M10 19v-6a4 4 0 0 1 8 0v6M10 9v10"/></svg>LinkedIn</a><a href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7a3 3 0 0 1 0 6H3zM3 12h8a3.5 3.5 0 0 1 0 7H3zM15 7h6M14 14h7a3.5 3.5 0 0 0-7 0Zm0 0a3.5 3.5 0 0 0 7 3"/></svg>Behance</a><a href="#home"><i data-lucide="arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i>Back to top</a></div></div></footer>
+<footer class="footer footer-redesign">
+  <div class="wrap">
+    <div class="footer-main">
+      <a class="footer-brand" href="#home" aria-label="Allah Nawaz — back to home"><span class="footer-monogram">AN</span><span><strong>Allah Nawaz</strong><small>UI/UX &amp; Product Designer</small></span></a>
+      <p class="footer-note">Thoughtful digital experiences.<br>Designed with intention.</p>
+      <nav class="footer-nav" aria-label="Footer navigation"><a href="#work">Selected work</a><a href="#about">About</a><a href="#process">Process</a><a href="#contact">Contact</a></nav>
+      <div class="footerlinks" aria-label="Professional profiles"><a href="https://www.linkedin.com/in/allah-nawaz-productdesigner/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v10M5 5h.01M10 19v-6a4 4 0 0 1 8 0v6M10 9v10"/></svg>LinkedIn</a><a href="https://www.behance.net/allahnawaz175" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7a3 3 0 0 1 0 6H3zM3 12h8a3.5 3.5 0 0 1 0 7H3zM15 7h6M14 14h7a3.5 3.5 0 0 0-7 0Zm0 0a3.5 3.5 0 0 0 7 3"/></svg>Behance</a></div>
+    </div>
+    <div class="footer-bottom"><span>© <span id="year"></span> Allah Nawaz. All rights reserved.</span><span class="footer-location">Based in Islamabad, Pakistan <i aria-hidden="true">·</i> Available remotely</span><a class="footer-top" href="#home"><i data-lucide="arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></i>Back to top</a></div>
+  </div>
+</footer>
 <script>
 const menuBtn=document.getElementById('menuBtn'),navLinks=document.getElementById('navLinks');
 menuBtn.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open));menuBtn.setAttribute('aria-label',open?'Close navigation':'Open navigation');menuBtn.textContent=open?'Close ×':'Menu ☰';});
