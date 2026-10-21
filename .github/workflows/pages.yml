@@ -1,10 +1,11 @@
-name: Deploy portfolio to GitHub Pages
+name: Deploy portfolio and Naz Assistant to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
       - 'portfolio.html'
+      - 'naz-assistant.html'
       - 'robots.txt'
       - 'sitemap.xml'
       - 'social-preview.svg'
@@ -33,10 +34,11 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Prepare portfolio-only site
+      - name: Prepare standalone site pages
         run: |
           mkdir -p _site
           cp portfolio.html _site/index.html
+          cp naz-assistant.html _site/naz-assistant.html
           cp robots.txt _site/robots.txt
           cp sitemap.xml _site/sitemap.xml
           cp social-preview.svg _site/social-preview.svg
