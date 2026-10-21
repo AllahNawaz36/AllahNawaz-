@@ -678,7 +678,7 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
   }
   // Portfolio-only guided replies. No business automation features.
   const portfolioKnowledge = {
-    portfolio: 'Explore the selected projects and case studies on this page. Project cards link to original work where available.',
+    portfolio: 'Explore selected UI/UX and product design projects, including SaaS interfaces, estimating workflows, connected experiences, and web experiences. Project cards link to original work where available.',
     services: 'I offer UI/UX and product design, responsive web and mobile interfaces, SaaS dashboards, wireframes, prototypes, design systems, and visual design.',
     process: 'My design process starts with understanding the business goal and users, then moves through research, user flows, wireframes, visual design, prototyping, and handoff.',
     brief: 'A useful project brief includes the product or business, target users, main problem, goals, required screens or deliverables, references, deadline, and budget range if known.'
@@ -694,7 +694,7 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
       return say('Hi! I’m Allah Nawaz’s portfolio assistant. I can help you explore projects, understand design services and process, or prepare a project brief. What would you like to know?', 'Assalam-o-alaikum! Main Allah Nawaz ke portfolio ka assistant hoon. Main projects, design services, process aur project brief ke baare mein help kar sakta hoon. Aap kya jaanna chahte hain?');
     }
     if (contains(/(portfolio|project|case study|behance|experience|work samples|show me your work)/)) {
-      return say(portfolioKnowledge.portfolio + ' Scroll to the Work section and open a project card to see more details.', 'Portfolio mein selected projects aur case studies dekhein. Work section tak scroll karein aur details ke liye project card open karein.');
+      return say(portfolioKnowledge.portfolio + ' Scroll to the Work section and open a project card to see more details.', 'Portfolio mein selected UI/UX aur product design projects dekhein, jin mein SaaS interfaces, estimating workflows, connected experiences aur web experiences shamil hain. Work section tak scroll karein aur details ke liye project card open karein.');
     }
     if (contains(/(service|services|hire|what do you do|offer|ui.?ux|product design|website|mobile app|saas|design system|prototype|wireframe)/)) {
       return say(portfolioKnowledge.services, 'Meri services mein UI/UX aur product design, responsive web/mobile interfaces, SaaS dashboards, wireframes, prototypes, design systems aur visual design shamil hain.');
