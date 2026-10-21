@@ -39,6 +39,8 @@ jobs:
           mkdir -p _site
           cp portfolio.html _site/index.html
           cp naz-assistant.html _site/naz-assistant.html
+          mkdir -p _site/naz-assistant
+          cp naz-assistant.html _site/naz-assistant/index.html
           cp robots.txt _site/robots.txt
           cp sitemap.xml _site/sitemap.xml
           cp social-preview.svg _site/social-preview.svg
