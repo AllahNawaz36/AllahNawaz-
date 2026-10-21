@@ -1261,6 +1261,17 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
  .workgrid>.project,.more-work-card,.aboutcard,.skillcard,#process .processgrid>.step{transition:none}
  .workgrid>.project:hover,.more-work-card:hover,.aboutcard:hover,.skillcard:hover,#process .processgrid>.step:hover{transform:none}
 }
+
+/* Bento finishing pass: visible keyboard focus and predictable tap targets. */
+.workgrid>.project,.more-work-grid>.more-work-card,#about .aboutcard,#about .skillcard,#experience .experience-grid>.aboutcard,#process .processgrid>.step{scroll-margin-top:24px}
+.workgrid>.project:focus-within,.more-work-grid>.more-work-card:focus-within,#about .aboutcard:focus-within,#about .skillcard:focus-within,#experience .experience-grid>.aboutcard:focus-within,#process .processgrid>.step:focus-within{outline:2px solid var(--lime,#d5ff72);outline-offset:3px}
+.heroactions a,.contact-redesign a,.footer-redesign a{overflow-wrap:anywhere}
+.heroactions a:focus-visible,.contact-redesign a:focus-visible,.footer-redesign a:focus-visible,.workgrid a:focus-visible,.more-work-grid a:focus-visible,#about a:focus-visible,#experience a:focus-visible,#process a:focus-visible{outline:2px solid var(--lime,#d5ff72);outline-offset:4px;border-radius:8px}
+@media(max-width:640px){
+ .workgrid>.project,.more-work-grid>.more-work-card,#about .aboutcard,#about .skillcard,#experience .experience-grid>.aboutcard,#process .processgrid>.step{min-width:0}
+ .workgrid .projectbody,.more-work-grid .more-work-card{overflow-wrap:anywhere}
+ .heroactions a,.contact-redesign a{min-height:44px}
+}
 </style>
 
 </body></html>
