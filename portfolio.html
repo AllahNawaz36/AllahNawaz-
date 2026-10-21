@@ -428,6 +428,47 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 }
 </style>
 
+
+<style>
+/* Accessibility and final responsive polish for contact and footer. */
+#contact .contact-action:focus-visible,
+#contact .contact-details a:focus-visible,
+.footer-redesign a:focus-visible{
+ outline:3px solid var(--lime);
+ outline-offset:4px;
+ border-radius:8px;
+}
+#contact .contact-action,
+#contact .contact-details>a,
+.footer-redesign .footer-nav a,
+.footer-redesign .footerlinks a,
+.footer-redesign .footer-top{ -webkit-tap-highlight-color:transparent; }
+#contact .contact-details>a{min-height:48px}
+.footer-redesign .footer-main{align-items:start}
+.footer-redesign .footer-nav a{padding:2px 0}
+.footer-redesign .footer-bottom>span{line-height:1.65}
+@media(max-width:800px){
+ #contact .contact-redesign{align-items:stretch}
+ #contact .contact-copy,#contact .contact-panel{min-width:0}
+ .footer-redesign .footer-main{gap:22px 28px}
+ .footer-redesign .footer-nav{row-gap:4px}
+}
+@media(max-width:430px){
+ #contact .contact-action{min-height:64px}
+ #contact .contact-details>a{padding:11px 0}
+ #contact .contact-details strong{overflow-wrap:anywhere;word-break:normal}
+ .footer-redesign .footer-main{gap:18px}
+ .footer-redesign .footer-nav{column-gap:15px}
+ .footer-redesign .footer-bottom{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ #contact .contact-action,
+ .footer-redesign .footer-nav a,
+ .footer-redesign .footerlinks a,
+ .footer-redesign .footer-top{transition:none}
+}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
