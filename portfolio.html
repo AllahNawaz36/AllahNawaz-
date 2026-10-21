@@ -286,7 +286,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:760px){
   .wrap{width:min(100% - 28px,1160px)}
   .navin{height:68px;min-height:68px}
-  .links{top:68px;box-shadow:0 18px 45px rgba(0,0,0,.32)}
+  .links{top:68px;max-height:calc(100dvh - 82px);overflow-y:auto;overscroll-behavior:contain;box-shadow:0 18px 45px rgba(0,0,0,.32)}
   .links a{min-height:44px;display:flex;align-items:center}
   .hero{padding-top:66px}
   .hero h1{letter-spacing:-.065em;line-height:1.04}
