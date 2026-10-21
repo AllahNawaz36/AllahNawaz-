@@ -1263,6 +1263,19 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 }
 
 
+
+/* Motion preference and embedded-preview resilience. */
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+.visual.behance-embed,.more-work-visual.behance-live-embed{position:relative;isolation:isolate}
+.visual.behance-embed iframe,.more-work-visual.behance-live-embed iframe{max-width:100%;min-width:0}
+.embed-fallback:focus-visible{outline:2px solid var(--lime,#d5ff72);outline-offset:3px}
+@media(max-width:640px){
+ .visual.behance-embed .embed-fallback{font-size:11px;line-height:1.45;white-space:normal}
+ .more-work-visual.behance-live-embed .embed-fallback{font-size:11px;line-height:1.45;white-space:normal}
+}
 /* Case-study disclosure: clearer touch, focus, and expanded states. */
 .case-study{min-width:0;overflow-wrap:anywhere}
 .case-study summary{display:flex;align-items:center;min-height:44px;gap:10px;line-height:1.5}
