@@ -1262,6 +1262,18 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
  .workgrid>.project:hover,.more-work-card:hover,.aboutcard:hover,.skillcard:hover,#process .processgrid>.step:hover{transform:none}
 }
 
+
+/* Case-study disclosure: clearer touch, focus, and expanded states. */
+.case-study{min-width:0;overflow-wrap:anywhere}
+.case-study summary{display:flex;align-items:center;min-height:44px;gap:10px;line-height:1.5}
+.case-study summary:focus-visible{outline:2px solid var(--lime,#d5ff72);outline-offset:4px;border-radius:6px}
+.case-study[open]{border-color:#d5ff724d}
+.case-study[open] summary{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.case-study p{overflow-wrap:anywhere}
+@media(max-width:640px){
+ .case-study{padding:11px 12px}
+ .case-study summary{font-size:13px}
+}
 /* Bento finishing pass: visible keyboard focus and predictable tap targets. */
 .workgrid>.project,.more-work-grid>.more-work-card,#about .aboutcard,#about .skillcard,#experience .experience-grid>.aboutcard,#process .processgrid>.step{scroll-margin-top:24px}
 .workgrid>.project:focus-within,.more-work-grid>.more-work-card:focus-within,#about .aboutcard:focus-within,#about .skillcard:focus-within,#experience .experience-grid>.aboutcard:focus-within,#process .processgrid>.step:focus-within{outline:2px solid var(--lime,#d5ff72);outline-offset:3px}
