@@ -1163,4 +1163,104 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
     }
   });
 </script>
+
+<style id="bento-grid-redesign">
+/* Bento grid redesign: preserve content and links, upgrade layout only. */
+:root{--bento-radius:24px;--bento-gap:16px}
+.section{padding-block:clamp(48px,6vw,82px)}
+.sectionhead{margin-bottom:24px}
+.hero{padding:clamp(46px,7vw,86px) 0 58px}
+.hero .wrap{
+ position:relative;isolation:isolate;overflow:hidden;
+ padding:clamp(28px,5.2vw,64px);
+ border:1px solid var(--line);border-radius:32px;
+ background:linear-gradient(125deg,#1b1e18 0%,#151713 62%,#20251a 100%);
+ box-shadow:0 22px 70px #0002;
+}
+.hero .wrap:after{
+ content:"";position:absolute;z-index:-1;right:-70px;top:-100px;
+ width:390px;aspect-ratio:1;border:1px solid #d5ff721c;border-radius:34%;
+ transform:rotate(28deg);box-shadow:0 0 0 32px #d5ff7207,0 0 0 68px #d5ff7205;
+ pointer-events:none;
+}
+.hero h1{max-width:900px}
+.hero .wrap>p{max-width:680px}
+.herofoot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:38px;padding-top:0;border-top:0}
+.herofoot span{display:flex;align-items:flex-start;flex-direction:column;gap:5px;min-width:0;padding:15px;border:1px solid #ffffff12;border-radius:16px;background:#ffffff05;line-height:1.55}
+.herofoot b{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--lime)}
+.workgrid{grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap);align-items:stretch}
+.workgrid>.project{grid-column:span 6;min-width:0;border-radius:var(--bento-radius);display:flex;flex-direction:column}
+.workgrid>.project:first-child{grid-column:span 7}
+.workgrid>.project:nth-child(2){grid-column:span 5}
+.workgrid>.project:first-child .visual{height:clamp(280px,31vw,390px)}
+.workgrid>.project:nth-child(2) .visual{height:clamp(250px,28vw,340px)}
+.workgrid .projectbody{display:flex;flex:1;flex-direction:column;align-items:flex-start}
+.workgrid .projectbody .projectlink{margin-top:auto;padding-top:18px}
+.workgrid .projectbody .case-study{width:100%}
+.workgrid .project:hover,.more-work-card:hover,.aboutcard:hover,.skillcard:hover,.processgrid>.step:hover{
+ transform:translateY(-4px);border-color:#d5ff725c;box-shadow:0 20px 46px #0002
+}
+.more-work-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap)}
+.more-work-grid>.more-work-card{grid-column:span 4;min-width:0;border-radius:var(--bento-radius);overflow:hidden}
+.more-work-grid>.more-work-card:nth-child(-n+2){grid-column:span 6}
+.more-work-visual{min-width:0}
+#motion-lab .motion-lab{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:var(--bento-gap)}
+#motion-lab .motion-copy,#motion-lab .motion-stage{border-radius:var(--bento-radius);min-width:0}
+#about .aboutgrid{grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap)}
+#about .aboutcard{grid-column:span 5;border-radius:var(--bento-radius)}
+#about .skillcard{grid-column:span 7;border-radius:var(--bento-radius);min-width:0}
+#about .skilllist{grid-template-columns:repeat(2,minmax(0,1fr))}
+#experience .experience-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap)}
+#experience .experience-grid>.aboutcard{grid-column:span 4;min-width:0;border-radius:var(--bento-radius)}
+#process .processgrid{grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap)}
+#process .processgrid>.step{grid-column:span 3;min-width:0;border-radius:20px;padding:22px;transition:transform .25s,border-color .25s,box-shadow .25s}
+#process .step h3{margin-top:18px}
+#contact .contact-redesign{border-radius:32px;box-shadow:0 22px 60px #0002}
+.footer-redesign .footer-main{gap:26px 36px}
+.footer-redesign .footer-group{padding:16px;border:1px solid var(--line);border-radius:16px;background:#ffffff03}
+@media(max-width:900px){
+ .workgrid>.project:first-child,.workgrid>.project:nth-child(2){grid-column:span 6}
+ .more-work-grid>.more-work-card,.more-work-grid>.more-work-card:nth-child(-n+2){grid-column:span 6}
+ #about .aboutcard{grid-column:span 5}
+ #about .skillcard{grid-column:span 7}
+ #experience .experience-grid>.aboutcard{grid-column:span 6}
+ #process .processgrid>.step{grid-column:span 6}
+}
+@media(max-width:640px){
+ .hero{padding-top:28px}
+ .hero .wrap{padding:25px 19px;border-radius:24px}
+ .hero:before{right:-230px;top:-50px}
+ .hero h1{font-size:clamp(39px,11vw,58px);letter-spacing:-.065em}
+ .herofoot{grid-template-columns:1fr;gap:8px;margin-top:27px}
+ .herofoot span{padding:12px 14px;flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px}
+ .workgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .workgrid>.project,.workgrid>.project:first-child,.workgrid>.project:nth-child(2){grid-column:1/-1}
+ .workgrid>.project:first-child .visual,.workgrid>.project:nth-child(2) .visual{height:clamp(220px,62vw,320px)}
+ .more-work-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .more-work-grid>.more-work-card,.more-work-grid>.more-work-card:nth-child(-n+2){grid-column:1/-1}
+ #motion-lab .motion-lab{grid-template-columns:1fr}
+ #motion-lab .motion-copy,#motion-lab .motion-stage{min-height:250px}
+ #about .aboutgrid{grid-template-columns:1fr}
+ #about .aboutcard,#about .skillcard{grid-column:1/-1}
+ #about .skilllist{grid-template-columns:1fr}
+ #experience .experience-grid{grid-template-columns:1fr}
+ #experience .experience-grid>.aboutcard{grid-column:1/-1}
+ #process .processgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #process .processgrid>.step{grid-column:span 1;padding:16px}
+ #contact .contact-redesign{border-radius:24px}
+ .footer-redesign .footer-main{grid-template-columns:1fr}
+ .footer-redesign .footer-note{justify-self:start;text-align:left}
+ .footer-redesign .footer-group{padding:14px}
+}
+@media(max-width:370px){
+ #process .processgrid{grid-template-columns:1fr}
+ #process .processgrid>.step{grid-column:1/-1}
+ .heroactions .btn{width:100%;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+ .workgrid>.project,.more-work-card,.aboutcard,.skillcard,#process .processgrid>.step{transition:none}
+ .workgrid>.project:hover,.more-work-card:hover,.aboutcard:hover,.skillcard:hover,#process .processgrid>.step:hover{transform:none}
+}
+</style>
+
 </body></html>
