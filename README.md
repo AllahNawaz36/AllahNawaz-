@@ -1,72 +1,65 @@
 # Allah Nawaz — UI/UX & Product Designer
 
-**Live portfolio:** [https://allahnawaz36.github.io/AllahNawaz-/](https://allahnawaz36.github.io/AllahNawaz-/)
+**Live site:** [https://allahnawaz36.github.io/AllahNawaz-/](https://allahnawaz36.github.io/AllahNawaz-/)
 
-Professional single-page portfolio for **Allah Nawaz**, a UI/UX and Product Designer based in Islamabad, Pakistan. Focus areas include SaaS platforms, web applications, mobile experiences, user flows, information architecture, wireframes and high-fidelity interface design.
+Professional portfolio for **Allah Nawaz**, a UI/UX and Product Designer based in Islamabad, Pakistan.
 
----
-
-## About this repository
-
-| File | Purpose |
-|------|---------|
-| `portfolio.html` | Complete single-page portfolio (source of truth) |
-| `robots.txt` | Search-engine crawl rules |
-| `sitemap.xml` | XML sitemap for indexing |
-| `social-preview.svg` | Open Graph / social sharing image (converted to PNG on deploy) |
-| `.github/workflows/pages.yml` | GitHub Actions workflow that deploys to GitHub Pages |
-| `.nojekyll` | Ensures GitHub Pages serves files without Jekyll processing |
-
-The site is deployed automatically to **GitHub Pages** whenever changes are pushed to the `main` branch.
-
----
-
-## Sections
-
-1. **Selected work** — Curated product and interface case studies (Behance embeds)
-2. **More projects** — Additional design work
-3. **Motion & VFX** — Motion and visual exploration
-4. **About** — Background and design approach
-5. **Experience** — Capabilities and contribution style
-6. **Process** — Structured design workflow
-7. **Contact** — Email and WhatsApp enquiry options
+**Focus areas**
+- SaaS platforms & dashboards
+- Web applications
+- Mobile experiences
+- User flows & information architecture
+- Wireframes, high-fidelity UI & prototypes
+- Design systems and visual design
 
 ---
 
 ## Professional profiles
 
-- [LinkedIn](https://www.linkedin.com/in/allah-nawaz-productdesigner/)
-- [Behance](https://www.behance.net/allahnawaz175)
+- [Behance](https://www.behance.net/allahnawaz175) — Selected case studies and visual work
+- [LinkedIn](https://www.linkedin.com/in/allah-nawaz-productdesigner/) — Experience and recommendations
+- Email: [allahnawazmalik175@gmail.com](mailto:allahnawazmalik175@gmail.com)
+
+---
+
+## Services
+
+| Area | Deliverables |
+|------|--------------|
+| **Product / SaaS UX** | User flows, information architecture, interface design, interactive prototypes |
+| **Web & Mobile UI** | Responsive interfaces, design systems, handoff-ready Figma files |
+| **Visual & Campaign** | Social creatives, marketing visuals, consistent brand systems |
+
+Open to remote freelance and contract work.
+
+---
+
+## Repository structure
+
+| File | Purpose |
+|------|---------|
+| `portfolio.html` | Single-page portfolio (source of truth for GitHub Pages) |
+| `robots.txt` | Crawl rules |
+| `sitemap.xml` | Search indexing |
+| `social-preview.svg` | Open Graph / social card (converted to PNG on deploy) |
+| `.github/workflows/pages.yml` | Automatic deployment to GitHub Pages |
+| `.nojekyll` | Disables Jekyll processing |
+
+The site deploys automatically on every push to `main`.
 
 ---
 
 ## Local preview
 
-Open `portfolio.html` directly in a browser, or serve the folder with any static server:
-
 ```bash
-# Example with Python
 python -m http.server 8080
 ```
 
-Then visit `http://localhost:8080/portfolio.html`.
-
----
-
-## Deployment notes
-
-The GitHub Actions workflow:
-
-1. Copies `portfolio.html` → `_site/index.html`
-2. Copies supporting files (`robots.txt`, `sitemap.xml`, `social-preview.svg`)
-3. Converts the SVG social preview to PNG (1200×630)
-4. Deploys the `_site` folder to GitHub Pages
-
-No build step or framework is required. The site is pure HTML, CSS and minimal JavaScript.
+Open `http://localhost:8080/portfolio.html`.
 
 ---
 
 ## License
 
-All rights reserved © Allah Nawaz.  
+© Allah Nawaz. All rights reserved.
 Portfolio content and design are the intellectual property of the author.
