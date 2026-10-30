@@ -79,28 +79,6 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 "DM Sans",sa
 .hero p{animation:heroEnter .95s .08s var(--ease-premium) both}
 .heroactions{animation:heroEnter .95s .15s var(--ease-premium) both}
 @keyframes heroEnter{from{opacity:0;transform:translateY(16px);filter:blur(5px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
-.motion-lab{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
-.motion-copy,.motion-stage{min-height:300px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-.motion-copy{padding:clamp(24px,4vw,38px);background:linear-gradient(145deg,#1d211a,#141612)}
-.motion-copy h3{font:700 clamp(26px,3vw,36px)/1.12 Manrope,sans-serif;letter-spacing:-1.5px;margin:14px 0}
-.motion-copy p{color:var(--muted);font-size:14px;max-width:440px}
-.motion-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.motion-tags span{border:1px solid #3a4131;border-radius:999px;padding:7px 10px;color:#d8e1c9;font-size:11px}
-.motion-stage{position:relative;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 50%,#39462c 0,#1a2017 43%,#11130f 78%);perspective:700px;isolation:isolate}
-.motion-stage:before,.motion-stage:after{content:"";position:absolute;border:1px solid #d5ff7230;border-radius:50%;width:220px;height:220px;animation:orbitSpin 16s linear infinite}
-.motion-stage:after{width:285px;height:130px;transform:rotate(-35deg);animation:orbitTilt 12s linear infinite}
-@keyframes orbitSpin{to{transform:rotate(360deg)}}
-@keyframes orbitTilt{from{transform:rotate(-35deg)}to{transform:rotate(325deg)}}
-.motion-core{position:relative;display:grid;place-items:center;width:112px;height:112px;border-radius:32px;background:linear-gradient(145deg,#eaffb7,#9dcd4b);color:#171912;font:800 26px Manrope;letter-spacing:-2px;box-shadow:0 0 45px #d5ff7230,0 25px 70px #0008;transform:rotate(-8deg);animation:coreFloat 4.5s ease-in-out infinite;z-index:1}
-.motion-core:before{content:"";position:absolute;inset:-8px;border:1px solid #d5ff7270;border-radius:38px;animation:coreRing 3.5s ease-in-out infinite}
-@keyframes coreFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-@keyframes coreRing{0%,100%{transform:scale(.96);opacity:.45}50%{transform:scale(1.08);opacity:1}}
-.motion-orb{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--lime);box-shadow:0 0 20px #d5ff72aa;top:22%;left:24%;animation:orbDrift 7s ease-in-out infinite alternate}
-.motion-orb.two{top:auto;left:auto;right:20%;bottom:23%;width:7px;height:7px;animation-delay:-3s}
-@keyframes orbDrift{to{transform:translate3d(26px,32px,0) scale(1.4)}}
-.motion-caption{position:absolute;left:18px;bottom:16px;color:#aab29d;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
-@media(max-width:760px){.motion-lab{grid-template-columns:1fr}.motion-copy,.motion-stage{min-height:260px}.motion-stage:before{width:190px;height:190px}.motion-stage:after{width:230px;height:110px}}
-
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{transition:none!important}}
 
 /* Curated creative reference + asset hub */
@@ -146,7 +124,7 @@ h1,h2,h3,p{overflow-wrap:break-word}
 .skilllist .skill i svg{width:16px;height:16px}
 .projectlink:focus-visible,.resource-card:focus-visible{outline:3px solid var(--lime);outline-offset:4px}
 @media(max-width:760px){.hero h1{letter-spacing:-.06em}.herofoot span{align-items:flex-start}.nav .links a{display:flex;align-items:center;min-height:44px}.nav .links .navcta{justify-content:center}}
-@media(prefers-reduced-motion:reduce){.hero:before,.kicker .pulse,.hero h1,.hero .kicker,.hero p,.heroactions,.motion-stage:before,.motion-stage:after,.motion-core,.motion-core:before,.motion-orb{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.hero:before,.kicker .pulse,.hero h1,.hero .kicker,.hero p,.heroactions{animation:none!important}}
 
 
 /* Reliable local project previews: no third-party iframe dependency */
@@ -478,7 +456,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <header class="nav"><div class="wrap navin">
 <a class="brand" href="#home" aria-label="Allah Nawaz home"><span class="monogram">AN.</span><span>Allah Nawaz<small>Product Designer</small></span></a>
 <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Open navigation">Menu ☰</button>
-<nav class="links" id="navLinks"><a href="#work">Selected work</a><a href="#more-work">More projects</a><a href="#motion-lab">Motion & VFX</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#process">Process</a><a href="#contact">Contact</a><a class="navcta" href="https://www.linkedin.com/in/allah-nawaz-256a81286/" target="_blank" rel="noopener noreferrer">Let’s connect ↗</a></nav>
+<nav class="links" id="navLinks"><a href="#work">Selected work</a><a href="#more-work">More projects</a><a href="#about">About</a><a href="#experience">Experience</a><a href="#process">Process</a><a href="#contact">Contact</a><a class="navcta" href="https://www.linkedin.com/in/allah-nawaz-256a81286/" target="_blank" rel="noopener noreferrer">Let’s connect ↗</a></nav>
 </div></header>
 <main id="main-content">
 <section class="hero" id="home"><div class="wrap">
@@ -685,12 +663,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   </div>
 </section>
 
-<section class="section" id="motion-lab"><div class="wrap">
-<div class="sectionhead reveal"><div><div class="overline">02 / Motion playground</div><h2>Make the interface feel alive.</h2></div><p>Motion can guide attention, express brand personality, and make interactions feel more considered. This animated study demonstrates the visual direction—not a claim of client VFX work.</p></div>
-<div class="motion-lab">
-<article class="motion-copy reveal"><div class="kicker"><span class="pulse"></span> Motion · Animation · VFX exploration</div><h3>Beyond static screens.<br><span style="color:var(--lime)">Into moving stories.</span></h3><p>Exploring motion-led storytelling through purposeful transitions, kinetic typography, layered depth, light, and compositing-inspired visuals—always in service of the message.</p><div class="motion-tags"><span>Micro-interactions</span><span>Motion graphics</span><span>Visual effects concepts</span><span>Transitions & timing</span></div></article>
-<div class="motion-stage reveal" role="img" aria-label="Abstract animated motion design study with orbiting rings, a floating monogram, and glowing particles"><span class="motion-orb"></span><span class="motion-orb two"></span><div class="motion-core">AN.</div><span class="motion-caption">Motion study 01 · Depth / Light / Timing</span></div>
-</div></div></section>
 <section class="section" id="about"><div class="wrap"><div class="sectionhead reveal"><div><div class="overline">03 / About me</div><h2>Curious by nature.<br>Intentional by design.</h2></div><p>With 3 years of UI/UX design experience, I work across B2B SaaS, web, and mobile products for construction, marketing, and real-estate workflows.</p></div>
 <div class="aboutgrid"><article class="aboutcard reveal"><div class="bigmark">AN.</div><h3>Designing for people<br>and outcomes.</h3><p>My work spans product interfaces, design systems, e-commerce, and campaign visuals. I have built a 60+ component Figma design system and focus on clear user flows, consistent components, and practical developer handoff.</p><a class="projectlink" href="https://www.linkedin.com/in/allah-nawaz-256a81286/" target="_blank" rel="noopener noreferrer">More about my work ↗</a></article>
 <article class="skillcard reveal"><div class="overline">My toolkit</div><h3 style="font:700 23px Manrope;letter-spacing:-.8px;margin:10px 0">From user flows to polished UI.</h3><p>A focused overview of the design skills and tools reflected in my portfolio.</p><div class="skilllist"><div class="skill"><i data-lucide="workflow" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M8 5h8M6 7v4a4 4 0 0 0 4 4h2M18 7v4a4 4 0 0 1-4 4h-2"/></svg></i>Information architecture & user flows</div><div class="skill"><i data-lucide="pen-tool" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4"/><path d="M13 7 5 15l-2 6 6-2 8-8"/><path d="m16 4 2-2 4 4-2 2"/></svg></i>Wireframing & interaction design</div><div class="skill"><i data-lucide="layout-dashboard" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></i>High-fidelity UI design</div><div class="skill"><i data-lucide="mouse-pointer-2" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 3 14 10-7 1-3 7L5 3Z"/><path d="m13 14 5 5"/></svg></i>Interactive prototyping</div><div class="skill"><i data-lucide="layers" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg></i>Figma Auto Layout, Variables & components</div><div class="skill"><i data-lucide="component" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></i>Design systems, variants & tokens</div><div class="skill"><i data-lucide="smartphone" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></i>Responsive web & mobile interfaces</div><div class="skill"><i data-lucide="sparkles" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7Z"/></svg></i>Visual hierarchy & campaign design</div><div class="skill"><i data-lucide="box" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.7 7.5 4.4 7.5-4.4M12 12v9"/></svg></i>Framer & Spline 3D concepts</div><div class="skill"><i data-lucide="file-text" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></i>Design documentation & developer handoff</div></div></article></div>
@@ -1247,8 +1219,6 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
 .more-work-grid>.more-work-card{grid-column:span 4;min-width:0;border-radius:var(--bento-radius);overflow:hidden}
 .more-work-grid>.more-work-card:nth-child(-n+2){grid-column:span 6}
 .more-work-visual{min-width:0}
-#motion-lab .motion-lab{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:var(--bento-gap)}
-#motion-lab .motion-copy,#motion-lab .motion-stage{border-radius:var(--bento-radius);min-width:0}
 #about .aboutgrid{grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--bento-gap)}
 #about .aboutcard{grid-column:span 5;border-radius:var(--bento-radius)}
 #about .skillcard{grid-column:span 7;border-radius:var(--bento-radius);min-width:0}
@@ -1281,8 +1251,6 @@ if('IntersectionObserver' in window){const observer=new IntersectionObserver(ent
  .workgrid>.project:first-child .visual,.workgrid>.project:nth-child(2) .visual{height:clamp(220px,62vw,320px)}
  .more-work-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
  .more-work-grid>.more-work-card,.more-work-grid>.more-work-card:nth-child(-n+2){grid-column:1/-1}
- #motion-lab .motion-lab{grid-template-columns:1fr}
- #motion-lab .motion-copy,#motion-lab .motion-stage{min-height:250px}
  #about .aboutgrid{grid-template-columns:1fr}
  #about .aboutcard,#about .skillcard{grid-column:1/-1}
  #about .skilllist{grid-template-columns:1fr}
